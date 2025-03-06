@@ -102,19 +102,17 @@ namespace WebUI.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete([FromBody] int? id)
         {
+            string message = string.Empty;
             if (id.HasValue && id > 0)
             {
                 var result = await dm.Delete(id.Value);
-                if (!string.IsNullOrEmpty(result.Message))
-                {
-                    TempData["PopupMessage"] = result.Message;
-                }
+                message = result.Message;
             }
             else
             {
                 ModelState.AddModelError("ErrorDetail", "Silinirken bir hata oluştu!");
             }
-            return RedirectToAction("Index");
+            return Json(message);
         }
     }
 }
