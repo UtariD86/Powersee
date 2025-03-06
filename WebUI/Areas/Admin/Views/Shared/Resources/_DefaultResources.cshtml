@@ -1,0 +1,75 @@
+﻿@{
+    string googleMapsApiKey = "";
+}
+
+<!-- REGION: STYLES -->
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Remix Icon -->
+<link href="~/iconsandfonts/remixicon.css" rel="stylesheet" />
+
+
+
+<style>
+    .zw-copyright {
+        color: #0084a4;
+    }
+
+        .zw-copyright : hover {
+            color: #259ef0;
+        }
+</style>
+
+<!-- DevExtreme CSS -->
+<link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/21.2.5/css/dx.common.css" />
+<link id="devextreme-theme" rel="stylesheet" href="~/devextreme/css/dx.volleytics.light.css" />
+
+<!--CROPPER-->
+<link href="~/cropper/cropper.min.css" rel="stylesheet" />
+<!--ENDREGION: STYLES-->
+<!--||||||||||||||||||||||||||||||||||||||||||||||||||||||||-->
+<!--REGION: SCRIPTS-->
+<!-- JQUERY -->
+<script src="~/devextreme/js/jquery.min.js"></script>
+<script src="~/devextreme/js/jquery.easing.min.js"></script>
+<script>var $ = jQuery.noConflict(false);</script>
+
+<!-- Input Mask -->
+<script src="~/inputmask/inputmask.js"></script>
+<script src="~/inputmask/inputmask.min.js"></script>
+<script src="~/inputmask/jquery.inputmask.js"></script>
+<script src="~/inputmask/jquery.inputmask.min.js"></script>
+
+
+<!--Devextreme-->
+@* <script src="https://unpkg.com/devextreme-intl/dist/devextreme-intl.min.js"></script> *@
+<script src="~/devextreme/js/dx.all.js"></script>
+
+@* <script>
+        fetch('../devextreme/js/localization/messages/tr.json')
+           .then(response => response.json())
+           .then(data => {
+               // JSON verisini yükledikten sonra localization işlemini yap
+               DevExpress.localization.loadMessages(data.tr);
+               DevExpress.localization.locale('tr');
+           })
+           .catch(error => {
+               console.error('Localization JSON dosyası yüklenirken bir hata oluştu:', error);
+           });
+    </script>
+*@
+<!-- MAPS API -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQY8dmi5OAtUULEKw7p6zoLAwiCsS2K_w&callback=initMap" async defer></script>
+
+<!--CROPPER-->
+<link href="~/cropper/cropper.min.js" rel="stylesheet" />
+
+<!-- Toastr -->
+<link href="~/toastr/toastr.min.css" rel="stylesheet" />
+<link href="~/toastr/toastr.css" rel="stylesheet" />
+<script src="~/toastr/toastr.min.js"></script>
+
+<!-- Global Functions -->
+<script src="~/zurafworks/js/globalfunctions.js"></script>
+<!-- ENDREGION: SCRIPTS -->

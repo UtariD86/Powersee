@@ -1,0 +1,73 @@
+:root, :root.light, :root .light {
+    --falcon-primary: #c23450;
+    --falcon-primary-rgb: 194, 52, 80;
+    --falcon-secondary: #94747e;
+    --falcon-font-volleytics: "Poppins" --falcon-primary-rgb: 194, 52, 80;
+}
+
+.dark {
+    --falcon-primary: #c23450;
+    --falcon-primary-rgb: 194, 52, 80;
+}
+
+.btn-primary, .navbar-vertical .btn-purchase, .tox .tox-menu__footer .tox-button:last-child, .tox .tox-dialog__footer .tox-button:last-child {
+    --falcon-btn-color: #fff;
+    --falcon-btn-bg: var(--falcon-primary);
+    --falcon-btn-border-color: var(--falcon-primary);
+    --falcon-btn-hover-color: #fff;
+    --falcon-btn-hover-bg: rgba(var(--falcon-primary-rgb), 0.9);
+    --falcon-btn-hover-border-color: rgba(var(--falcon-primary-rgb), 0.9);
+    --falcon-btn-focus-shadow-rgb: 76, 143, 233;
+    --falcon-btn-active-color: #fff;
+    --falcon-btn-active-bg: rgba(var(--falcon-primary-rgb), 0.9);
+    --falcon-btn-active-border-color: rgba(var(--falcon-primary-rgb), 0.9);
+    --falcon-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --falcon-btn-disabled-color: #fff;
+    --falcon-btn-disabled-bg: rgba(var(--falcon-primary-rgb), 0.5);
+    --falcon-btn-disabled-border-color: rgba(var(--falcon-primary-rgb), 0.5)
+}
+
+
+
+
+.navbar-vertical.navbar-vibrant .navbar-collapse {
+    /*background-image: linear-gradient(-45deg, rgba(245, 66, 102, 0.7), rgba(196, 52, 76, 0.8)), url(../assets/img/generic/navbargradient.jpg);*/
+    /*background-image: linear-gradient(-45deg, rgba(185, 58, 92, 0.7), rgba(185, 58, 92, 0.8)), url(../assets/img/generic/navbargradient.jpg);*/
+    background-image: linear-gradient(-45deg, rgba(194, 52, 80, 0.7), rgba(194, 52, 80, 0.8)), url(../assets/img/generic/navbargradient.jpg);
+    /*background-image: linear-gradient(-45deg, rgba(85, 36, 60, 0.99), rgba(123, 52, 87, 0.98)), url(../assets/img/generic/bgtry.png);*/
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+.font-volleytics {
+    font-family: Prototype;
+    color: #c23450;
+}
+
+@media (min-width: 1200px) {
+    .navbar-vertical.navbar-expand-xl + .content .navbar-top {
+        margin-left: 10px;
+    }
+}
+
+.navbar-vertical .navbar-nav .nav-link-icon {
+    width: 1.5rem;
+    min-width: 1.5rem;
+    font-size: 1.5rem;
+}
+
+@media (min-width: 1200px) {
+    .navbar-vertical-collapsed .navbar-vertical.navbar-expand-xl .navbar-collapse {
+        width: 3.625rem !important;
+        margin-left: -1rem;
+        overflow: hidden;
+    }
+}
+
+.form-check-input:checked {
+    background-color: var(--falcon-primary) !important;
+    border-color: var(--falcon-primary) !important;
+}
