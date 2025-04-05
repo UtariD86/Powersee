@@ -1,0 +1,176 @@
+﻿@{
+    string PageName = "Şubeler";
+    string AreaName = "Admin";
+}
+
+
+<div class="card">
+    <div class="card-body">
+        <div id="gridContainer" class="border"></div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+
+        $('#gridContainer').dxDataGrid({
+            dataSource: {
+                load: function (loadOptions) {
+                    var data = {
+                        PageSize: loadOptions.take || 10,
+                        PageIndex: Math.floor((loadOptions.skip || 0) / (loadOptions.take || 10)),
+                        Filter: loadOptions.filter ? JSON.stringify(loadOptions.filter) : null, // Pass the filter as JSON
+                         // Group: loadOptions.department ? JSON.stringify(loadOptions.department) : null // Pass the department as JSON
+                    };
+                    return $.ajax({
+                        url: '/@AreaName/get-subeler',
+                        method: 'POST',
+                        data: JSON.stringify(data),
+                        dataType: 'json',
+                        contentType: 'application/json',
+                    }).then(function (response) {
+
+                        let gridInstance = $('#gridContainer').dxDataGrid('instance');
+
+                        if (response && !gridInstance.__lookupSet) {
+                            gridInstance.beginUpdate();
+                            if (response.GenderSel) {
+                                gridInstance.option('columns[4].lookup.dataSource', response.GenderSel);
+                            }
+                            gridInstance.endUpdate();
+
+                            gridInstance.__lookupSet = true; // Lookup'ların ayarlandığını işaretle
+                        }
+
+                        if (response && response.Items) {
+                            debugger;
+                            return {
+                                data: response.Items, // Adjusted to 'Items'
+                                totalCount: response.Count // Adjusted to 'Count'
+                            };
+                        } else {
+                            return {
+                                data: [],
+                                totalCount: 0
+                            };
+                        }
+                    }).catch(function (error) {
+                        return {
+                            data: [],
+                            totalCount: 0
+                        };
+                    });
+                }
+            },
+            filterRow: { visible: true },
+            remoteOperations: { paging: true, subePaging: false, filtering: true, sorting: true }, // Enable remote filtering ipucu
+            paging: {
+                pageSize: 10,
+                pageIndex: 0,
+                enabled: true
+            },
+            pager: {
+                showPageSizeSelector: true,
+                allowedPageSizes: [10, 20, 30],
+                showNavigationButtons: true,
+                visible: true,
+                showInfo: true
+            },
+            keyExpr: 'id',
+            showBorders: true,
+            headerFilter: {
+                visible: false
+            },
+            searchPanel: {
+                visible: true,
+                width: 240,
+                placeholder: "Şube Ara..."
+            },
+            editing: {
+                mode: 'none'
+            },
+            //get-sube - delete-sube yap ipuçları
+
+            columns: [
+            {
+                dataField: 'Id',
+                caption: 'Düzenle',
+                width: 70,
+                cellTemplate: function (container, options) {
+                    $('<a class="edit-icon" style="color:#0085cf; margin-right:20%; cursor:pointer;" title="Düzenle"><i class="fas fa-pen-nib" style="font-size: 15px;"></i></a>')
+                        .on('click', function () {
+                            var id = options.data.Id;
+                            zuraf.getById('/@AreaName/get-sube', id, '#gridContainer');
+                        }).appendTo(container);
+
+                    $('<a class="delete-icon text-danger" style="cursor:pointer;" title="Sil"><i class="far fa-trash-alt" style="font-size: 15px;"></i></a>')
+                        .on('click', function () {
+                            var id = options.data.Id;
+                            zuraf.deleteById('/@AreaName/delete-sube', id, '#gridContainer', true);
+                        }).appendTo(container);
+                },
+                allowFiltering: false
+            },
+            {
+                dataField: 'Subeisim',
+                caption: 'Şube Adı',
+                allowFiltering: true,
+                alignment: "center"
+            },
+            {
+                dataField: 'Adres',
+                caption: 'Şube Adresi',
+                allowFiltering: true,
+                alignment: "center"
+            },
+            {
+                dataField: 'TelefonNumarasi1',
+                caption: 'Şube Telefon Numarası',
+                allowFiltering: true,
+                alignment: "center"
+            }
+
+
+
+
+        ],
+
+
+        //sube veri tabanındaki kolonlar eklenecek dataFieldlar c# da yapılan isimlendirmeler ile düzenlenecek ipuçları
+            toolbar: {
+                items: [
+                    {
+                        location: 'before',
+                        template: function () {
+                            return '<div class="headline"><h7><i class="icon-feather-bar-chart-2"></i>@PageName</h7></div>';
+                        }
+                    },
+                    {
+                        location: 'after',
+                        template: function () {
+                            return ' <a onclick="zuraf.getById(\'/@AreaName/get-sube\',null,\'#gridContainer\')" id="addButton" class="btn btn-primary mr-1 mb-1" ><i class="fa fa-plus"></i> &nbsp; Ekle</a>';
+                        }//url değişcek ipuçları
+                    },
+                ]
+            },
+            onContentReady: function (e) {
+                if (!e.component.__ready) {
+                    e.component.__ready = true;
+                }
+            },
+            groupPanel: {
+                visible: false
+            },
+            grouping: {
+                autoExpandAll: false
+            },
+            groupExpandMode: "rowClick",
+            columnChooser: {
+                enabled: true
+            }
+        });//department group olarak değiştirildi
+    });
+</script>
+
+                

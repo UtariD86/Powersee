@@ -21,7 +21,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddSingleton<FilterHelper>();
 
 builder.Services.AddScoped<IDepartmentService, DepartmentManager>();
-
+builder.Services.AddScoped<ISubeService, SubeManager>();
 #endregion
 
 
