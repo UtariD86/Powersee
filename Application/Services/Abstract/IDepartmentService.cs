@@ -1,5 +1,6 @@
 ﻿using Core.Dtos.Abstract;
 using Core.Dtos.Concrete;
+using Domain.Dtos;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,7 @@ namespace Application.Services.Abstract
         /// <summary>
         /// Departmanları belli bir aralıkta getirir
         /// </summary>
-        Task<IDataResult<PageResponse<Department>>> GetToGrid(PageRequest request);
+        Task<IDataResult<PageResponse<DepartmentListDto>>> GetToGrid(PageRequest request);
 
         /// <summary>
         /// Departman ekleme ve güncelleme işlemleri

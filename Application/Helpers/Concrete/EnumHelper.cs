@@ -1,4 +1,8 @@
 ﻿using Application.Helpers.Abstract;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Application.Helpers.Concrete
 {
@@ -15,6 +19,20 @@ namespace Application.Helpers.Concrete
                    .Cast<Enum>()
                    .Select(e => new KeyValuePair<int, string>(Convert.ToInt32(e), e.ToString()))
                    .ToList();
+        }
+
+        // ✅ SelectList üretmek için yeni method
+        public static SelectList ToSelectList<T>() where T : Enum
+        {
+            var values = Enum.GetValues(typeof(T))
+                .Cast<T>()
+                .Select(e => new SelectListItem
+                {
+                    Value = Convert.ToInt32(e).ToString(),
+                    Text = e.ToString()
+                });
+
+            return new SelectList(values, "Value", "Text");
         }
     }
 }

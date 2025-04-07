@@ -1,5 +1,5 @@
 ﻿@{
-    string PageName = "Departmanlar";
+    string PageName = "Şubeler";
     string AreaName = "Admin";
 }
 
@@ -24,7 +24,7 @@
                          // Group: loadOptions.department ? JSON.stringify(loadOptions.department) : null // Pass the department as JSON
                     };
                     return $.ajax({
-                        url: '/@AreaName/get-departments',
+                        url: '/@AreaName/get-subeler',
                         method: 'POST',
                         data: JSON.stringify(data),
                         dataType: 'json',
@@ -64,7 +64,7 @@
                 }
             },
             filterRow: { visible: true },
-            remoteOperations: { paging: true, departmentPaging: false, filtering: true, sorting: true }, // Enable remote filtering
+            remoteOperations: { paging: true, subePaging: false, filtering: true, sorting: true }, // Enable remote filtering ipucu
             paging: {
                 pageSize: 10,
                 pageIndex: 0,
@@ -85,11 +85,13 @@
             searchPanel: {
                 visible: true,
                 width: 240,
-                placeholder: "Ara..."
+                placeholder: "Şube Ara..."
             },
             editing: {
                 mode: 'none'
             },
+            //get-sube - delete-sube yap ipuçları
+
             columns: [
             {
                 dataField: 'Id',
@@ -99,60 +101,43 @@
                     $('<a class="edit-icon" style="color:#0085cf; margin-right:20%; cursor:pointer;" title="Düzenle"><i class="fas fa-pen-nib" style="font-size: 15px;"></i></a>')
                         .on('click', function () {
                             var id = options.data.Id;
-                            zuraf.getById('/@AreaName/get-department', id, '#gridContainer');
+                            zuraf.getById('/@AreaName/get-sube', id, '#gridContainer');
                         }).appendTo(container);
 
                     $('<a class="delete-icon text-danger" style="cursor:pointer;" title="Sil"><i class="far fa-trash-alt" style="font-size: 15px;"></i></a>')
                         .on('click', function () {
                             var id = options.data.Id;
-                            zuraf.deleteById('/@AreaName/delete-department', id, '#gridContainer', true);
+                            zuraf.deleteById('/@AreaName/delete-sube', id, '#gridContainer', true);
                         }).appendTo(container);
                 },
                 allowFiltering: false
             },
             {
-                dataField: 'Name',
-                caption: 'Grup Adı',
+                dataField: 'Subeisim',
+                caption: 'Şube Adı',
                 allowFiltering: true,
                 alignment: "center"
             },
             {
                 dataField: 'Adres',
-                caption: 'Adres',
-                allowFiltering: true,
-                alignment: "center"
-            },
-             {
-                dataField: 'UniqueCodeStr',
-                caption: 'UniqueCode',
-                allowFiltering: true,
-                alignment: "center"
-            },
-             {
-                dataField: 'ManagerName',
-                caption: 'Yetkili Adı',
+                caption: 'Şube Adresi',
                 allowFiltering: true,
                 alignment: "center"
             },
             {
-                dataField: 'CalismaTuruStr',
-                caption: 'CalismaTürü',
-                allowFiltering: true,
-                alignment: "center"
-            },
-             {
-                dataField: 'ActiveStr',
-                caption: 'Aktif Mi?',
-                allowFiltering: true,
-                alignment: "center"
-            },
-            {
-                dataField: 'Description',
-                caption: 'Açıklama',
+                dataField: 'TelefonNumarasi1',
+                caption: 'Şube Telefon Numarası',
                 allowFiltering: true,
                 alignment: "center"
             }
+
+
+
+
         ],
+
+
+        //sube veri tabanındaki kolonlar eklenecek dataFieldlar c# da yapılan isimlendirmeler ile düzenlenecek ipuçları
             toolbar: {
                 items: [
                     {
@@ -164,8 +149,8 @@
                     {
                         location: 'after',
                         template: function () {
-                            return ' <a onclick="zuraf.getById(\'/@AreaName/get-department\',null,\'#gridContainer\')" id="addButton" class="btn btn-primary mr-1 mb-1" ><i class="fa fa-plus"></i> &nbsp; Ekle</a>';
-                        }
+                            return ' <a onclick="zuraf.getById(\'/@AreaName/get-sube\',null,\'#gridContainer\')" id="addButton" class="btn btn-primary mr-1 mb-1" ><i class="fa fa-plus"></i> &nbsp; Ekle</a>';
+                        }//url değişcek ipuçları
                     },
                 ]
             },
@@ -174,16 +159,18 @@
                     e.component.__ready = true;
                 }
             },
-            departmentPanel: {
+            groupPanel: {
                 visible: false
             },
-            departmenting: {
+            grouping: {
                 autoExpandAll: false
             },
-            departmentExpandMode: "rowClick",
+            groupExpandMode: "rowClick",
             columnChooser: {
                 enabled: true
             }
-        });
+        });//department group olarak değiştirildi
     });
 </script>
+
+                

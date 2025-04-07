@@ -23,6 +23,8 @@ public class UnitOfWork : IUnitOfWork
     //Repository sınıflarını buraya ekleyebilirsiniz.
     private EfDepartmentRepository? _departmentRepository;
 
+    private EfSubeRepository? _subeRepository;
+
     /// <param name="context"></param>
 
     public UnitOfWork(ApplicationDbContext context)
@@ -36,6 +38,8 @@ public class UnitOfWork : IUnitOfWork
     //ayrıca UnitOfwırk içinde kolayca erişebilemmiz için Departments adında bir property oluşturmuş olduk.
     public IDepartmentRepository Departments => _departmentRepository ?? new EfDepartmentRepository(_context, this);
 
+
+    public ISubeRepository Subeler => _subeRepository ?? new EfSubeRepository(_context, this);
 
     /// <summary>
     /// Dispose: UnitOfWork sınıfı ile işimiz bittiğinde context nesnesini bellekten temizlemek için kullanılır.

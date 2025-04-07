@@ -16,12 +16,16 @@ public class ApplicationDbContext : IdentityDbContext
 
     // Veritabanı tabloları buraya DbSet olarak eklenir.
     public DbSet<Department> Departments { get; set; }
-     
+
+
+    public DbSet<Sube> Subeler { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
         // Tablo Konfigürasyonları için oluşturulmuş mapping sınıfları burada apply edilir.
         modelBuilder.ApplyConfiguration(new DepartmentMap());
+        modelBuilder.ApplyConfiguration(new SubeMap());
     }
 }
