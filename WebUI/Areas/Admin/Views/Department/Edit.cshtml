@@ -8,20 +8,17 @@
     <div class="modal-dialog modal-dialog-centered modal" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Departman</h5><button class="btn-close" onclick="zuraf.closeModal('#editModal')" type="button" aria-label="Close"></button>
+                <h5 class="modal-title" id="exampleModalLabel">Departman</h5>
+                <button class="btn-close" onclick="zuraf.closeModal('#editModal')" type="button" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="editForm" method="post" onsubmit="return false" action="/@AreaName/save-department" enctype="multipart/form-data">
-
                     @Html.HiddenFor(Model => Model.Id)
+                    @Html.HiddenFor(Model => Model.UniqueCode)
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-floating mb-3">
-                                @Html.TextBoxFor(Model => Model.Name, new
-                                    {
-                                        @class = "form-control",
-                                        id = "name"
-                                    })
+                                @Html.TextBoxFor(Model => Model.Name, new { @class = "form-control", id = "name" })
                                 <label for="name">Departman Adı</label>
                                 <div class="invalid-feedback">
                                     @Html.ValidationMessageFor(Model => Model.Name)
@@ -32,23 +29,96 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-floating mb-3">
-                                @Html.TextAreaFor(Model => Model.Description, new
-                                    {
-                                        @class = "form-control",
-                                        id = "name"
-                                    })
-                                <label for="name">Açıklama</label>
+                                @Html.TextAreaFor(Model => Model.Adres, new { @class = "form-control", id = "Adres" })
+                                <label for="Adres">Adres</label>
+                                <div class="invalid-feedback">
+                                    @Html.ValidationMessageFor(Model => Model.Adres)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-floating mb-3">
+                                @Html.DropDownListFor(model => model.CalismaTuru,
+                                         new SelectList(Model.CalismaTurusel, "Value", "Text", Model.CalismaTurusel),
+                                         "Seçiniz",
+                                         new { @class = "form-control form-select", id = "calismaturu2" }) <!-- farklı bir id -->
+                                <label for="calismaturu2">Çalışma Türü (Tekrar)</label>
+                                <div class="invalid-feedback">
+                                    @Html.ValidationMessageFor(model => model.CalismaTuru)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-floating mb-3">
+                                @Html.DropDownListFor(Model => Model.Managerid,
+                                         new SelectList(
+                                         Model.ManagerList,
+                                         "Value", "Text",
+                                         Model.ManagerList),
+                                         "Seçiniz",
+                                         new
+                                         {
+                                             @class = "form-control form-select",
+                                             id = "name"
+                                         })
+                                <label for="name">Yetkili</label>
+                                <div class="invalid-feedback">
+                                    @Html.ValidationMessageFor(Model => Model.Managerid)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-floating mb-3">
+                                @Html.TextAreaFor(Model => Model.Description, new { @class = "form-control", id = "description" })
+                                <label for="description">Açıklama</label>
                                 <div class="invalid-feedback">
                                     @Html.ValidationMessageFor(Model => Model.Description)
                                 </div>
                             </div>
                         </div>
                     </div>
-                </form>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check form-switch mb-3">
+                                @{
+                                    var isActive = Model.Active.HasValue && Model.Active.Value;
+                                }
+                                <input type="checkbox"
+                                       class="form-check-input"
+                                       id="active"
+                                       name="checkbox"
+                                       value="true"
+                                @(isActive ? "checked" : "") />
 
+                                @Html.HiddenFor(model => model.Active)
+
+                                <label class="form-check-label" for="active">garip bi tuş</label>
+                                <div class="invalid-feedback">
+                                    @Html.ValidationMessageFor(model => model.Active)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                        $(document).ready(function () {
+                            $('#active').change(function () {
+                                var isChecked = $(this).is(':checked');
+                                $('input[name="Active"]').val(isChecked);
+                            });
+                        });
+                    </script>
+
+
+                </form> <!-- FORM ETİKETİ DOĞRU YERDE KAPATILDI -->
             </div>
             <div class="modal-footer">
-                <button onclick="zuraf.closeModal('#editModal')" class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Kapat</button>
+                <button onclick="zuraf.closeModal('#editModal')" class="btn btn-secondary btn-sm" type="button">Kapat</button>
                 <button id="saveButton" class="btn btn-primary btn-sm" type="button">Kaydet</button>
             </div>
         </div>
@@ -56,14 +126,9 @@
 </div>
 
 <script>
-
-
     $(document).ready(function () {
-
         $('#saveButton').on('click', function () {
-
             zuraf.submitForm("editForm");
         });
-
     });
 </script>

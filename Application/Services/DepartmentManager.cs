@@ -1,9 +1,12 @@
-﻿using Application.Helpers.Concrete.Filtering;
+﻿using Application.Helpers.Abstract;
+using Application.Helpers.Concrete;
+using Application.Helpers.Concrete.Filtering;
 using Application.Services.Abstract;
 using Azure.Core;
 using Core.Dtos.Abstract;
 using Core.Dtos.Concrete;
 using Core.Enums;
+using Domain.Dtos;
 using Domain.Entities;
 using Persistence.Abstract;
 using System;
@@ -25,12 +28,16 @@ namespace Application.Services
         //Burada filtreleme için özel yazılmış bir yardımcı sınıfı kullanıyoruz.
         private readonly FilterHelper _filterHelper;
 
+        //private readonly IEnumHelper _enumHelper;
+
         //Dependency Injection kullanarak IUnitOfWork tipinde bir parametre alıyoruz.
-        public DepartmentManager(IUnitOfWork unitOfWork, FilterHelper filterHelper)
+        public DepartmentManager(IUnitOfWork unitOfWork, FilterHelper filterHelper /*IEnumHelper enumHelper*/)
         {
             //Dependency Injection ile gelen parametreyi _unitOfWork ve _filterHelper değişkenine atıyoruz.
             _unitOfWork = unitOfWork;
             _filterHelper = filterHelper;
+
+            //_enumHelper = enumHelper;
 
             //Böylece IOC container bize ihtiyaç halinde IUnitOfWork tipinde bir nesne sağlayacak.
             //Bu işlem bizim newleme işlemlerimizi minimize edecek ve bağımlılıklarımızı minimize edecek.
@@ -68,6 +75,9 @@ namespace Application.Services
                 {
                     //Ekleme İşlemi
 
+                    department.UniqueCode = KodOlustur(department.Name);
+
+
                     //Departmanın ismi ile aynı isme sahip bir departman var mı diye kontrol ediyoruz.
                     //Eşsiz olmasını istediğimiz için yalnızca bir kontrol. Şart değil.
                     var checkDepartment = await _unitOfWork.Departments.GetAsync(d => d.Name == department.Name);
@@ -103,6 +113,8 @@ namespace Application.Services
                    );
             }
         }
+
+
 
         //Bu metot silme işlemlerini yapacak.
         public async Task<IResult> Delete(int Id)
@@ -156,7 +168,7 @@ namespace Application.Services
         }
 
         //Bu metot departmanları sayfalı bir şekilde getirecek.
-        public async Task<IDataResult<PageResponse<Department>>> GetToGrid(PageRequest request)
+        public async Task<IDataResult<PageResponse<DepartmentListDto>>> GetToGrid(PageRequest request)
         {
             try
             {
@@ -166,26 +178,31 @@ namespace Application.Services
                     predicate = _filterHelper.GetExpression<Department>(request.Filter, deleted: false);
 
                 // Sayfalama işlemi için GetEntitiesWithPaginationAsync metodunu kullanıyoruz
-                var departments = await _unitOfWork.Departments.GetEntitiesWithPaginationAsync(
+                var departments = await _unitOfWork.Departments.GetDtoWithPaginationAsync(
                     request.PageIndex, // İstekten gelen sayfa numarası
                     request.PageSize,  // İstekten gelen sayfa boyutu
                     predicate: predicate, // Silinmiş olmayan departmanları alırken, filtreyi de uyguluyoruz
                     orderBy: q => q.OrderByDescending(d => d.UpdatedDate) // Güncelleme tarihine göre azalan sırayla sıralıyoruz
                 );
 
+                foreach (var department in departments.Items)
+                {
+                    //department.CalismaTuru = (string)CalismaTuru
+                }
+
                 // Eğer departmanlar varsa, sayfalı yanıtı döndürüyoruz
                 if (departments.Items.Any())
                 {
-                    return new DataResult<PageResponse<Department>>(ResultStatus.Success, departments);
+                    return new DataResult<PageResponse<DepartmentListDto>>(ResultStatus.Success, departments);
                 }
 
                 // Eğer hiç departman yoksa hata mesajı döndürüyoruz
-                return new DataResult<PageResponse<Department>>(ResultStatus.Error, "Hiç Departman bulunamadı", null);
+                return new DataResult<PageResponse<DepartmentListDto>>(ResultStatus.Error, "Hiç Departman bulunamadı", null);
             }
             catch (Exception ex)
             {
                 // Hata durumunda, hata mesajı ile birlikte bir yanıt döndürüyoruz
-                return new DataResult<PageResponse<Department>>(ResultStatus.Error, $"Bir hata oluştu: {ex.Message}", null);
+                return new DataResult<PageResponse<DepartmentListDto>>(ResultStatus.Error, $"Bir hata oluştu: {ex.Message}", null);
             }
         }
 
@@ -207,5 +224,34 @@ namespace Application.Services
             return new DataResult<Department>(ResultStatus.Error, "Departman bulunamadı", null);
         }
 
+
+        private string? KodOlustur(string departmanAdi)
+        {
+            // İlk 5 karakteri al, eksikse 'X' ile tamamla
+            string ilkBes = departmanAdi.ToUpper().PadRight(5, 'X').Substring(0, 5);
+
+            // Rastgele 5 karakter oluştur
+            string rastgeleKisim = RastgeleKodOlustur(5);
+
+            // Birleştir
+            string kod = $"{ilkBes}-{rastgeleKisim}";
+
+            return kod;
+        }
+
+        public string RastgeleKodOlustur(int uzunluk)
+        {
+            const string karakterler = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            Random random = new Random();
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < uzunluk; i++)
+            {
+                int index = random.Next(karakterler.Length);
+                sb.Append(karakterler[index]);
+            }
+
+            return sb.ToString();
+        }
     }
-}
+    }
