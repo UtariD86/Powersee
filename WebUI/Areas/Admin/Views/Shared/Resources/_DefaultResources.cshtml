@@ -73,3 +73,13 @@
 <!-- Global Functions -->
 <script src="~/zurafworks/js/globalfunctions.js"></script>
 <!-- ENDREGION: SCRIPTS -->
+
+<script>
+    $(document).ajaxError(function (event, jqxhr, settings, exception) {
+        if (jqxhr.status === 401) {
+            var data = $.parseJSON(jqxhr.responseText);
+            window.location = data.redirectUrl;
+        }
+    });
+
+</script>

@@ -4716,7 +4716,7 @@ var events = [{
     description: "Crain's 2020 Hall of Fame. Sponsored Content By Crain's Content Studio. Crain's Content Studio Presents: New Jersey: Perfect for Business. Crain's Business Forum: Letitia James, New York State Attorney General. Crain's NYC Summit: Examining racial disparities during the pandemic",
     className: 'bg-soft-primary'
 }, {
-    title: 'Conference',
+    title: 'Toplantı',
     start: "".concat(currentYear, "-").concat(currentMonth, "-").concat(currentDay),
     description: 'The Milken Institute Global Conference gathered the best minds in the world to tackle some of its most stubborn challenges. It was a unique experience in which individuals with the power to enact change connected with experts who are reinventing health, technology, philanthropy, industry, and media.',
     className: 'bg-soft-success',
