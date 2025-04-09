@@ -28,6 +28,7 @@ builder.Services.AddSingleton<FilterHelper>();
 builder.Services.AddScoped<IDepartmentService, DepartmentManager>();
 builder.Services.AddScoped<IPositionService, PositionManager>();
 
+builder.Services.AddScoped<ISubeService, SubeManager>();
 #endregion
 
 

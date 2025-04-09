@@ -20,6 +20,10 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<Domain.Entities.Position> Positions { get; set; }// NetTopologySuite.GeometriesGraph.Position diye birşey olduğu içn böyle yazdım
 
 
+
+
+    public DbSet<Sube> Subeler { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -28,5 +32,6 @@ public class ApplicationDbContext : IdentityDbContext
         modelBuilder.ApplyConfiguration(new DepartmentMap());
         modelBuilder.ApplyConfiguration(new PositionMap());
 
+        modelBuilder.ApplyConfiguration(new SubeMap());
     }
 }

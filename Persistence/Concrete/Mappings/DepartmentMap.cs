@@ -21,6 +21,13 @@ public class DepartmentMap : IEntityTypeConfiguration<Department>
         builder.Property(d => d.CreatedDate).HasColumnName("CreatedDate").IsRequired();
         builder.Property(d => d.UpdatedDate).HasColumnName("UpdatedDate");
         builder.Property(d => d.DeletedDate).HasColumnName("DeletedDate");
+        builder.Property(d => d.Adres).HasColumnName("Adres").IsRequired();
+        builder.Property(d => d.Managerid).HasColumnName("Managarıd");
+        builder.Property(d => d.Active).HasColumnName("Active");
+        builder.Property(d => d.UniqueCode).HasColumnName("UniqueCode");
+        builder.Property(d => d.CalismaTuru).HasColumnName("CalismaTuru");
+
+
 
 
     }

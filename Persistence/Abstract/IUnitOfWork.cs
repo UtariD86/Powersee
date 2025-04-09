@@ -26,6 +26,8 @@ public interface IUnitOfWork
     IDepartmentRepository Departments { get; }
     IPositonRepository Positions { get; }
 
+    ISubeRepository Subeler { get; }
+
     /// <summary>
     /// Veritabanı işlemlerini kaydetmek için kullanılır.
     /// </summary>

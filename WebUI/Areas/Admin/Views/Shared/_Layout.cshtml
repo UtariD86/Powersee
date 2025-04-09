@@ -34,7 +34,7 @@
 
 <body>
 
-      <div id="partialEditContent"></div>
+    <div id="partialEditContent"></div>
 
     <!-- ===============================================-->
     <!--    Main Content-->
@@ -90,6 +90,11 @@
                                         <a class="nav-link" href="@Url.Action("", "Department")">
                                             <div class="d-flex align-items-center"><span class="nav-link-text ps-2">Departmanlar</span></div>
                                         </a>
+                                        <a class="nav-link" href="@Url.Action("", "Sube")">
+                                            <div class="d-flex align-items-center"><span class="nav-link-text ps-2">Şubeler</span></div>
+                                        </a>
+
+                                        @*şubeler eklendi ipucu*@ 
                                     </li>
                                 </ul>
 
@@ -233,7 +238,7 @@
                                 }
 
                                                                 $(document).ready(function () {
-                            
+
                                     // Tema değiştirme butonuna click event'i ekle
                                     $('#themeControlToggle').on('click', function () {
                                         let newTheme = $(this).is(':checked') ? 'dark' : 'light';
