@@ -17,13 +17,14 @@ namespace Persistence.Abstract;
 /// yalnızca IUnitOfWork interface'ini kullanarak veritabanı işlemlerini yönetebiliriz.
 /// _unitOfWork.EntityAdi.AddAsync(entity) şeklinde tek bir noktadan veritabanı işlemlerini yönetebiliriz.
 /// </summary>
-public interface IUnitOfWork 
+public interface IUnitOfWork
 {
 
     //Burada pattern içersinde kullanılacak olan Repository sınıflarını belirliyoruz ayrıca kolay erişebilmek için 
     //Property isimlendirmeleri yapıyoruz.
     //IExampleRepository Example { get; }
     IDepartmentRepository Departments { get; }
+    IPositonRepository Positions { get; }
 
     /// <summary>
     /// Veritabanı işlemlerini kaydetmek için kullanılır.

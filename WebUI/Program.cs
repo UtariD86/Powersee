@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Persistence.Abstract;
 using Persistence.Concrete;
 using Application.Helpers.Concrete.Filtering;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,12 +17,16 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+
+
+
 //Burada programda kullandýðýmýz servisleri ve sýnýflarý IOC Container a tanýtýyoruz
 #region ServiceRegisteration
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddSingleton<FilterHelper>();
 
 builder.Services.AddScoped<IDepartmentService, DepartmentManager>();
+builder.Services.AddScoped<IPositionService, PositionManager>();
 
 #endregion
 
@@ -34,6 +40,7 @@ builder.Services.AddControllersWithViews()
     });
 
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

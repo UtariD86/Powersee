@@ -1,4 +1,5 @@
-﻿using Persistence.Abstract;
+﻿using Core.Data.Repositories.Concrete;
+using Persistence.Abstract;
 using Persistence.Repositories;
 using Persistence.Repositories.Abstract;
 using System;
@@ -22,6 +23,7 @@ public class UnitOfWork : IUnitOfWork
 
     //Repository sınıflarını buraya ekleyebilirsiniz.
     private EfDepartmentRepository? _departmentRepository;
+    private EFPositionRepository? _positionRepository;
 
     /// <param name="context"></param>
 
@@ -36,6 +38,9 @@ public class UnitOfWork : IUnitOfWork
     //ayrıca UnitOfwırk içinde kolayca erişebilemmiz için Departments adında bir property oluşturmuş olduk.
     public IDepartmentRepository Departments => _departmentRepository ?? new EfDepartmentRepository(_context, this);
 
+    public IPositonRepository Positions => _positionRepository ?? new EFPositionRepository(_context, this);
+
+    
 
     /// <summary>
     /// Dispose: UnitOfWork sınıfı ile işimiz bittiğinde context nesnesini bellekten temizlemek için kullanılır.
