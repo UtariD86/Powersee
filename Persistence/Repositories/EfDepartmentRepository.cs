@@ -4,6 +4,7 @@ using Core.Dtos.Concrete;
 using Domain.Dtos;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence.Abstract;
@@ -58,9 +59,14 @@ namespace Persistence.Repositories
             // Calculate the total number of pages
             var totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
 
-            
+            var dummyManagers = new List<SelectListItem>
+{
+    new SelectListItem { Value = "1", Text = "Ahmet Yılmaz" },
+    new SelectListItem { Value = "2", Text = "Elif Demir" },
+    new SelectListItem { Value = "3", Text = "Mehmet Kaya" }
+};
 
-            var result = items.Select(static dept => new DepartmentListDto
+            var result = items.Select(dept => new DepartmentListDto
             {
                 Id = dept.Id,
                 Name = dept.Name,
@@ -71,15 +77,14 @@ namespace Persistence.Repositories
                 CreatedDate = dept.CreatedDate,
                 UpdatedDate = dept.UpdatedDate,
                 DeletedDate = dept.DeletedDate,
-                ManagerName = "Buraya seçilen Yekili adı JOIN ILE gelecek",
+                ManagerName = dummyManagers
+                                .FirstOrDefault(m => m.Value == dept.Managerid.ToString())?.Text ?? "Bilinmiyor",
                 ActiveStr = dept.Active.HasValue ? (dept.Active.Value ? "Aktif" : "Pasif") : "Bilinmiyor",
 
-                // 🔽 Bu ikisini ekliyorsun:
-                UniqueCode = dept.UniqueCode,      
-                UniqueCodeStr = dept.UniqueCode,   
+                UniqueCode = dept.UniqueCode,
+                UniqueCodeStr = dept.UniqueCode,
 
                 CalismaTuruCal = dept.CalismaTuru,
-
 
             }).ToList();
 

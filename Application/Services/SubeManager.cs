@@ -4,6 +4,7 @@ using Azure.Core;
 using Core.Dtos.Abstract;
 using Core.Dtos.Concrete;
 using Core.Enums;
+using DocumentFormat.OpenXml.Bibliography;
 using Domain.Entities;
 using Persistence.Abstract;
 using System;
@@ -43,9 +44,9 @@ namespace Application.Services
 
                 if (sube != null && sube.Id != 0)
                 {
-                 
 
-                
+                    sube.UpdatedDate = DateTime.UtcNow;
+
                     await _unitOfWork.Subeler.UpdateAsync(sube);
 
 
@@ -58,21 +59,13 @@ namespace Application.Services
                         message: $"{sube.Subeisim} isimli şube başarıyla güncellendi."
                         );
                 }
-                else 
+                else
                 {
 
-                    var checkSube = await _unitOfWork.Subeler.GetAsync(d => d.Subeisim == sube.Subeisim);
+                    sube.UpdatedDate = DateTime.UtcNow;
+                    sube.CreatedDate = DateTime.UtcNow;
 
-      
-                    if (checkSube != null)
-                    {
-                        return new DataResult<Sube>(
-                            resultStatus: ResultStatus.Error,
-                            message: "Şube Halihazırda Mevcut",
-                            data: null);
-                    }
 
-          
                     await _unitOfWork.Subeler.AddAsync(sube);
 
          

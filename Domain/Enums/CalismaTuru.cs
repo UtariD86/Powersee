@@ -8,8 +8,8 @@ namespace Domain.Enums
 {
     public enum CalismaTuru
     {
-        hibrit,
-        uzaktan,
-        isyerinden
+        Hibrit,
+        Uzaktan,
+        Isyerinden
     }
 }

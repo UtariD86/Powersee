@@ -16,12 +16,32 @@
                     @Html.HiddenFor(Model => Model.Id)
                     @Html.HiddenFor(Model => Model.UniqueCode)
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-8">
                             <div class="form-floating mb-3">
                                 @Html.TextBoxFor(Model => Model.Name, new { @class = "form-control", id = "name" })
                                 <label for="name">Departman Adı</label>
                                 <div class="invalid-feedback">
                                     @Html.ValidationMessageFor(Model => Model.Name)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check form-switch mb-3">
+                                @{
+                                    var isActive = Model.Active.HasValue && Model.Active.Value;
+                                }
+                                <input type="checkbox"
+                                       class="form-check-input"
+                                       id="active"
+                                       name="checkbox"
+                                       value="true"
+                                       @(isActive ? "checked" : "") />
+
+                                @Html.HiddenFor(model => model.Active)
+
+                                <label class="form-check-label" for="active">Aktif</label>
+                                <div class="invalid-feedback">
+                                    @Html.ValidationMessageFor(model => model.Active)
                                 </div>
                             </div>
                         </div>
@@ -38,7 +58,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="form-floating mb-3">
                                 @Html.DropDownListFor(model => model.CalismaTuru,
                                          new SelectList(Model.CalismaTurusel, "Value", "Text", Model.CalismaTurusel),
@@ -50,9 +70,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="form-floating mb-3">
                                 @Html.DropDownListFor(Model => Model.Managerid,
                                          new SelectList(
@@ -79,28 +97,6 @@
                                 <label for="description">Açıklama</label>
                                 <div class="invalid-feedback">
                                     @Html.ValidationMessageFor(Model => Model.Description)
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-check form-switch mb-3">
-                                @{
-                                    var isActive = Model.Active.HasValue && Model.Active.Value;
-                                }
-                                <input type="checkbox"
-                                       class="form-check-input"
-                                       id="active"
-                                       name="checkbox"
-                                       value="true"
-                                @(isActive ? "checked" : "") />
-
-                                @Html.HiddenFor(model => model.Active)
-
-                                <label class="form-check-label" for="active">garip bi tuş</label>
-                                <div class="invalid-feedback">
-                                    @Html.ValidationMessageFor(model => model.Active)
                                 </div>
                             </div>
                         </div>

@@ -3,6 +3,7 @@ using Application.Services.Abstract;
 using Core.Dtos.Abstract;
 using Core.Dtos.Concrete;
 using Core.Enums;
+using DocumentFormat.OpenXml.Bibliography;
 using Domain.Entities;
 using Persistence.Abstract;
 using System;
@@ -30,20 +31,19 @@ namespace Application.Services
             {
                 if (position != null && position.Id != 0)
                 {
-                    
+
+                    position.UpdatedDate = DateTime.UtcNow;
+
                     await _unitOfWork.Positions.UpdateAsync(position);
                     await _unitOfWork.SaveChangesAsync();
                     return new DataResult<Position>(ResultStatus.Success, $"{position.Name} başarıyla güncellendi.", position);
                 }
                 else
                 {
-                    var checkPosition = await _unitOfWork.Positions.GetAsync(p => p.Name == position.Name);
-                    if (checkPosition != null)
-                    {
-                        return new DataResult<Position>(ResultStatus.Error, "Bu pozisyon zaten mevcut.", null);
-                    }
+                    position.UpdatedDate = DateTime.UtcNow;
+                    position.CreatedDate = DateTime.UtcNow;
 
-                   position.Code=GenerateUniquePositionCode(position.Name);
+                    position.Code=GenerateUniquePositionCode(position.Name);
                     position.CreatedDate = DateTime.UtcNow;
                     await _unitOfWork.Positions.AddAsync(position);
                     await _unitOfWork.SaveChangesAsync();

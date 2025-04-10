@@ -55,6 +55,7 @@ namespace Application.Services
                 //Bu işlem varolan bir nesne için kullanılacağı anlamına gelir. Yani günceleme işlemi yapılacak demektir.
                 if (department != null && department.Id != 0)
                 {
+                    department.UpdatedDate = DateTime.UtcNow;
                     //Buraya gerekirse kontroller validasyon mesajları vb ekleyebiliriz.
 
                     //Güncelleme İşlemi
@@ -73,6 +74,8 @@ namespace Application.Services
                 }
                 else //Eğer gelen departman nesnesi null ise veya departman nesnesinin Id'si 0 ise bu bir ekleme işlemidir.
                 {
+                    department.UpdatedDate = DateTime.UtcNow;
+                    department.CreatedDate = DateTime.UtcNow;
                     //Ekleme İşlemi
 
                     department.UniqueCode = KodOlustur(department.Name);
@@ -80,7 +83,7 @@ namespace Application.Services
 
                     //Departmanın ismi ile aynı isme sahip bir departman var mı diye kontrol ediyoruz.
                     //Eşsiz olmasını istediğimiz için yalnızca bir kontrol. Şart değil.
-                    var checkDepartment = await _unitOfWork.Departments.GetAsync(d => d.Name == department.Name);
+                    var checkDepartment = await _unitOfWork.Departments.GetAsync(d => d.Name == department.Name && department.DeletedDate == null);
 
                     //Eğer şartımıza uymazsa bu şekilde bir hata dönebiliriz.
                     if (checkDepartment != null)

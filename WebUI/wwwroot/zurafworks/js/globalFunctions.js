@@ -156,6 +156,7 @@ const zuraf = {
 
                     } else {
                         console.error("Beklenmeyen hata formatı:", xhr.responseText);
+                        toastr.error(xhr.responseText, "Hata", { timeOut: 5000 })
                     }
                 }
             }

@@ -122,7 +122,8 @@ namespace WebUI.Areas.Admin.Controllers
 
             var result = dm.Edit(department);
             var message = result.Result.Message ?? "İşlem başarılı";
-
+            if (result.Result.ResultStatus == ResultStatus.Error)
+                return BadRequest(result.Result.Message);
             return Json(message);
         }
 

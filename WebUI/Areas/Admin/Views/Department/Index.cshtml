@@ -128,12 +128,16 @@
                 allowFiltering: true,
                 alignment: "center"
             },
-             {
-                dataField: 'ManagerName',
-                caption: 'Yetkili Adı',
-                allowFiltering: true,
-                alignment: "center"
-            },
+                {
+                    dataField: 'Managerid',
+                    caption: 'Yetkili Adı',
+                    allowFiltering: true,
+                    alignment: 'center',
+                    cellTemplate: function (container, options) {
+                        container.text(options.data.ManagerName);
+                    }
+                },
+
             {
                 dataField: 'CalismaTuruStr',
                 caption: 'CalismaTürü',

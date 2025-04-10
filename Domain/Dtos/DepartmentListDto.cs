@@ -11,6 +11,7 @@ namespace Domain.Dtos
     public class DepartmentListDto : Department
     {
         public string ManagerName { get; set; }
+
         public string ActiveStr { get; set; }
         public string UniqueCode { get; set; }
 
