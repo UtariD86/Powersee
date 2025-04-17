@@ -24,6 +24,8 @@ public class ApplicationDbContext : IdentityDbContext
 
     public DbSet<Sube> Subeler { get; set; }
 
+    public DbSet<Personel> Personels { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -31,7 +33,7 @@ public class ApplicationDbContext : IdentityDbContext
         // Tablo Konfigürasyonları için oluşturulmuş mapping sınıfları burada apply edilir.
         modelBuilder.ApplyConfiguration(new DepartmentMap());
         modelBuilder.ApplyConfiguration(new PositionMap());
-
         modelBuilder.ApplyConfiguration(new SubeMap());
+        modelBuilder.ApplyConfiguration(new PersonelMap());
     }
 }

@@ -27,6 +27,8 @@ public class UnitOfWork : IUnitOfWork
 
     private EfSubeRepository? _subeRepository;
 
+    private EfPersonelRepository? _personelRepository;
+
     /// <param name="context"></param>
 
     public UnitOfWork(ApplicationDbContext context)
@@ -45,6 +47,8 @@ public class UnitOfWork : IUnitOfWork
     
 
     public ISubeRepository Subeler => _subeRepository ?? new EfSubeRepository(_context, this);
+
+    public IPersonelRepository Personels => _personelRepository ?? new EfPersonelRepository(_context, this);
 
     /// <summary>
     /// Dispose: UnitOfWork sınıfı ile işimiz bittiğinde context nesnesini bellekten temizlemek için kullanılır.
