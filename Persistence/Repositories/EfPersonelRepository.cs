@@ -36,70 +36,59 @@ namespace Persistence.Repositories
         }
 
 
-        public async Task<PageResponse<PersonelListDto>> 
-            
+        public async Task<PageResponse<PersonelListDto>>
             GetAllPersonelsAsync(
-        Expression<Func<Personel, bool>>? predicate = null,
-        Func<IQueryable<Personel>, IOrderedQueryable<Personel>>? orderBy = null,
-        int? pageIndex = null,
-        int? pageSize = null
-        )
-
-
+                Expression<Func<Personel, bool>>? predicate = null,
+                Func<IQueryable<Personel>, IOrderedQueryable<Personel>>? orderBy = null,
+                int pageIndex = 1,
+                int pageSize = 10
+            )
         {
-            try { 
-            IQueryable<Personel> query = context.Set<Personel>();
-            if (predicate != null)
+            try
             {
-                query = query.Where(predicate);
-            }
+                IQueryable<Personel> query = context.Set<Personel>();
+                if (predicate != null)
+                {
+                    query = query.Where(predicate);
+                }
 
-            if (orderBy != null)
-            {
-                query = orderBy(query);
-            }
+                if (orderBy != null)
+                {
+                    query = orderBy(query);
+                }
 
-            // Sayfalama (Paging)
-            if (pageIndex.HasValue && pageSize.HasValue)
-            {
-                query = query.Skip((pageIndex.Value - 1) * pageSize.Value).Take(pageSize.Value);
-            }
+                // Sayfalama (Paging)
+                query = query.Skip((pageIndex - 1) * pageSize).Take(pageSize);
 
-            // Get paginated data
-            var items = await query
-                .Skip(Math.Max(0, (pageIndex.Value - 1) * pageSize.Value)) // Skip for pagination, ensure non-negative offset
-                .Take(pageSize.Value) // Take the page size limit
-                .ToListAsync();
+                // Get paginated data
+                var items = await query.ToListAsync();
 
-            // Get the total count for pagination
-            var totalCount = await query.CountAsync();
-
-            // Calculate the total number of pages
-            var totalPages = (int)Math.Ceiling((double)totalCount / pageSize.Value);
-
-
-            var result = items.Select(personel => new PersonelListDto
-            {
-                Id = personel.Id,
-                CalismaTipiStr = EnumHelper.ToSelectList<CalismaTipi>()
+                var result = items.Select(personel => new PersonelListDto
+                {
+                    Id = personel.Id,
+                    CalismaTipiStr = EnumHelper.ToSelectList<CalismaTipi>()
                         .FirstOrDefault(x => x.Value == personel.CalismaTipi.ToString())?.Text,
+                }).ToList();
 
+                // Get the total count for pagination
+                var totalCount = await context.Set<Personel>().CountAsync();
 
+                // Calculate the total number of pages
+                var totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
 
-            }).ToList();
-
-            // Return paginated response
-            return new PageResponse<PersonelListDto>
-            {
-                Index = pageIndex.Value,
-                Size = pageSize.Value,
-                Count = totalCount,
-                Pages = totalPages,
-                HasPrevious = pageIndex > 1,
-                HasNext = pageIndex < totalPages,
-                Items = result
-            };
-            }catch(Exception ex)
+                // Return paginated response
+                return new PageResponse<PersonelListDto>
+                {
+                    Index = pageIndex,
+                    Size = pageSize,
+                    Count = totalCount,
+                    Pages = totalPages,
+                    HasPrevious = pageIndex > 1,
+                    HasNext = pageIndex < totalPages,
+                    Items = result
+                };
+            }
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -107,4 +96,3 @@ namespace Persistence.Repositories
 
     }
 }
-

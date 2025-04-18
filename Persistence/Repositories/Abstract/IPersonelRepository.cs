@@ -19,8 +19,8 @@ namespace Persistence.Repositories.Abstract
             GetAllPersonelsAsync(
         Expression<Func<Personel, bool>>? predicate = null,
         Func<IQueryable<Personel>, IOrderedQueryable<Personel>>? orderBy = null,
-        int? pageIndex = null,
-        int? pageSize = null
+        int pageIndex = 1,
+        int pageSize = 10
         );
     }
 }
