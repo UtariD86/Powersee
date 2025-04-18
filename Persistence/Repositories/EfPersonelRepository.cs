@@ -44,8 +44,6 @@ namespace Persistence.Repositories
                 int pageSize = 10
             )
         {
-            try
-            {
                 IQueryable<Personel> query = context.Set<Personel>();
                 if (predicate != null)
                 {
@@ -58,7 +56,9 @@ namespace Persistence.Repositories
                 }
 
                 // Sayfalama (Paging)
-                query = query.Skip((pageIndex - 1) * pageSize).Take(pageSize);
+                int skip = Math.Max(0, (pageIndex - 1) * pageSize);
+                query = query.Skip(skip).Take(pageSize);
+
 
                 // Get paginated data
                 var items = await query.ToListAsync();
@@ -66,8 +66,10 @@ namespace Persistence.Repositories
                 var result = items.Select(personel => new PersonelListDto
                 {
                     Id = personel.Id,
-                    CalismaTipiStr = EnumHelper.ToSelectList<CalismaTipi>()
-                        .FirstOrDefault(x => x.Value == personel.CalismaTipi.ToString())?.Text,
+                    CalismaTipiStr = EnumHelper.GetDescription<CalismaTipi>(personel.CalismaTipi),
+                    CalismaTipi = personel.CalismaTipi,
+                    departmentName = "Test",
+                    bankaHesapNo = personel.bankaHesapNo
                 }).ToList();
 
                 // Get the total count for pagination
@@ -87,11 +89,6 @@ namespace Persistence.Repositories
                     HasNext = pageIndex < totalPages,
                     Items = result
                 };
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
         }
 
     }

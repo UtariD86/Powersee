@@ -37,7 +37,7 @@ namespace Application.Helpers.Concrete
             return new SelectList(values, "Value", "Text");
         }
 
-        private static string GetDescription<T>(T e)
+        public static string GetDescription<T>(T e)
         {
             var field = e.GetType().GetField(e.ToString());
             var attribute = field.GetCustomAttributes(typeof(DisplayAttribute), false)

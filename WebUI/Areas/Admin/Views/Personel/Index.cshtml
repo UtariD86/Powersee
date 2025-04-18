@@ -30,7 +30,7 @@
                     }).then(function (response) {
 
                         let gridInstance = $('#gridContainer').dxDataGrid('instance');
-
+                        debugger;
                         if (response && !gridInstance.__lookupSet) {
                             gridInstance.beginUpdate();
                             if (response.GenderSel) {
@@ -116,6 +116,15 @@
                     caption: 'Soyisim',
                     allowFiltering: true,
                     alignment: "center"
+                },
+                {
+                    dataField: 'CalismaTipi', // enum değeri burada tutuluyor
+                    caption: 'Çalışma tipi',
+                    allowFiltering: true,
+                    alignment: "center",
+                    cellTemplate: function (cellElement, cellInfo) {
+                        cellElement.text(cellInfo.data.CalismaTipiStr); // Görünüm kısmı string halini kullanır
+                    }
                 },
                 {
                     dataField: 'adres',
