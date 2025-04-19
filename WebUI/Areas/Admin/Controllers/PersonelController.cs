@@ -8,8 +8,12 @@ using Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Dynamic;
+using WebUI.Areas.Admin.Models.Department;
 using WebUI.Areas.Admin.Models.Personel;
+using WebUI.Areas.Admin.Models.Position;
+using WebUI.Areas.Admin.Models.Sube;
 
 namespace WebUI.Areas.Admin.Controllers
 {
@@ -26,10 +30,17 @@ namespace WebUI.Areas.Admin.Controllers
     public class PersonelController : Controller
     {
         //Tanımladığımız servis sınıfına erişim sağlamak için bir değişken tanımlıyoruz.
-        private readonly IPersonelService dm;
-        public PersonelController(IPersonelService _dm)
+        private readonly IPersonelService _personelService;
+        private readonly IDepartmentService _departmentService;
+        private readonly ISubeService _subeService;
+        private readonly IPositionService _positionService;
+
+        public PersonelController(IPersonelService personelService, IDepartmentService departmentService, ISubeService subeService, IPositionService positionService)
         {
-            dm = _dm;
+            _personelService = personelService;
+            _departmentService = departmentService;
+            _subeService = subeService;
+            _positionService = positionService;
         }
 
         //Index Sayfamıza yönlendirme yapar
@@ -43,7 +54,7 @@ namespace WebUI.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> GetList([FromBody] PageRequest pageRequest)
         {
-            var data = await dm.GetToGrid(pageRequest);
+            var data = await _personelService.GetToGrid(pageRequest);
             return Json(data.Data);
         }
 
@@ -56,7 +67,7 @@ namespace WebUI.Areas.Admin.Controllers
             if (id.HasValue)
             {
 
-                var result = await dm.GetById(id.Value);
+                var result = await _personelService.GetById(id.Value);
                 var entity = result.Data;
                 if (entity != null && result.ResultStatus == ResultStatus.Success)
                 {
@@ -103,6 +114,18 @@ namespace WebUI.Areas.Admin.Controllers
                 }
 
             }
+
+            //SelectListler için gerekli verileri alıyoruz
+            var departmentResult = await _departmentService.GetAll();
+            var subeResult = await _subeService.GetAll();
+            var positionResult = await _positionService.GetAll();
+
+            model.DepartmentSel = new SelectList(departmentResult?.Data, "Id", "Name");
+            model.SubeSel = new SelectList(subeResult?.Data, "Id", "Subeisim");
+            model.PozisyonSel = new SelectList(positionResult?.Data, "Id", "Name");
+
+
+
             return PartialView(model);
         }
 
@@ -153,7 +176,7 @@ namespace WebUI.Areas.Admin.Controllers
                 VardiyaTuru = model.VardiyaTuru,
             };
             personel.Id = id;
-            var result = dm.Edit(personel);
+            var result = _personelService.Edit(personel);
             if (!string.IsNullOrEmpty(result.Result.Message))
             {
                 message = result.Result.Message;
@@ -170,7 +193,7 @@ namespace WebUI.Areas.Admin.Controllers
             string message = string.Empty;
             if (id.HasValue && id > 0)
             {
-                var result = await dm.Delete(id.Value);
+                var result = await _personelService.Delete(id.Value);
                 message = result.Message;
             }
             else

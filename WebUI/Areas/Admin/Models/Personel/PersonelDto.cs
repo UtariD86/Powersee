@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Domain.Enums;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WebUI.Areas.Admin.Models.Personel
 {
@@ -27,9 +28,14 @@ namespace WebUI.Areas.Admin.Models.Personel
         public string? aciklama { get; set; }
 
 
-
+        public SelectList DepartmentSel { get; set; }
         public string? departmanId { get; set; }
+
+        public SelectList PozisyonSel { get; set; }
         public string? pozisyonId { get; set; }
+        public SelectList SubeSel { get; set; }
+
+
         public string? subeId { get; set; }
         public string? yillikIzinGunSayisi { get; set; }
         public string? performansNotu { get; set; }

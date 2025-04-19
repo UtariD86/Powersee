@@ -179,45 +179,50 @@
 
 							<!-- Departman ID -->
 							<div class="row">
-								<div class="col-md-12">
-									<div class="form-floating mb-3">
-										@Html.TextBoxFor(Model => Model.departmanId, new
-											{
-												@class = "form-control",
-												id = "departmanId"
-											})
-										<label for="departmanId">Departman ID</label>
-										<div class="invalid-feedback">
-											@Html.ValidationMessageFor(Model => Model.departmanId)
-										</div>
-									</div>
-								</div>
+                                <div class="col-md-12">
+                                    <div class="form-floating mb-3">
+                                        @Html.DropDownListFor(model => model.departmanId,
+                                                 new SelectList(Model.DepartmentSel, "Value", "Text", Model.departmanId),
+                                                 "Seçiniz",
+                                                 new { @class = "form-control form-select", id = "departmanId" }) <!-- farklı bir id -->
+                                        <label for="calismaturu2">Departman</label>
+                                        <div class="invalid-feedback">
+                                            @Html.ValidationMessageFor(model => model.departmanId)
+                                        </div>
+                                    </div>
+                                </div>
 							</div>
 
 							<!-- Pozisyon ID -->
 							<div class="row">
-								<div class="col-md-12">
-									<div class="form-floating mb-3">
-										@Html.TextBoxFor(Model => Model.pozisyonId, new { @class = "form-control", id = "pozisyonId" })
-										<label for="pozisyonId">Pozisyon ID</label>
-										<div class="invalid-feedback">
-											@Html.ValidationMessageFor(Model => Model.pozisyonId)
-										</div>
-									</div>
-								</div>
+                                <div class="col-md-12">
+                                    <div class="form-floating mb-3">
+                                        @Html.DropDownListFor(model => model.pozisyonId,
+                                                 new SelectList(Model.PozisyonSel, "Value", "Text", Model.pozisyonId),
+                                                 "Seçiniz",
+                                                 new { @class = "form-control form-select", id = "pozisyonId" }) <!-- farklı bir id -->
+                                        <label for="calismaturu2">Pozisyon</label>
+                                        <div class="invalid-feedback">
+                                            @Html.ValidationMessageFor(model => model.pozisyonId)
+                                        </div>
+                                    </div>
+                                </div>
 							</div>
 
 							<!-- Şube ID -->
 							<div class="row">
-								<div class="col-md-12">
-									<div class="form-floating mb-3">
-										@Html.TextBoxFor(Model => Model.subeId, new { @class = "form-control", id = "subeId" })
-										<label for="subeId">Şube ID</label>
-										<div class="invalid-feedback">
-											@Html.ValidationMessageFor(Model => Model.subeId)
-										</div>
-									</div>
-								</div>
+                                <div class="col-md-12">
+                                    <div class="form-floating mb-3">
+                                        @Html.DropDownListFor(model => model.subeId,
+                                                 new SelectList(Model.SubeSel, "Value", "Text", Model.subeId),
+                                                 "Seçiniz",
+                                                 new { @class = "form-control form-select", id = "calismaturu2" }) <!-- farklı bir id -->
+                                        <label for="calismaturu2">Şube</label>
+                                        <div class="invalid-feedback">
+                                            @Html.ValidationMessageFor(model => model.subeId)
+                                        </div>
+                                    </div>
+                                </div>
 							</div>
 
 							<!-- Yıllık İzin Gün Sayısı -->
