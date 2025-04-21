@@ -18,11 +18,9 @@ public class ApplicationDbContext : IdentityDbContext
     // Veritabanı tabloları buraya DbSet olarak eklenir.
     public DbSet<Department> Departments { get; set; }
     public DbSet<Domain.Entities.Position> Positions { get; set; }// NetTopologySuite.GeometriesGraph.Position diye birşey olduğu içn böyle yazdım
-
-
-
-
     public DbSet<Sube> Subeler { get; set; }
+
+    public DbSet<Izin> Izinler { get; set; } // Izinler tablosu için DbSet
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -31,7 +29,8 @@ public class ApplicationDbContext : IdentityDbContext
         // Tablo Konfigürasyonları için oluşturulmuş mapping sınıfları burada apply edilir.
         modelBuilder.ApplyConfiguration(new DepartmentMap());
         modelBuilder.ApplyConfiguration(new PositionMap());
-
         modelBuilder.ApplyConfiguration(new SubeMap());
+
+        modelBuilder.ApplyConfiguration(new IzinMap()); // IzinMap'i ekleniyor
     }
 }

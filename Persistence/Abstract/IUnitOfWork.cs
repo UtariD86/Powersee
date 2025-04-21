@@ -24,6 +24,9 @@ public interface IUnitOfWork
     //Property isimlendirmeleri yapıyoruz.
     //IExampleRepository Example { get; }
     IDepartmentRepository Departments { get; }
+
+    IIzinRepository Izinler { get; }
+
     IPositonRepository Positions { get; }
 
     ISubeRepository Subeler { get; }
