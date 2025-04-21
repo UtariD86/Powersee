@@ -29,6 +29,8 @@ builder.Services.AddScoped<IDepartmentService, DepartmentManager>();
 builder.Services.AddScoped<IIzinService, IIzinService>();
 builder.Services.AddScoped<IPositionService, PositionManager>();
 builder.Services.AddScoped<ISubeService, SubeManager>();
+builder.Services.AddScoped<IPersonelService, PersonelManager>();
+
 #endregion
 
 

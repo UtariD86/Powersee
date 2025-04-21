@@ -78,7 +78,7 @@ namespace Application.Services
         public async Task<IDataResult<IList<Position>>> GetAll()
         {
             var positions = await _unitOfWork.Positions.GetAllAsync(p => !p.DeletedDate.HasValue, q => q.OrderByDescending(p => p.UpdatedDate));
-            if (positions.Count > 0)
+            if (positions.Count > -1)
             {
                 return new DataResult<IList<Position>>(ResultStatus.Success, positions);
             }

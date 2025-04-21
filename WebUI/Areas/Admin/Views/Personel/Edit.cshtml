@@ -1,0 +1,422 @@
+﻿@model WebUI.Areas.Admin.Models.Personel.PersonelDto
+@{
+	Layout = null;
+	string AreaName = "Admin";
+}
+
+<div class="modal show" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal modal-xl" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Personel</h5><button class="btn-close" onclick="zuraf.closeModal('#editModal')" type="button" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<form id="editForm" method="post" onsubmit="return false" action="/@AreaName/save-personel" enctype="multipart/form-data">
+					<div class="row">
+						<div class="col-md-4">
+							@Html.HiddenFor(Model => Model.Id)
+							<div class="row">
+								<div class="col-md-12">
+									<div class="form-floating mb-3">
+										@Html.TextBoxFor(Model => Model.isim, new
+											{
+												@class = "form-control",
+												id = "isim"
+											})
+										<label for="isim">İsim</label>
+										<div class="invalid-feedback">
+											@Html.ValidationMessageFor(Model => Model.isim)
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12">
+									<div class="form-floating mb-3">
+										@Html.TextBoxFor(Model => Model.soyisim, new
+											{
+												@class = "form-control",
+												id = "soyisim"
+											})
+										<label for="soyisim">Soyisim</label>
+										<div class="invalid-feedback">
+											@Html.ValidationMessageFor(Model => Model.soyisim)
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12">
+									<div class="form-floating mb-3">
+										@Html.TextBoxFor(Model => Model.adres, new
+											{
+												@class = "form-control",
+												id = "adres"
+											})
+										<label for="adres">Adres</label>
+										<div class="invalid-feedback">
+											@Html.ValidationMessageFor(Model => Model.adres)
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12">
+									<div class="form-floating mb-3">
+										@Html.TextBoxFor(Model => Model.telefonNumarasi1, new
+											{
+												@class = "form-control",
+												id = "telefonNumarasi1"
+											})
+										<label for="telefonNumarasi1">Telefon Numarası 1</label>
+										<div class="invalid-feedback">
+											@Html.ValidationMessageFor(Model => Model.telefonNumarasi1)
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12">
+									<div class="form-floating mb-3">
+										@Html.TextBoxFor(Model => Model.telefonNumarasi2, new
+											{
+												@class = "form-control",
+												id = "telefonNumarasi2"
+											})
+										<label for="telefonNumarasi2">Telefon Numarası 2</label>
+										<div class="invalid-feedback">
+											@Html.ValidationMessageFor(Model => Model.telefonNumarasi2)
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12">
+									<div class="form-floating mb-3">
+										@Html.TextBoxFor(Model => Model.tcKimlik, new
+											{
+												@class = "form-control",
+												id = "tcKimlik"
+											})
+										<label for="form">Tc. Kimlik No</label>
+										<div class="invalid-feedback">
+											@Html.ValidationMessageFor(Model => Model.tcKimlik)
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12">
+									<div class="form-floating mb-3">
+										@Html.TextBoxFor(Model => Model.bankaHesapNo, new
+											{
+												@class = "form-control",
+												id = "bankaHesapNo"
+											})
+										<label for="bankaHesapNo">Banka Hesap No</label>
+										<div class="invalid-feedback">
+											@Html.ValidationMessageFor(Model => Model.bankaHesapNo)
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12">
+									<div class="form-floating mb-3">
+										@Html.TextBoxFor(Model => Model.vergiNo, new
+											{
+												@class = "form-control",
+												id = "vergiNo"
+											})
+										<label for="vergiNo">Veri No</label>
+										<div class="invalid-feedback">
+											@Html.ValidationMessageFor(Model => Model.vergiNo)
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12">
+									<div class="form-floating mb-3">
+										@Html.TextBoxFor(Model => Model.vergiDairesiAdi, new
+											{
+												@class = "form-control",
+												id = "vergiDairesiAdi"
+											})
+										<label for="vergiDairesiAdi">Veri Dairesi Adı</label>
+										<div class="invalid-feedback">
+											@Html.ValidationMessageFor(Model => Model.vergiDairesiAdi)
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+						<div class="col-md-4">
+
+							<div class="row">
+								<div class="col-md-12">
+									<div class="form-floating mb-3">
+										@Html.TextBoxFor(Model => Model.aciklama, new
+											{
+												@class = "form-control",
+												id = "aciklama"
+											})
+										<label for="aciklama">Açıklama</label>
+										<div class="invalid-feedback">
+											@Html.ValidationMessageFor(Model => Model.aciklama)
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<!-- Departman ID -->
+							<div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-floating mb-3">
+                                        @Html.DropDownListFor(model => model.departmanId,
+                                                 new SelectList(Model.DepartmentSel, "Value", "Text", Model.departmanId),
+                                                 "Seçiniz",
+                                                 new { @class = "form-control form-select", id = "departmanId" }) <!-- farklı bir id -->
+                                        <label for="calismaturu2">Departman</label>
+                                        <div class="invalid-feedback">
+                                            @Html.ValidationMessageFor(model => model.departmanId)
+                                        </div>
+                                    </div>
+                                </div>
+							</div>
+
+							<!-- Pozisyon ID -->
+							<div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-floating mb-3">
+                                        @Html.DropDownListFor(model => model.pozisyonId,
+                                                 new SelectList(Model.PozisyonSel, "Value", "Text", Model.pozisyonId),
+                                                 "Seçiniz",
+                                                 new { @class = "form-control form-select", id = "pozisyonId" }) <!-- farklı bir id -->
+                                        <label for="calismaturu2">Pozisyon</label>
+                                        <div class="invalid-feedback">
+                                            @Html.ValidationMessageFor(model => model.pozisyonId)
+                                        </div>
+                                    </div>
+                                </div>
+							</div>
+
+							<!-- Şube ID -->
+							<div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-floating mb-3">
+                                        @Html.DropDownListFor(model => model.subeId,
+                                                 new SelectList(Model.SubeSel, "Value", "Text", Model.subeId),
+                                                 "Seçiniz",
+                                                 new { @class = "form-control form-select", id = "calismaturu2" }) <!-- farklı bir id -->
+                                        <label for="calismaturu2">Şube</label>
+                                        <div class="invalid-feedback">
+                                            @Html.ValidationMessageFor(model => model.subeId)
+                                        </div>
+                                    </div>
+                                </div>
+							</div>
+
+							<!-- Yıllık İzin Gün Sayısı -->
+							<div class="row">
+								<div class="col-md-12">
+									<div class="form-floating mb-3">
+										@Html.TextBoxFor(Model => Model.yillikIzinGunSayisi, new { @class = "form-control", id = "yillikIzinGunSayisi" })
+										<label for="yillikIzinGunSayisi">Yıllık İzin Gün Sayısı</label>
+										<div class="invalid-feedback">
+											@Html.ValidationMessageFor(Model => Model.yillikIzinGunSayisi)
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<!-- Performans Notu -->
+							<div class="row">
+								<div class="col-md-12">
+									<div class="form-floating mb-3">
+										@Html.TextBoxFor(Model => Model.performansNotu, new { @class = "form-control", id = "performansNotu" })
+										<label for="performansNotu">Performans Notu</label>
+										<div class="invalid-feedback">
+											@Html.ValidationMessageFor(Model => Model.performansNotu)
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- SGK Sicil No -->
+							<div class="row mt-3">
+								<div class="col-md-12">
+									<div class="form-floating mb-3">
+										@Html.TextBoxFor(Model => Model.sgkSicilNo, new { @class = "form-control", id = "sgkSicilNo" })
+										<label for="sgkSicilNo">SGK Sicil No</label>
+										<div class="invalid-feedback">
+											@Html.ValidationMessageFor(Model => Model.sgkSicilNo)
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<!-- Haftalık Saat -->
+							<div class="row mt-3">
+								<div class="col-md-12">
+									<div class="form-floating mb-3">
+										@Html.TextBoxFor(Model => Model.haftalikSaat, new { @class = "form-control", id = "haftalikSaat", type = "Decimal" })
+										<label for="haftalikSaat">Haftalık Saat</label>
+										<div class="invalid-feedback">
+											@Html.ValidationMessageFor(Model => Model.haftalikSaat)
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+
+							<!-- Saatlik Ücret -->
+							<div class="row">
+								<div class="col-md-12">
+									<div class="form-floating mb-3">
+										@Html.TextBoxFor(Model => Model.saatlikUcret, new { @class = "form-control", id = "saatlikUcret", type = "Decimal" })
+										<label for="saatlikUcret">Saatlik Ücret</label>
+										<div class="invalid-feedback">
+											@Html.ValidationMessageFor(Model => Model.saatlikUcret)
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<!-- Doğum Tarihi -->
+							<div class="row">
+								<div class="col-md-12">
+									<label class="form-label">Doğum Tarihi</label>
+									@Html.TextBoxFor(Model => Model.dogumTarihi, new { @class = "form-control", id = "dogumTarihi" })
+									<div class="invalid-feedback">
+										@Html.ValidationMessageFor(Model => Model.dogumTarihi)
+									</div>
+								</div>
+							</div>
+
+
+							<!-- Başlangıç Tarihi -->
+							<div class="row">
+								<div class="col-md-12">
+									<label class="form-label">Başlangıç Tarihi</label>
+									@Html.TextBoxFor(Model => Model.baslangicTarihi, new { @class = "form-control", id = "baslangicTarihi" })
+									<div class="invalid-feedback">
+										@Html.ValidationMessageFor(Model => Model.baslangicTarihi)
+									</div>
+								</div>
+							</div>
+
+							<!-- Bitiş Tarihi -->
+							<div class="row mt-3">
+								<div class="col-md-12">
+									<label class="form-label">Bitiş Tarihi</label>
+									@Html.TextBoxFor(Model => Model.bitisTarihi, new { @class = "form-control", id = "bitisTarihi" })
+									<div class="invalid-feedback">
+										@Html.ValidationMessageFor(Model => Model.bitisTarihi)
+									</div>
+								</div>
+							</div>
+
+							<!-- Fazla Mesaiye Uygun -->
+							<div class="row mt-3">
+								<div class="col-md-12">
+									<label class="form-label" for="fazlaMesaiUygun">Fazla Mesaiye Uygun</label>
+									@Html.DropDownListFor(Model => Model.fazlaMesaiUygun,
+																		new List<SelectListItem>
+									{
+									new SelectListItem { Text = "Evet", Value = "true", Selected = Model.fazlaMesaiUygun },
+									new SelectListItem { Text = "Hayır", Value = "false", Selected = !Model.fazlaMesaiUygun }
+									},
+																		htmlAttributes: new { @class = "form-select", id = "fazlaMesaiUygun" })
+									<div class="invalid-feedback d-block">
+										@Html.ValidationMessageFor(Model => Model.fazlaMesaiUygun)
+									</div>
+								</div>
+							</div>
+
+							<!-- Çalışma Tipi -->
+							<div class="row mt-3">
+								<div class="col-md-12"> 
+									<label class="form-label">Çalışma Tipi</label>
+									@Html.DropDownListFor(Model => Model.CalismaTipi,
+																		new SelectList(new[] {
+									new { Value = "1", Text = "Tam Zamanlı" },
+									new { Value = "2", Text = "Yarı Zamanlı" },
+									new { Value = "3", Text = "Uzaktan" }
+									}, "Value", "Text"),
+																		"Seçiniz",
+																		new { @class = "form-select", id = "CalismaTipi" })
+									<div class="invalid-feedback">
+										@Html.ValidationMessageFor(Model => Model.CalismaTipi)
+									</div>
+								</div>
+							</div>
+
+
+							<!-- Cinsiyet -->
+							<div class="row">
+								<div class="col-md-12">
+									<label class="form-label">Cinsiyet</label>
+									@Html.DropDownListFor(Model => Model.Cinsiyet,
+																		new SelectList(new[] {
+									new { Value = "1", Text = "Erkek" },
+									new { Value = "2", Text = "Kadın" },
+									new { Value = "3", Text = "Diğer" }
+									}, "Value", "Text"),
+																		"Seçiniz",
+																		new { @class = "form-select", id = "Cinsiyet" })
+									<div class="invalid-feedback">
+										@Html.ValidationMessageFor(Model => Model.Cinsiyet)
+									</div>
+								</div>
+							</div>
+
+							<!-- Vardiya Türü -->
+							<div class="row mt-3">
+								<div class="col-md-12">
+									<label class="form-label">Vardiya Türü</label>
+									@Html.DropDownListFor(Model => Model.VardiyaTuru,
+																		new SelectList(new[] {
+									new { Value = "1", Text = "Gündüz" },
+									new { Value = "2", Text = "Gece" }
+									}, "Value", "Text"),
+																		"Seçiniz",
+																		new { @class = "form-select", id = "VardiyaTuru" })
+									<div class="invalid-feedback">
+										@Html.ValidationMessageFor(Model => Model.VardiyaTuru)
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+
+			</div>
+			<div class="modal-footer">
+				<button onclick="zuraf.closeModal('#editModal')" class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Kapat</button>
+				<button id="saveButton" class="btn btn-primary btn-sm" type="button">Kaydet</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+
+
+	$(document).ready(function () {
+
+		$('#saveButton').on('click', function () {
+
+			zuraf.submitForm("editForm");
+		});
+
+	});
+</script>

@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\Admin\Models\asd\" />
     <Folder Include="wwwroot\devextreme\css\custom\" />
     <Folder Include="wwwroot\devextreme\themes\" />
     <Folder Include="wwwroot\textEditor\css\custom\" />

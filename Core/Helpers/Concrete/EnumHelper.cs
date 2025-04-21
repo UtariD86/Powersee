@@ -1,7 +1,9 @@
-﻿using Application.Helpers.Abstract;
+﻿using Core.Helpers.Abstract;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace Application.Helpers.Concrete
@@ -29,10 +31,19 @@ namespace Application.Helpers.Concrete
                 .Select(e => new SelectListItem
                 {
                     Value = Convert.ToInt32(e).ToString(),
-                    Text = e.ToString()
+                    Text = GetDescription(e)
                 });
 
             return new SelectList(values, "Value", "Text");
         }
+
+        public static string GetDescription<T>(T e)
+        {
+            var field = e.GetType().GetField(e.ToString());
+            var attribute = field.GetCustomAttributes(typeof(DisplayAttribute), false)
+                .FirstOrDefault() as DisplayAttribute;
+            return attribute.GetName() ?? e.ToString();
+        }
     }
+
 }

@@ -1,0 +1,518 @@
+﻿@{
+    string PageName = "";
+    string AreaName = "Admin";
+}
+
+
+<div class="card">
+    <div class="card-body">
+        <div id="gridContainer" class="border"></div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $('#gridContainer').dxDataGrid({
+            dataSource: {
+                load: function (loadOptions) {
+                    var data = {
+                        PageSize: loadOptions.take || 10,
+                        PageIndex: Math.floor((loadOptions.skip || 0) / (loadOptions.take || 10)),
+                        Filter: loadOptions.filter ? JSON.stringify(loadOptions.filter) : null, // Pass the filter as JSON
+                    };
+                    return $.ajax({
+                        url: '/@AreaName/get-personels',
+                        method: 'POST',
+                        data: JSON.stringify(data),
+                        dataType: 'json',
+                        contentType: 'application/json',
+                    }).then(function (response) {
+
+                        let gridInstance = $('#gridContainer').dxDataGrid('instance');
+                        debugger;
+                        if (response && !gridInstance.__lookupSet) {
+                            gridInstance.beginUpdate();
+                            if (response.GenderSel) {
+                                gridInstance.option('columns[4].lookup.dataSource', response.GenderSel);
+                            }
+                            gridInstance.endUpdate();
+
+                            gridInstance.__lookupSet = true; // Lookup'ların ayarlandığını işaretle
+                        }
+
+                        if (response && response.Items) {
+                            return {
+                                data: response.Items,
+                                totalCount: response.Count
+                            };
+                        } else {
+                            return {
+                                data: [],
+                                totalCount: 0
+                            };
+                        }
+                    }).catch(function (error) {
+                        return {
+                            data: [],
+                            totalCount: 0
+                        };
+                    });
+                }
+            },
+            filterRow: { visible: true },
+            remoteOperations: { paging: true, filtering: true, sorting: true },
+            paging: {
+                pageSize: 10,
+                pageIndex: 0,
+                enabled: true
+            },
+            pager: {
+                showPageSizeSelector: true,
+                allowedPageSizes: [10, 20, 30],
+                showNavigationButtons: true,
+                visible: true,
+                showInfo: true
+            },
+            keyExpr: 'id',
+            showBorders: true,
+            headerFilter: { visible: false },
+            searchPanel: {
+                visible: true,
+                width: 240,
+                placeholder: "Şube Ara..."
+            },
+            editing: {
+                mode: 'none'
+            },
+            columns: [
+                {
+                    dataField: 'Id',
+                    caption: 'Düzenle',
+                    width: 70,
+                    cellTemplate: function (container, options) {
+                        $('<a class="edit-icon" style="color:#0085cf; margin-right:20%; cursor:pointer;" title="Düzenle"><i class="fas fa-pen-nib" style="font-size: 15px;"></i></a>')
+                            .on('click', function () {
+                                var id = options.data.Id;
+                                zuraf.getById('/@AreaName/get-personel', id, '#gridContainer');
+                            }).appendTo(container);
+
+                        $('<a class="delete-icon text-danger" style="cursor:pointer;" title="Sil"><i class="far fa-trash-alt" style="font-size: 15px;"></i></a>')
+                            .on('click', function () {
+                                var id = options.data.Id;
+                                zuraf.deleteById('/@AreaName/delete-personel', id, '#gridContainer', true);
+                            }).appendTo(container);
+                    },
+                    allowFiltering: false
+                },
+                {
+                    dataField: 'isim',
+                    caption: 'İsim',
+                    allowFiltering: true,
+                    alignment: "center"
+                },
+                {
+                    dataField: 'soyisim',
+                    caption: 'Soyisim',
+                    allowFiltering: true,
+                    alignment: "center"
+                },
+                {
+                    dataField: 'CalismaTipi', // enum değeri burada tutuluyor
+                    caption: 'Çalışma tipi',
+                    allowFiltering: true,
+                    alignment: "center",
+                    cellTemplate: function (cellElement, cellInfo) {
+                        cellElement.text(cellInfo.data.CalismaTipiStr); // Görünüm kısmı string halini kullanır
+                    }
+                },
+                {
+                    dataField: 'adres',
+                    caption: 'Adres',
+                    allowFiltering: true,
+                    alignment: "center"
+                }
+            ],
+                masterDetail: {
+        enabled: true,
+        template: function (container, options) {
+            var detailContainer = $('<div class="row p-3">').appendTo(container);
+
+            function createDetail(label, value, badgeClass = 'badge-secondary') {
+                var col = $('<div class="col-md-3 mb-3">'); // responsive 4lü kolon
+                $('<div>').css({ 'font-weight': 'bold' }).text(label).appendTo(col);
+                $('<div>').html('<span class="badge ' + badgeClass + '">' + (value || 'N/A') + '</span>').appendTo(col);
+                return col;
+            }
+
+            detailContainer.append(
+                createDetail('Telefon Numarası 1', options.data.telefonNumarasi1, 'badge-primary'),
+                createDetail('Telefon Numarası 2', options.data.telefonNumarasi2, 'badge-info'),
+                createDetail('TC Kimlik No', options.data.tcKimlik, 'badge-dark'),
+                createDetail('Banka Hesap No', options.data.bankaHesapNo, 'badge-warning'),
+                createDetail('Vergi No', options.data.vergiNo, 'badge-success'),
+                createDetail('Vergi Dairesi Adı', options.data.vergiDairesiAdi, 'badge-danger'),
+                createDetail('Açıklama', options.data.aciklama, 'badge-light'),
+                createDetail('Departman ID', options.data.departmanId, 'badge-secondary'),
+                createDetail('Çalışma Tipi', options.data.CalismaTipiStr, 'badge-secondary'),
+            );
+        }
+    },
+
+            toolbar: {
+                items: [
+                    {
+                        location: 'before',
+                        template: function () {
+                            return '<div class="headline"><h7><i class="icon-feather-bar-chart-2"></i>@PageName</h7></div>';
+                        }
+                    },
+                    {
+                        location: 'after',
+                        template: function () {
+                            return ' <a onclick="zuraf.getById(\'/@AreaName/get-personel\',null,\'#gridContainer\')" id="addButton" class="btn btn-primary mr-1 mb-1" ><i class="fa fa-plus"></i> &nbsp; Ekle</a>';
+                        }
+                    },
+                ]
+            },
+            onContentReady: function (e) {
+                if (!e.component.__ready) {
+                    e.component.__ready = true;
+                }
+            },
+            groupPanel: {
+                visible: false
+            },
+            grouping: {
+                autoExpandAll: false
+            },
+            groupExpandMode: "rowClick",
+            columnChooser: {
+                enabled: true
+            }
+        });
+    });
+</script>
+
+@* 
+<script>
+
+    $(document).ready(function () {
+
+        $('#gridContainer').dxDataGrid({
+            dataSource: {
+                load: function (loadOptions) {
+                    var data = {
+                        PageSize: loadOptions.take || 10,
+                        PageIndex: Math.floor((loadOptions.skip || 0) / (loadOptions.take || 10)),
+                        Filter: loadOptions.filter ? JSON.stringify(loadOptions.filter) : null, // Pass the filter as JSON
+                         // Group: loadOptions.department ? JSON.stringify(loadOptions.department) : null // Pass the department as JSON
+                    };
+                    return $.ajax({
+                        url: '/@AreaName/get-personels',
+                        method: 'POST',
+                        data: JSON.stringify(data),
+                        dataType: 'json',
+                        contentType: 'application/json',
+                    }).then(function (response) {
+
+                        let gridInstance = $('#gridContainer').dxDataGrid('instance');
+
+                        if (response && !gridInstance.__lookupSet) {
+                            gridInstance.beginUpdate();
+                            if (response.GenderSel) {
+                                gridInstance.option('columns[4].lookup.dataSource', response.GenderSel);
+                            }
+                            gridInstance.endUpdate();
+
+                            gridInstance.__lookupSet = true; // Lookup'ların ayarlandığını işaretle
+                        }
+
+                        if (response && response.Items) {
+                            debugger;
+                            return {
+                                data: response.Items, // Adjusted to 'Items'
+                                totalCount: response.Count // Adjusted to 'Count'
+                            };
+                        } else {
+                            return {
+                                data: [],
+                                totalCount: 0
+                            };
+                        }
+                    }).catch(function (error) {
+                        return {
+                            data: [],
+                            totalCount: 0
+                        };
+                    });
+                }
+            },
+            filterRow: { visible: true },
+            remoteOperations: { paging: true, subePaging: false, filtering: true, sorting: true }, // Enable remote filtering ipucu
+            paging: {
+                pageSize: 10,
+                pageIndex: 0,
+                enabled: true
+            },
+            pager: {
+                showPageSizeSelector: true,
+                allowedPageSizes: [10, 20, 30],
+                showNavigationButtons: true,
+                visible: true,
+                showInfo: true
+            },
+            keyExpr: 'id',
+            showBorders: true,
+            headerFilter: {
+                visible: false
+            },
+            searchPanel: {
+                visible: true,
+                width: 240,
+                placeholder: "Şube Ara..."
+            },
+            editing: {
+                mode: 'none'
+            },
+            //get-personel - delete-personel yap ipuçları
+
+            columns: [
+            {
+                dataField: 'Id',
+                caption: 'Düzenle',
+                width: 70,
+                cellTemplate: function (container, options) {
+                    $('<a class="edit-icon" style="color:#0085cf; margin-right:20%; cursor:pointer;" title="Düzenle"><i class="fas fa-pen-nib" style="font-size: 15px;"></i></a>')
+                        .on('click', function () {
+                            var id = options.data.Id;
+                            zuraf.getById('/@AreaName/get-personel', id, '#gridContainer');
+                        }).appendTo(container);
+
+                    $('<a class="delete-icon text-danger" style="cursor:pointer;" title="Sil"><i class="far fa-trash-alt" style="font-size: 15px;"></i></a>')
+                        .on('click', function () {
+                            var id = options.data.Id;
+                            zuraf.deleteById('/@AreaName/delete-personel', id, '#gridContainer', true);
+                        }).appendTo(container);
+                },
+                allowFiltering: false
+
+
+
+
+            },
+            
+            {
+                dataField: 'isim',
+                caption: 'İsim',
+                allowFiltering: true,
+                alignment: "center"
+            },
+
+            {
+                dataField: 'soyisim',
+                caption: 'Soyisim',
+                allowFiltering: true,
+                alignment: "center"
+            },
+
+            {
+                dataField: 'adres',
+                caption: 'Adres',
+                allowFiltering: true,
+                alignment: "center"
+            },
+
+            {
+                dataField: 'telefonNumarasi1',
+                caption: 'Telefon Numarası 1',
+                allowFiltering: true,
+                alignment: "center"
+            },
+
+            {
+                dataField: 'telefonNumarasi2',
+                caption: 'Telefon Numarası 2',
+                allowFiltering: true,
+                alignment: "center"
+            },
+
+            {
+                dataField: 'tcKimlik',
+                caption: 'Tc. Kimlik no:',
+                allowFiltering: true,
+                alignment: "center"
+            },
+
+            {
+                dataField: 'bankaHesapNo',
+                caption: 'Banka Hesap No',
+                allowFiltering: true,
+                alignment: "center"
+            },
+
+            {
+                dataField: 'vergiNo',
+                caption: 'Vergi No',
+                allowFiltering: true,
+                alignment: "center"
+            },
+
+            {
+                dataField: 'vergiDairesiAdi',
+                caption: 'Vergi Dairesi Adı',
+                allowFiltering: true,
+                alignment: "center"
+            },
+
+            {
+                dataField: 'aciklama',
+                caption: 'Açıklama',
+                allowFiltering: true,
+                alignment: "center"
+            },
+
+            {
+                dataField: 'departmanId',
+                caption: 'Departman ID',
+                allowFiltering: true,
+                alignment: "center"
+            },
+
+            {
+                dataField: 'pozisyonId',
+                caption: 'Pozisyon ID',
+                allowFiltering: true,
+                alignment: "center"
+            },
+
+            {
+                dataField: 'subeId',
+                caption: 'Şube ID',
+                allowFiltering: true,
+                alignment: "center"
+            },
+
+            {
+                dataField: 'yillikIzinGunSayisi',
+                caption: 'Yıllık izin Gün Sayısı',
+                allowFiltering: true,
+                alignment: "center"
+            },
+
+            {
+                dataField: 'performansNotu',
+                caption: 'Performans Notu',
+                allowFiltering: true,
+                alignment: "center"
+            },
+
+            {
+                dataField: 'sgkSicilNo',
+                caption: 'Sgk Sicil No',
+                allowFiltering: true,
+                alignment: "center"
+            },
+
+            {
+                dataField: 'haftalikSaat',
+                caption: 'Haftalık Saat',
+                allowFiltering: true,
+                alignment: "center"
+            },
+
+            {
+                dataField: 'saatlikUcret',
+                caption: 'Saatlik Ücret',
+                allowFiltering: true,
+                alignment: "center"
+            },
+
+            {
+                dataField: 'dogumTarihi',
+                caption: 'Doğum Tarihi',
+                allowFiltering: true,
+                alignment: "center"
+            },
+
+            {
+                dataField: 'baslangicTarihi',
+                caption: 'Başlangıç Tarihi',
+                allowFiltering: true,
+                alignment: "center"
+            },
+
+            {
+                dataField: 'bitisTarihi',
+                caption: 'Bitiş Tarihi',
+                allowFiltering: true,
+                alignment: "center"
+            },
+
+            {
+                dataField: 'fazlaMesaiUygun',
+                caption: 'Fazla Mesaiye Uygun',
+                allowFiltering: true,
+                alignment: "center"
+            },
+
+            {
+                dataField: 'CalismaTipi',
+                caption: 'Çalışma Tipi',
+                allowFiltering: true,
+                alignment: "center"
+            },
+    
+            {
+                dataField: 'Cinsiyet',
+                caption: 'Cinsiyet',
+                allowFiltering: true,
+                alignment: "center"
+            },
+
+            {
+                dataField: 'VardiyaTuru',
+                caption: 'Vardiya Türü',
+                allowFiltering: true,
+                alignment: "center"
+            },
+
+        ],
+
+
+        
+            toolbar: {
+                items: [
+                    {
+                        location: 'before',
+                        template: function () {
+                            return '<div class="headline"><h7><i class="icon-feather-bar-chart-2"></i>@PageName</h7></div>';
+                        }
+                    },
+                    {
+                        location: 'after',
+                        template: function () {
+                            return ' <a onclick="zuraf.getById(\'/@AreaName/get-personel\',null,\'#gridContainer\')" id="addButton" class="btn btn-primary mr-1 mb-1" ><i class="fa fa-plus"></i> &nbsp; Ekle</a>';
+                        }
+                    },
+                ]
+            },
+            onContentReady: function (e) {
+                if (!e.component.__ready) {
+                    e.component.__ready = true;
+                }
+            },
+            groupPanel: {
+                visible: false
+            },
+            grouping: {
+                autoExpandAll: false
+            },
+            groupExpandMode: "rowClick",
+            columnChooser: {
+                enabled: true
+            }
+        });
+    });
+</script>
+ *@
