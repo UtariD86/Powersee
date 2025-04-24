@@ -27,6 +27,8 @@ public class PersonelMap : IEntityTypeConfiguration<Personel>
         builder.Property(d => d.vergiDairesiAdi).HasColumnName("vergiDairesiAdi");
         builder.Property(d => d.aciklama).HasColumnName("aciklama");
 
+        builder.Property(d => d.profilFotografiUrl).HasColumnName("profilFotografiUrl");
+
         builder.Property(d => d.departmanId).HasColumnName("departmanId");
         builder.Property(d => d.pozisyonId).HasColumnName("pozisyonId");
         builder.Property(d => d.subeId).HasColumnName("subeId");

@@ -34,6 +34,7 @@
     <Folder Include="wwwroot\devextreme\css\custom\" />
     <Folder Include="wwwroot\devextreme\themes\" />
     <Folder Include="wwwroot\textEditor\css\custom\" />
+    <Folder Include="wwwroot\uploads\profilePhotos\" />
   </ItemGroup>
 
 </Project>

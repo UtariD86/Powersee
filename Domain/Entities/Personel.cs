@@ -1,8 +1,10 @@
 ﻿using Core.Dtos.Abstract;
 using Core.Dtos.Concrete;
 using Domain.Enums;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +23,11 @@ public class Personel : EntityBase, IEntity
     public string vergiDairesiAdi { get; set; }
     public string aciklama { get; set; }
 
+    [NotMapped]
+    public IFormFile? profilFotografi { get; set; }
+    public string? profilFotografiUrl { get; set; }
+
+    
 
     public int departmanId { get; set; }
     public int pozisyonId { get; set; }
@@ -36,10 +43,10 @@ public class Personel : EntityBase, IEntity
 
     public DateTime dogumTarihi { get; set; }
     public DateTime baslangicTarihi { get; set; }
-    public DateTime bitisTarihi { get; set; }
+    public DateTime? bitisTarihi { get; set; }
 
 
-    public bool fazlaMesaiUygun { get; set; }
+    public bool? fazlaMesaiUygun { get; set; }
 
 
     public CalismaTipi CalismaTipi { get; set; }

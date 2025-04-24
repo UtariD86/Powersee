@@ -31,6 +31,13 @@
 								</div>
 							</div>
 
+							<input asp-for="profilFotografi" type="file" name="profilFotografi" class="form-control" />
+								<!-- diğer alanlar -->
+
+
+
+
+
 							<div class="row">
 								<div class="col-md-12">
 									<div class="form-floating mb-3">
@@ -179,50 +186,50 @@
 
 							<!-- Departman ID -->
 							<div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-floating mb-3">
-                                        @Html.DropDownListFor(model => model.departmanId,
-                                                 new SelectList(Model.DepartmentSel, "Value", "Text", Model.departmanId),
-                                                 "Seçiniz",
-                                                 new { @class = "form-control form-select", id = "departmanId" }) <!-- farklı bir id -->
-                                        <label for="calismaturu2">Departman</label>
-                                        <div class="invalid-feedback">
-                                            @Html.ValidationMessageFor(model => model.departmanId)
-                                        </div>
-                                    </div>
-                                </div>
+								<div class="col-md-12">
+									<div class="form-floating mb-3">
+										@Html.DropDownListFor(model => model.departmanId,
+																						new SelectList(Model.DepartmentSel, "Value", "Text", Model.departmanId),
+																						"Seçiniz",
+																						new { @class = "form-control form-select", id = "departmanId" })
+										<label for="departmanId">Departman</label>
+										<div class="invalid-feedback">
+											@Html.ValidationMessageFor(model => model.departmanId)
+										</div>
+									</div>
+								</div>
 							</div>
 
 							<!-- Pozisyon ID -->
 							<div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-floating mb-3">
-                                        @Html.DropDownListFor(model => model.pozisyonId,
-                                                 new SelectList(Model.PozisyonSel, "Value", "Text", Model.pozisyonId),
-                                                 "Seçiniz",
-                                                 new { @class = "form-control form-select", id = "pozisyonId" }) <!-- farklı bir id -->
-                                        <label for="calismaturu2">Pozisyon</label>
-                                        <div class="invalid-feedback">
-                                            @Html.ValidationMessageFor(model => model.pozisyonId)
-                                        </div>
-                                    </div>
-                                </div>
+								<div class="col-md-12">
+									<div class="form-floating mb-3">
+										@Html.DropDownListFor(model => model.pozisyonId,
+																						new SelectList(Model.PozisyonSel, "Value", "Text", Model.pozisyonId),
+																						"Seçiniz",
+																						new { @class = "form-control form-select", id = "pozisyonId" })
+										<label for="pozisyonId">Pozisyon</label>
+										<div class="invalid-feedback">
+											@Html.ValidationMessageFor(model => model.pozisyonId)
+										</div>
+									</div>
+								</div>
 							</div>
 
 							<!-- Şube ID -->
 							<div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-floating mb-3">
-                                        @Html.DropDownListFor(model => model.subeId,
-                                                 new SelectList(Model.SubeSel, "Value", "Text", Model.subeId),
-                                                 "Seçiniz",
-                                                 new { @class = "form-control form-select", id = "calismaturu2" }) <!-- farklı bir id -->
-                                        <label for="calismaturu2">Şube</label>
-                                        <div class="invalid-feedback">
-                                            @Html.ValidationMessageFor(model => model.subeId)
-                                        </div>
-                                    </div>
-                                </div>
+								<div class="col-md-12">
+									<div class="form-floating mb-3">
+										@Html.DropDownListFor(model => model.subeId,
+																						new SelectList(Model.SubeSel, "Value", "Text", Model.subeId),
+																						"Seçiniz",
+																						new { @class = "form-control form-select", id = "subeId" })
+										<label for="subeId">Şube</label>
+										<div class="invalid-feedback">
+											@Html.ValidationMessageFor(model => model.subeId)
+										</div>
+									</div>
+								</div>
 							</div>
 
 							<!-- Yıllık İzin Gün Sayısı -->
@@ -292,59 +299,80 @@
 							</div>
 
 							<!-- Doğum Tarihi -->
-							<div class="row">
-								<div class="col-md-12">
-									<label class="form-label">Doğum Tarihi</label>
-									@Html.TextBoxFor(Model => Model.dogumTarihi, new { @class = "form-control", id = "dogumTarihi" })
+							<div class="col-md-12">
+								<div class="form-floating mb-3">
+									@Html.TextBoxFor(Model => Model.dogumTarihi, new
+										{
+											@class = "form-control",
+											id = "dogumTarihi",
+											placeholder = "GG/AA/YYYY SS:DD",
+										})
+									<label for="name">Doğum Tarihi</label>
 									<div class="invalid-feedback">
 										@Html.ValidationMessageFor(Model => Model.dogumTarihi)
 									</div>
 								</div>
+								<script>$(document).ready(function () { zuraf.setDatePicker("dogumTarihi") });</script>
 							</div>
 
 
 							<!-- Başlangıç Tarihi -->
-							<div class="row">
-								<div class="col-md-12">
-									<label class="form-label">Başlangıç Tarihi</label>
-									@Html.TextBoxFor(Model => Model.baslangicTarihi, new { @class = "form-control", id = "baslangicTarihi" })
+							<div class="col-md-12">
+								<div class="form-floating mb-3">
+									@Html.TextBoxFor(Model => Model.baslangicTarihi, new
+										{
+											@class = "form-control",
+											id = "baslangicTarihi",
+											placeholder = "GG/AA/YYYY SS:DD",
+										})
+									<label for="name">Başlangıç Tarihi</label>
 									<div class="invalid-feedback">
 										@Html.ValidationMessageFor(Model => Model.baslangicTarihi)
 									</div>
 								</div>
+								<script>$(document).ready(function () { zuraf.setDatePicker("baslangicTarihi") });</script>
 							</div>
 
 							<!-- Bitiş Tarihi -->
-							<div class="row mt-3">
-								<div class="col-md-12">
-									<label class="form-label">Bitiş Tarihi</label>
-									@Html.TextBoxFor(Model => Model.bitisTarihi, new { @class = "form-control", id = "bitisTarihi" })
+							<div class="col-md-12">
+								<div class="form-floating mb-3">
+									@Html.TextBoxFor(Model => Model.bitisTarihi, new
+										{
+											@class = "form-control",
+											id = "bitisTarihi",
+											placeholder = "GG/AA/YYYY SS:DD",
+										})
+									<label for="name">Bitiş Tarihi</label>
 									<div class="invalid-feedback">
 										@Html.ValidationMessageFor(Model => Model.bitisTarihi)
 									</div>
 								</div>
+								<script>$(document).ready(function () { zuraf.setDatePicker("bitisTarihi") });</script>
 							</div>
 
 							<!-- Fazla Mesaiye Uygun -->
+
 							<div class="row mt-3">
 								<div class="col-md-12">
-									<label class="form-label" for="fazlaMesaiUygun">Fazla Mesaiye Uygun</label>
-									@Html.DropDownListFor(Model => Model.fazlaMesaiUygun,
-																		new List<SelectListItem>
-									{
-									new SelectListItem { Text = "Evet", Value = "true", Selected = Model.fazlaMesaiUygun },
-									new SelectListItem { Text = "Hayır", Value = "false", Selected = !Model.fazlaMesaiUygun }
-									},
-																		htmlAttributes: new { @class = "form-select", id = "fazlaMesaiUygun" })
-									<div class="invalid-feedback d-block">
-										@Html.ValidationMessageFor(Model => Model.fazlaMesaiUygun)
+									<div class="form-check form-switch mb-12">
+										@{
+											var isMesaiUygun = Model.fazlaMesaiUygun.HasValue && Model.fazlaMesaiUygun.Value;
+										}
+
+										<input type="hidden" name="fazlaMesaiUygun" value="false" />
+										<input type="checkbox"
+											   class="form-check-input"
+											   id="fazlaMesaiUygun"
+											   name="fazlaMesaiUygun"
+											   value="true"
+										@(isMesaiUygun ? "checked" : "") />
+										<label class="form-check-label" for="fazlaMesaiUygun">Fazla Mesaiye Uygun</label>
 									</div>
 								</div>
 							</div>
-
 							<!-- Çalışma Tipi -->
 							<div class="row mt-3">
-								<div class="col-md-12"> 
+								<div class="col-md-12">
 									<label class="form-label">Çalışma Tipi</label>
 									@Html.DropDownListFor(Model => Model.CalismaTipi,
 																		new SelectList(new[] {
@@ -414,7 +442,9 @@
 	$(document).ready(function () {
 
 		$('#saveButton').on('click', function () {
-
+            zuraf.submitForm("editForm", {
+                profilFotografi: { name: "profilFotografi", type: "fileupload" }
+            });
 			zuraf.submitForm("editForm");
 		});
 

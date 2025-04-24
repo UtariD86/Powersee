@@ -117,15 +117,15 @@
                     allowFiltering: true,
                     alignment: "center"
                 },
-                {
-                    dataField: 'CalismaTipi', // enum değeri burada tutuluyor
-                    caption: 'Çalışma tipi',
-                    allowFiltering: true,
-                    alignment: "center",
-                    cellTemplate: function (cellElement, cellInfo) {
-                        cellElement.text(cellInfo.data.CalismaTipiStr); // Görünüm kısmı string halini kullanır
-                    }
-                },
+                // {
+                //     dataField: 'CalismaTipi', // enum değeri burada tutuluyor
+                //     caption: 'Çalışma tipi',
+                //     allowFiltering: true,
+                //     alignment: "center",
+                //     cellTemplate: function (cellElement, cellInfo) {
+                //         cellElement.text(cellInfo.data.CalismaTipiStr); // Görünüm kısmı string halini kullanır
+                //     }
+                // },
                 {
                     dataField: 'adres',
                     caption: 'Adres',
@@ -154,7 +154,10 @@
                 createDetail('Vergi Dairesi Adı', options.data.vergiDairesiAdi, 'badge-danger'),
                 createDetail('Açıklama', options.data.aciklama, 'badge-light'),
                 createDetail('Departman ID', options.data.departmanId, 'badge-secondary'),
-                createDetail('Çalışma Tipi', options.data.CalismaTipiStr, 'badge-secondary'),
+                createDetail("Fazla Mesai'ye", options.data.fazlaMesaiUygunStr, 'badge-secondary'),
+                createDetail("Çalışma Tipi", options.data.CalismaTipiStr, 'badge-secondary'),
+                createDetail("Cinsiyet", options.data.CinsiyetStr, 'badge-secondary'),
+                createDetail("Vardiya Türü", options.data.VardiyaTuruStr, 'badge-secondary'),
             );
         }
     },

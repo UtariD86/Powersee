@@ -646,12 +646,50 @@ const zuraf = {
      * 
      * @param {string} targetElement - formatlanacak elemanının id'si.
      */
-    setDatePicker: function (targetElement) {
+    setDatePicker: function (targetId, type) {
         try {
-            targetElement.datetimepicker({
-                format: 'DD/MM/YYYY',
-                showTimepicker: false
-            });
+            switch (type) {
+                case "date":
+                    $('#' + targetId).flatpickr({
+                        enableTime: false,            // Saat seçimi aktif
+                        dateFormat: 'd/m/Y',    // Tarih formatı
+                    });
+                    break;
+
+                case "time":
+                    $('#' + targetId).flatpickr({
+                        enableTime: true,            // Saat seçimi aktif
+                        dateFormat: 'H:i',    // Tarih formatı
+                        noCalendar: true,
+                        time_24hr: true,            // 24 saatlik format
+                        /*locale: 'tr',*/               // Türkçe dil desteği
+                        allowInput: true,
+                    });
+                    break;
+
+                case "time-with-seconds":
+                    $('#' + targetId).flatpickr({
+                        enableTime: true,             // Saat seçimi aktif
+                        enableSeconds: true,          // Saniye seçimi aktif
+                        dateFormat: 'H:i:S',          // Saat:dakika:saniye formatı
+                        noCalendar: true,
+                        time_24hr: true,              // 24 saatlik format
+                        /*locale: 'tr',*/                 // Türkçe dil desteği
+                        allowInput: true,
+                    });
+                    break;
+
+                default:
+                    $('#' + targetId).flatpickr({
+                        enableTime: true,            // Saat seçimi aktif
+                        dateFormat: 'd/m/Y H:i',    // Tarih formatı
+                        time_24hr: true,            // 24 saatlik format
+                        /*locale: 'tr',*/               // Türkçe dil desteği
+                    });
+            }
+
+
+
         } catch (error) {
             console.error('Datetimepicker initialization error:', error);
         }

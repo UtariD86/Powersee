@@ -59,7 +59,7 @@ namespace Application.Services
                     return new DataResult<Personel>(
                         data: personel,
                         resultStatus: ResultStatus.Success,
-                        message: $"{personel.isim} isimli şube başarıyla güncellendi."
+                        message: $"{personel.isim} isimli personel başarıyla güncellendi."
                         );
                 }
                 else
@@ -160,7 +160,7 @@ namespace Application.Services
                 }
 
 
-                return new DataResult<PageResponse<PersonelListDto>>(ResultStatus.Error, "Hiç Şube bulunamadı", null);
+                return new DataResult<PageResponse<PersonelListDto>>(ResultStatus.Error, "Hiç Personel bulunamadı", null);
             }
             catch (Exception ex)
             {
@@ -184,7 +184,7 @@ namespace Application.Services
                 return new DataResult<Personel>(ResultStatus.Success, personel);
             }
 
-            return new DataResult<Personel>(ResultStatus.Error, "Şube bulunamadı", null);
+            return new DataResult<Personel>(ResultStatus.Error, "Personel bulunamadı", null);
         }
 
     }
