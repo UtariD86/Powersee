@@ -23,7 +23,7 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<Izin> Izinler { get; set; } // Izinler tablosu için DbSet
 
 
-    public DbSet<Sube> Subeler { get; set; }
+
 
     public DbSet<Personel> Personels { get; set; }
 

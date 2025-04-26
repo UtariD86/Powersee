@@ -26,7 +26,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddSingleton<FilterHelper>();
 
 builder.Services.AddScoped<IDepartmentService, DepartmentManager>();
-builder.Services.AddScoped<IIzinService, IIzinService>();
+builder.Services.AddScoped<IIzinService, IzinManager>();
 builder.Services.AddScoped<IPositionService, PositionManager>();
 builder.Services.AddScoped<ISubeService, SubeManager>();
 builder.Services.AddScoped<IPersonelService, PersonelManager>();

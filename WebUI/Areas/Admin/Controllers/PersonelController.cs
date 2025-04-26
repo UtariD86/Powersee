@@ -139,7 +139,9 @@ namespace WebUI.Areas.Admin.Controllers
                 var yeniYol = FileHelper.DosyaKaydet(model.profilFotografi, "uploads/profilePhotos", _env);
                 model.profilFotografiUrl = yeniYol;
             }
-
+            //yüklemiş ama kaydetmedi başka bir alanın eksikliğinden mi
+            //bilmiyorumda tam nerde değişiklik yaptın kanka orayı kaçırdım
+            //başka neresi eksik olabilir
             // Entity’ye verileri aktar
             var personel = new Personel()
             {

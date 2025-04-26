@@ -21,7 +21,7 @@ public class Personel : EntityBase, IEntity
     public string bankaHesapNo { get; set; }
     public string vergiNo { get; set; }
     public string vergiDairesiAdi { get; set; }
-    public string aciklama { get; set; }
+    public string? aciklama { get; set; }
 
     [NotMapped]
     public IFormFile? profilFotografi { get; set; }

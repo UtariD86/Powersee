@@ -17,14 +17,14 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-floating mb-3">
-                                @Html.TextBoxFor(Model => Model.IzinTuru, new
+                                @Html.TextBoxFor(Model => Model.IzinTuruEnum, new
                                     {
                                         @class = "form-control",
                                         id = "name"
                                     })
                                 <label for="name">İzin Türü</label>
                                 <div class="invalid-feedback">
-                                    @Html.ValidationMessageFor(Model => Model.IzinTuru) @*IzinTuru olarak düzenlendi ipuçları*@
+                                    @Html.ValidationMessageFor(Model => Model.IzinTuruEnum) @*IzinTuru olarak düzenlendi ipuçları*@
                                 </div>
                             </div>
                         </div>
@@ -32,14 +32,14 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-floating mb-3">
-                                @Html.TextAreaFor(Model => Model.Adres, new
+                                @Html.TextAreaFor(Model => Model.Aciklama, new
                                     {
                                         @class = "form-control",
                                         id = "name"
                                     })
                                 <label for="name">Adres</label>
                                 <div class="invalid-feedback">
-                                    @Html.ValidationMessageFor(Model => Model.Adres) @*Adres olarak düzenlendi ipuçları*@
+                                    @Html.ValidationMessageFor(Model => Model.Aciklama) @*Adres olarak düzenlendi ipuçları*@
                                 </div>
                             </div>
                         </div>
@@ -47,14 +47,14 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-floating mb-3">
-                                @Html.TextAreaFor(Model => Model.TelefonNumarasi1, new
+                                @Html.TextAreaFor(Model => Model.Aciklama, new
                                     {
                                         @class = "form-control",
                                         id = "name"
                                     })
                                 <label for="name">Telefon Numarası</label>
                                 <div class="invalid-feedback">
-                                    @Html.ValidationMessageFor(Model => Model.TelefonNumarasi1)
+                                    @Html.ValidationMessageFor(Model => Model.Aciklama)
                                 </div>
                             </div>
                         </div>

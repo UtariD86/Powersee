@@ -56,7 +56,7 @@ namespace Application.Services
                     return new DataResult<Izin>(
                         data: izin,
                         resultStatus: ResultStatus.Success,
-                        message: $"{izin.IzinTuru} isimli izin başarıyla güncellendi."
+                        message: $"{izin.IzinTuruEnum} isimli izin başarıyla güncellendi."
                         );
                 }
                 else
@@ -71,7 +71,7 @@ namespace Application.Services
 
                     await _unitOfWork.SaveChangesAsync();
 
-                    return new DataResult<Izin>(ResultStatus.Success, izin.IzinTuru + "Başarıyla Eklendi", izin);
+                    return new DataResult<Izin>(ResultStatus.Success, izin.IzinTuruEnum + "Başarıyla Eklendi", izin);
                 }
             }
             catch (Exception ex)
@@ -107,7 +107,7 @@ namespace Application.Services
                 await _unitOfWork.SaveChangesAsync();
 
 
-                return new Result(ResultStatus.Success, $"{_izin.IzinTuru} Başarıyla Silindi");
+                return new Result(ResultStatus.Success, $"{_izin.IzinTuruEnum} Başarıyla Silindi");
             }
 
             return new Result(ResultStatus.Error, "Seçili izin bulunamadı");

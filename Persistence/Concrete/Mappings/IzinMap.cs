@@ -24,11 +24,12 @@ namespace Persistence.Concrete.Mappings
                    .HasColumnName("BitisTarihi")
                    .IsRequired(); // Zorunlu alan ve sütun adı
 
-            builder.Property(i => i.IzinTuru)
+            builder.Property(i => i.IzinTuruEnum)
                    .HasColumnName("IzinTuru")
                    .IsRequired(); // Zorunlu alan ve sütun adı
 
-            builder.Property(i => i.UcretTuru)
+           
+            builder.Property(i => i.UcretTuruEnum)
                    .HasColumnName("UcretTuru")
                    .IsRequired(); // Zorunlu alan ve sütun adı
 
