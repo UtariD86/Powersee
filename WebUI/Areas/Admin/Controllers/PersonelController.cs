@@ -17,19 +17,10 @@ using WebUI.Areas.Admin.Models.Sube;
 
 namespace WebUI.Areas.Admin.Controllers
 {
-    //Bu satır arealar arasında farklı izinlere sahip endpointler oluşturabilmemizi sağlar.
-    [Area("Admin")]
-
-    //Bu satır yalnızca yetkilendirilmiş kullanıcıların bu controller sınıfındaki işlemleri yapabilmesini sağlar.
-    [Authorize]
-    //Bunu daha sonra role bazında olacak şekilde düzenleyeceğiz.
-
-
-    //Controller sınıflarımız web uygulamamızda kullanacağımız endpointlerin yönlendirilmesini sağlar.
-    //Sayfalar, json veriler vb işlemlerin yönetimi ve gösterimi için kullanılır.
-    public class PersonelController : Controller
+  [Area("Admin")]
+ [Authorize]
+public class PersonelController : Controller
     {
-        //Tanımladığımız servis sınıfına erişim sağlamak için bir değişken tanımlıyoruz.
         private readonly IPersonelService _personelService;
         private readonly IDepartmentService _departmentService;
         private readonly ISubeService _subeService;
