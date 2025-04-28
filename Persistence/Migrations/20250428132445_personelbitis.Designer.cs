@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence.Concrete;
 
@@ -11,9 +12,11 @@ using Persistence.Concrete;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250428132445_personelbitis")]
+    partial class personelbitis
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -88,6 +91,7 @@ namespace Persistence.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Aciklama")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("BaslangicTarihi")
@@ -157,7 +161,7 @@ namespace Persistence.Migrations
                     b.Property<DateTime>("baslangicTarihi")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("bitisTarihi")
+                    b.Property<DateTime?>("bitisTarihi")
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("departmanId")
@@ -166,7 +170,7 @@ namespace Persistence.Migrations
                     b.Property<DateTime>("dogumTarihi")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("fazlaMesaiUygun")
+                    b.Property<bool?>("fazlaMesaiUygun")
                         .HasColumnType("bit");
 
                     b.Property<decimal>("haftalikSaat")

@@ -30,11 +30,27 @@
 									</div>
 								</div>
 							</div>
+							<div class="row">
+								<div class="col-md-12">
+									<div class="form-floating mb-3">
+										
+										@if (!string.IsNullOrEmpty(Model.profilFotografiUrl))
+										{
+											<input type="hidden" name="profilFotografiUrl" value="@Model.profilFotografiUrl" />
+											<div style="display:none;">
+												<img src="@Model.profilFotografiUrl" alt="Profil Fotoğrafı" style="max-width: 200px;">
+											</div>
+										}
+										else
+										{
+											<input type="hidden" name="profilFotografiUrl" value="" />
+										}
 
-							<input asp-for="profilFotografi" type="file" name="profilFotografi" class="form-control" />
-								<!-- diğer alanlar -->
-
-
+										<!-- Profil Fotoğrafı Yükleme Alanı -->
+										<input asp-for="profilFotografi" type="file" name="profilFotografi" class="form-control" />
+									</div>
+								</div>
+							</div>
 
 
 
@@ -110,7 +126,7 @@
 												@class = "form-control",
 												id = "tcKimlik"
 											})
-										<label for="form">Tc. Kimlik No</label>
+										<label for="tcKimlik">TC Kimlik No</label>
 										<div class="invalid-feedback">
 											@Html.ValidationMessageFor(Model => Model.tcKimlik)
 										</div>
@@ -142,7 +158,7 @@
 												@class = "form-control",
 												id = "vergiNo"
 											})
-										<label for="vergiNo">Veri No</label>
+										<label for="vergiNo">Vergi No</label>
 										<div class="invalid-feedback">
 											@Html.ValidationMessageFor(Model => Model.vergiNo)
 										</div>
@@ -157,7 +173,7 @@
 												@class = "form-control",
 												id = "vergiDairesiAdi"
 											})
-										<label for="vergiDairesiAdi">Veri Dairesi Adı</label>
+										<label for="vergiDairesiAdi">Vergi Dairesi Adı</label>
 										<div class="invalid-feedback">
 											@Html.ValidationMessageFor(Model => Model.vergiDairesiAdi)
 										</div>
@@ -168,21 +184,7 @@
 						</div>
 						<div class="col-md-4">
 
-							<div class="row">
-								<div class="col-md-12">
-									<div class="form-floating mb-3">
-										@Html.TextBoxFor(Model => Model.aciklama, new
-											{
-												@class = "form-control",
-												id = "aciklama"
-											})
-										<label for="aciklama">Açıklama</label>
-										<div class="invalid-feedback">
-											@Html.ValidationMessageFor(Model => Model.aciklama)
-										</div>
-									</div>
-								</div>
-							</div>
+
 
 							<!-- Departman ID -->
 							<div class="row">
@@ -282,11 +284,8 @@
 									</div>
 								</div>
 							</div>
-						</div>
-						<div class="col-md-4">
-
 							<!-- Saatlik Ücret -->
-							<div class="row">
+							<div class="row mt-3">
 								<div class="col-md-12">
 									<div class="form-floating mb-3">
 										@Html.TextBoxFor(Model => Model.saatlikUcret, new { @class = "form-control", id = "saatlikUcret", type = "Decimal" })
@@ -297,6 +296,15 @@
 									</div>
 								</div>
 							</div>
+
+
+						</div>
+
+
+						<div class="col-md-4">
+
+							
+
 
 							<!-- Doğum Tarihi -->
 							<div class="col-md-12">
@@ -423,6 +431,25 @@
 									</div>
 								</div>
 							</div>
+							
+							<div class="row mt-3">
+								<div class="col-md-12">
+									<div class="form-floating mb-3">
+										@Html.TextBoxFor(Model => Model.aciklama, new
+											{
+												@class = "form-control",
+												id = "aciklama"
+											})
+										<label for="aciklama">Açıklama</label>
+										<div class="invalid-feedback">
+											@Html.ValidationMessageFor(Model => Model.aciklama)
+										</div>
+									</div>
+								</div>
+							</div>
+
+
+
 						</div>
 					</div>
 				</form>
@@ -442,9 +469,9 @@
 	$(document).ready(function () {
 
 		$('#saveButton').on('click', function () {
-            zuraf.submitForm("editForm", {
-                profilFotografi: { name: "profilFotografi", type: "fileupload" }
-            });
+			zuraf.submitForm("editForm", {
+				profilFotografi: { name: "profilFotografi", type: "fileupload" }
+			});
 		});
 
 	});
