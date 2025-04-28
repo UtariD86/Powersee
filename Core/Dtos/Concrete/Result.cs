@@ -11,7 +11,7 @@ namespace Core.Dtos.Concrete;
 /// <summary>
 /// İşlem sonuçlarını standartize etmek için kullanılan sınıf.
 /// </summary>
-public class Result : IResult
+public class Result : Core.Dtos.Abstract.IResult
 {
     /// <summary>
     /// Sadece işlem sonucu döner.

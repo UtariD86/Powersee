@@ -12,6 +12,10 @@ namespace Domain.Dtos
     {
         public string? CalismaTipiStr { get; set; }
 
-        public string departmentName { get; set; }
+        public string? CinsiyetStr { get; set; }
+
+        public string? VardiyaTuruStr { get; set; }
+
+        public string fazlaMesaiUygunStr { get; set; }
     }
 }

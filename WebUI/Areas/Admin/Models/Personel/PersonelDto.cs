@@ -27,16 +27,19 @@ namespace WebUI.Areas.Admin.Models.Personel
         public string? vergiDairesiAdi { get; set; }
         public string? aciklama { get; set; }
 
+        public string? profilFotografiUrl { get; set; }
 
-        public SelectList DepartmentSel { get; set; }
+        public IFormFile? profilFotografi { get; set; }
+
+        public SelectList? DepartmentSel { get; set; }
         public string? departmanId { get; set; }
 
-        public SelectList PozisyonSel { get; set; }
+        public SelectList? PozisyonSel { get; set; }
         public string? pozisyonId { get; set; }
-        public SelectList SubeSel { get; set; }
-
-
+       
+        public SelectList? SubeSel { get; set; }
         public string? subeId { get; set; }
+        
         public string? yillikIzinGunSayisi { get; set; }
         public string? performansNotu { get; set; }
         public string? sgkSicilNo { get; set; }
@@ -45,11 +48,11 @@ namespace WebUI.Areas.Admin.Models.Personel
         public string? saatlikUcret { get; set; }
 
 
-        public string? dogumTarihi { get; set; }
-        public string? baslangicTarihi { get; set; }
-        public string? bitisTarihi { get; set; }
+        public DateTime dogumTarihi { get; set; }
+        public DateTime baslangicTarihi { get; set; }
+        public DateTime? bitisTarihi { get; set; }
         
-        public bool fazlaMesaiUygun { get; set; }
+        public bool? fazlaMesaiUygun { get; set; }
 
 
         public CalismaTipi CalismaTipi { get; set; } // Orijinal enum değeri

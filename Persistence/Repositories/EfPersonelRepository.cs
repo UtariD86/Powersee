@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.Index.HPRtree;
 using Persistence.Abstract;
 using Persistence.Concrete;
@@ -66,10 +67,40 @@ namespace Persistence.Repositories
                 var result = items.Select(personel => new PersonelListDto
                 {
                     Id = personel.Id,
-                    CalismaTipiStr = EnumHelper.GetDescription<CalismaTipi>(personel.CalismaTipi),
+                    isim = personel.isim,
+                    soyisim = personel.soyisim,
+                    adres = personel.adres,
+                    telefonNumarasi1 = personel.telefonNumarasi1,
+                    telefonNumarasi2 = personel.telefonNumarasi2,
+                    tcKimlik = personel.tcKimlik,
+                    bankaHesapNo = personel.bankaHesapNo,
+                    vergiNo = personel.vergiNo,
+                    vergiDairesiAdi = personel.vergiDairesiAdi,
+                    aciklama = personel.aciklama,
+                    departmanId = personel.departmanId,
+                    pozisyonId = personel.pozisyonId,
+                    subeId = personel.subeId,
+                    yillikIzinGunSayisi = personel.yillikIzinGunSayisi,
+                    performansNotu = personel.performansNotu,
+                    sgkSicilNo = personel.sgkSicilNo,
+                    haftalikSaat = personel.haftalikSaat,
+                    saatlikUcret = personel.saatlikUcret,
+                    dogumTarihi = personel.dogumTarihi,
+                    baslangicTarihi = personel.baslangicTarihi,
+                    bitisTarihi = personel.bitisTarihi,
+                    fazlaMesaiUygun = personel.fazlaMesaiUygun,
+                    //fazlaMesaiUygunStr = personel.fazlaMesaiUygun ? "Uygun" : "Uygun Değil",
+                    fazlaMesaiUygunStr = personel.fazlaMesaiUygun.HasValue ? (personel.fazlaMesaiUygun.Value ? "Uygun" : "Uygun Değil") : "Bilinmiyor",
+
                     CalismaTipi = personel.CalismaTipi,
-                    departmentName = "Test",
-                    bankaHesapNo = personel.bankaHesapNo
+                    CalismaTipiStr = EnumHelper.GetDescription<CalismaTipi>(personel.CalismaTipi),
+                    
+                    Cinsiyet = personel.Cinsiyet,
+                    CinsiyetStr = EnumHelper.GetDescription<Cinsiyet>(personel.Cinsiyet),
+
+                    VardiyaTuru = personel.VardiyaTuru,
+                    VardiyaTuruStr = EnumHelper.GetDescription<VardiyaTuru>(personel.VardiyaTuru),
+                    
                 }).ToList();
 
                 // Get the total count for pagination

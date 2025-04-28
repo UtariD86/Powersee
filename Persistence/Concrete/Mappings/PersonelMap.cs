@@ -27,6 +27,8 @@ public class PersonelMap : IEntityTypeConfiguration<Personel>
         builder.Property(d => d.vergiDairesiAdi).HasColumnName("vergiDairesiAdi");
         builder.Property(d => d.aciklama).HasColumnName("aciklama");
 
+        builder.Property(d => d.profilFotografiUrl).HasColumnName("profilFotografiUrl");
+
         builder.Property(d => d.departmanId).HasColumnName("departmanId");
         builder.Property(d => d.pozisyonId).HasColumnName("pozisyonId");
         builder.Property(d => d.subeId).HasColumnName("subeId");
@@ -44,7 +46,7 @@ public class PersonelMap : IEntityTypeConfiguration<Personel>
         builder.Property(d => d.fazlaMesaiUygun).HasColumnName("fazlaMesaiUygun");
 
         builder.Property(d => d.CalismaTipi).HasColumnName("CalismaTipi");
-        builder.Property(d => d.Cinsiyet).HasColumnName("Cinsiyet");
+        builder.Property(d => d.Cinsiyet).HasColumnName("Cinsiyet");//agam tekrar migration at açıklama nullable olsun tamam şimdi mi atayım şimdi at istersen onun dışında bir sorun kalmadı gösterirken de  ~/@model.profilfotourl diye gösterebilirsin img src içinde tamamdır
         builder.Property(d => d.VardiyaTuru).HasColumnName("VardiyaTuru");
 
 
