@@ -17,5 +17,11 @@ namespace Domain.Dtos
         public string? VardiyaTuruStr { get; set; }
 
         public string fazlaMesaiUygunStr { get; set; }
+
+        public string DepartmentSelName { get; set; }
+
+        public string PositionSelName { get; set; }
+
+        public string SubeSelName { get; set; }
     }
 }

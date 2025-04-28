@@ -16,12 +16,12 @@ public class PersonelMap : IEntityTypeConfiguration<Personel>
         builder.ToTable("Personels").HasKey(d => d.Id);
 
         builder.Property(d => d.Id).HasColumnName("Id");
-        builder.Property(d => d.isim).HasColumnName("isim");
-        builder.Property(d => d.soyisim).HasColumnName("soyisim");
+        builder.Property(d => d.isim).HasColumnName("isim").IsRequired();
+        builder.Property(d => d.soyisim).HasColumnName("soyisim").IsRequired();
         builder.Property(d => d.adres).HasColumnName("adres");
-        builder.Property(d => d.telefonNumarasi1).HasColumnName("telefonNumarasi1");
+        builder.Property(d => d.telefonNumarasi1).HasColumnName("telefonNumarasi1").IsRequired();
         builder.Property(d => d.telefonNumarasi2).HasColumnName("telefonNumarasi2");
-        builder.Property(d => d.tcKimlik).HasColumnName("tcKimlik");
+        builder.Property(d => d.tcKimlik).HasColumnName("tcKimlik").IsRequired();
         builder.Property(d => d.bankaHesapNo).HasColumnName("bankaHesapNo");
         builder.Property(d => d.vergiNo).HasColumnName("vergiNo");
         builder.Property(d => d.vergiDairesiAdi).HasColumnName("vergiDairesiAdi");
@@ -34,20 +34,20 @@ public class PersonelMap : IEntityTypeConfiguration<Personel>
         builder.Property(d => d.subeId).HasColumnName("subeId");
         builder.Property(d => d.yillikIzinGunSayisi).HasColumnName("yillikIzinGunSayisi");
         builder.Property(d => d.performansNotu).HasColumnName("performansNotu");
-        builder.Property(d => d.sgkSicilNo).HasColumnName("sgkSicilNo");
+        builder.Property(d => d.sgkSicilNo).HasColumnName("sgkSicilNo").IsRequired();
         
-        builder.Property(d => d.haftalikSaat).HasColumnName("haftalikSaat");
+        builder.Property(d => d.haftalikSaat).HasColumnName("haftalikSaat").IsRequired();
         builder.Property(d => d.saatlikUcret).HasColumnName("saatlikUcret");
 
-        builder.Property(d => d.dogumTarihi).HasColumnName("dogumTarihi");
-        builder.Property(d => d.baslangicTarihi).HasColumnName("baslangicTarihi");
+        builder.Property(d => d.dogumTarihi).HasColumnName("dogumTarihi").IsRequired();
+        builder.Property(d => d.baslangicTarihi).HasColumnName("baslangicTarihi").IsRequired();
         builder.Property(d => d.bitisTarihi).HasColumnName("bitisTarihi");
 
         builder.Property(d => d.fazlaMesaiUygun).HasColumnName("fazlaMesaiUygun");
 
-        builder.Property(d => d.CalismaTipi).HasColumnName("CalismaTipi");
-        builder.Property(d => d.Cinsiyet).HasColumnName("Cinsiyet");//agam tekrar migration at açıklama nullable olsun tamam şimdi mi atayım şimdi at istersen onun dışında bir sorun kalmadı gösterirken de  ~/@model.profilfotourl diye gösterebilirsin img src içinde tamamdır
-        builder.Property(d => d.VardiyaTuru).HasColumnName("VardiyaTuru");
+        builder.Property(d => d.CalismaTipi).HasColumnName("CalismaTipi").IsRequired();
+        builder.Property(d => d.Cinsiyet).HasColumnName("Cinsiyet").IsRequired();
+        builder.Property(d => d.VardiyaTuru).HasColumnName("VardiyaTuru").IsRequired();
 
 
 
