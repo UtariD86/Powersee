@@ -361,3 +361,4 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/Persistence/Migrations/00000000000000_CreateIdentitySchema.cs
