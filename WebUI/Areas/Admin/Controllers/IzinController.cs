@@ -6,8 +6,17 @@ using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Dynamic;
 using WebUI.Areas.Admin.Models.Izin;
+
+// Buradan aşağıdakiler deneme
+using Domain.Enums;
+using WebUI.Areas.Admin.Models.Department;
+using WebUI.Areas.Admin.Models.Personel;
+using WebUI.Areas.Admin.Models.Position;
+using WebUI.Areas.Admin.Models.Sube;
+// Buraya kadar
 
 namespace WebUI.Areas.Admin.Controllers
 {
@@ -15,10 +24,12 @@ namespace WebUI.Areas.Admin.Controllers
     [Authorize]
     public class IzinController : Controller
     {
-        private readonly IIzinService dm;
-        public IzinController(IIzinService _dm)
+        private readonly IIzinService _izinService;
+        private readonly IPersonelService _personelService;
+        public IzinController(IIzinService izinService, IPersonelService personelService)
         {
-            dm = _dm;
+            _izinService = izinService;
+            _personelService = personelService;
         }
 
         public IActionResult Index()
@@ -30,7 +41,7 @@ namespace WebUI.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> GetList([FromBody] PageRequest pageRequest)
         {
-            var data = await dm.GetToGrid(pageRequest);
+            var data = await _izinService.GetToGrid(pageRequest);
             return Json(data.Data);
         }
 
@@ -41,16 +52,15 @@ namespace WebUI.Areas.Admin.Controllers
             var model = new IzinDto();
             if (id.HasValue)
             {
-                var result = await dm.GetById(id.Value);
+                var result = await _izinService.GetById(id.Value);
                 var entity = result.Data;
                 if (entity != null && result.ResultStatus == ResultStatus.Success)
                 {
-                    model.PersonelId = entity.PersonelId.ToString();
-
                     model.Id = entity.Id;
+                    model.PersonelId = entity.PersonelId.ToString();
+                    model.Aciklama = entity.Aciklama;
                     model.BaslangicTarihi = entity.BaslangicTarihi;
                     model.BitisTarihi = entity.BitisTarihi;
-                    model.Aciklama = entity.Aciklama;
                     model.IzinTuruEnum = entity.IzinTuruEnum;
                     model.UcretTuruEnum = entity.UcretTuruEnum;
                 }
@@ -59,6 +69,13 @@ namespace WebUI.Areas.Admin.Controllers
                     ModelState.AddModelError("ErrorDetail", "İzin bulunamadı.");
                 }
             }
+
+            var personelResult = await _personelService.GetAll();
+           
+
+            model.personelResultSel = new SelectList(personelResult?.Data, "Id", "İsim", "Soyisim");
+            
+
             return PartialView(model);
         }
 
@@ -77,14 +94,14 @@ namespace WebUI.Areas.Admin.Controllers
             {
                 Id = model.Id,
                 PersonelId = int.TryParse(model.PersonelId, out int PersonelIdInt) ? PersonelIdInt : 227,
+                Aciklama = model.Aciklama,
                 BaslangicTarihi = model.BaslangicTarihi,
                 BitisTarihi = model.BitisTarihi,
-                Aciklama = model.Aciklama,
                 IzinTuruEnum = model.IzinTuruEnum,
                 UcretTuruEnum = model.UcretTuruEnum
             };
-
-            var result = dm.Edit(izin);
+            izin.Id = id;
+            var result = _izinService.Edit(izin);
             if (!string.IsNullOrEmpty(result.Result.Message))
             {
                 message = result.Result.Message;
@@ -100,7 +117,7 @@ namespace WebUI.Areas.Admin.Controllers
             string message = string.Empty;
             if (id.HasValue && id > 0)
             {
-                var result = await dm.Delete(id.Value);
+                var result = await _izinService.Delete(id.Value);
                 message = result.Message;
             }
             else

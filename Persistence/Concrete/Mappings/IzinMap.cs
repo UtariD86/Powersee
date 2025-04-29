@@ -28,7 +28,6 @@ namespace Persistence.Concrete.Mappings
                    .HasColumnName("IzinTuru")
                    .IsRequired(); // Zorunlu alan ve sütun adı
 
-           
             builder.Property(i => i.UcretTuruEnum)
                    .HasColumnName("UcretTuru")
                    .IsRequired(); // Zorunlu alan ve sütun adı

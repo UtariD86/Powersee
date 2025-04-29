@@ -1,8 +1,8 @@
-﻿//using Application.Helpers.Concrete;
+﻿using Application.Helpers.Concrete;
 using Core.Data.Repositories.Concrete;
 using Core.Dtos.Abstract;
 using Core.Dtos.Concrete;
-//using Core.Helpers.Abstract;
+using Core.Helpers.Abstract;
 using Domain.Dtos;
 using Domain.Entities;
 using Domain.Enums;
@@ -76,11 +76,11 @@ namespace Persistence.Repositories
 
                 IzinTuruEnum = izin.IzinTuruEnum,
 
-                //IzinTuruStr = EnumHelper.GetDescription<IzinTuruEnum>(izin.IzinTuruEnum),
+                IzinTuruStr = EnumHelper.GetDescription<IzinTuruEnum>(izin.IzinTuruEnum),
 
                 UcretTuruEnum = izin.UcretTuruEnum,
 
-                //UcretTuruStr = EnumHelper.GetDescription<UcretTuruEnum>(izin.UcretTuruEnum),
+                UcretTuruStr = EnumHelper.GetDescription<UcretTuruEnum>(izin.UcretTuruEnum),
 
                 Aciklama = izin.Aciklama,
 

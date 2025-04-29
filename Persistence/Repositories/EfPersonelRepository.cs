@@ -69,14 +69,14 @@ namespace Persistence.Repositories
                     Id = personel.Id,
                     isim = personel.isim,
                     soyisim = personel.soyisim,
-                    adres = personel.adres,
+                    adres = personel.adres ?? "Bilgi Yok",
                     telefonNumarasi1 = personel.telefonNumarasi1,
-                    telefonNumarasi2 = personel.telefonNumarasi2,
+                    telefonNumarasi2 = personel.telefonNumarasi2 ?? "Bilgi Yok",
                     tcKimlik = personel.tcKimlik,
-                    bankaHesapNo = personel.bankaHesapNo,
-                    vergiNo = personel.vergiNo,
-                    vergiDairesiAdi = personel.vergiDairesiAdi,
-                    aciklama = personel.aciklama,
+                    bankaHesapNo = personel.bankaHesapNo ?? "Bilgi Yok",
+                    vergiNo = personel.vergiNo ?? "Bilgi Yok",
+                    vergiDairesiAdi = personel.vergiDairesiAdi ?? "Bilgi Yok",
+                    aciklama = personel.aciklama ?? "Bilgi Yok",
                     departmanId = personel.departmanId,
                     pozisyonId = personel.pozisyonId,
                     subeId = personel.subeId,
@@ -84,12 +84,12 @@ namespace Persistence.Repositories
                     performansNotu = personel.performansNotu,
                     sgkSicilNo = personel.sgkSicilNo,
                     haftalikSaat = personel.haftalikSaat,
-                    saatlikUcret = personel.saatlikUcret,
+                    saatlikUcret = personel.saatlikUcret ,
                     dogumTarihi = personel.dogumTarihi,
                     baslangicTarihi = personel.baslangicTarihi,
-                    bitisTarihi = personel.bitisTarihi,
+                    bitisTarihi = personel.bitisTarihi ?? DateTime.MinValue,
                     fazlaMesaiUygun = personel.fazlaMesaiUygun,
-                    //fazlaMesaiUygunStr = personel.fazlaMesaiUygun ? "Uygun" : "Uygun Değil",
+                    profilFotografiUrl = personel.profilFotografiUrl,
                     fazlaMesaiUygunStr = personel.fazlaMesaiUygun.HasValue ? (personel.fazlaMesaiUygun.Value ? "Uygun" : "Uygun Değil") : "Bilinmiyor",
 
                     CalismaTipi = personel.CalismaTipi,
@@ -100,7 +100,15 @@ namespace Persistence.Repositories
 
                     VardiyaTuru = personel.VardiyaTuru,
                     VardiyaTuruStr = EnumHelper.GetDescription<VardiyaTuru>(personel.VardiyaTuru),
-                    
+
+                    DepartmentSelName = (personel.departmanId.HasValue && context.Set<Department>().FirstOrDefault(d => d.Id == personel.departmanId) is { } department) ? department.Name : "Personel için departman girilmedi veya bulunamadı",
+
+                    PositionSelName = (personel.pozisyonId.HasValue && context.Set<Domain.Entities.Position>().FirstOrDefault(p => p.Id == personel.pozisyonId) is { } position) ? position.Name : "Personel için pozisyon girilmedi veya bulunamadı",
+
+                    SubeSelName = personel.subeId.HasValue && context.Set<Sube>().FirstOrDefault(s => s.Id == personel.subeId) is { } sube ? sube.Subeisim : "Personel için şube girilmedi veya bulunamadı",
+
+
+
                 }).ToList();
 
                 // Get the total count for pagination

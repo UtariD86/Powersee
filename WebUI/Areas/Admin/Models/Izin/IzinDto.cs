@@ -1,7 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using Core.Enums; 
-using Domain.Enums; 
+using Domain.Enums;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WebUI.Areas.Admin.Models.Izin
 {
@@ -10,7 +11,15 @@ namespace WebUI.Areas.Admin.Models.Izin
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Personel ID alanı zorunludur.")]
+
+
+        public SelectList personelResultSel { get; set; }
         public string? PersonelId { get; set; }
+
+        [Required(ErrorMessage = "Açıklama alanı zorunludur.")]
+        [MinLength(5, ErrorMessage = "Açıklama en az 5 karakter olmalıdır.")]
+        [MaxLength(500, ErrorMessage = "Açıklama en fazla 500 karakter olabilir.")]
+        public string? Aciklama { get; set; }
 
         [Required(ErrorMessage = "Başlangıç tarihi zorunludur.")]
         [DataType(DataType.Date)]
@@ -22,17 +31,18 @@ namespace WebUI.Areas.Admin.Models.Izin
         [Display(Name = "Bitiş Tarihi")]
         public DateTime BitisTarihi { get; set; }
 
-        [Required(ErrorMessage = "Açıklama alanı zorunludur.")]
-        [MinLength(5, ErrorMessage = "Açıklama en az 5 karakter olmalıdır.")]
-        [MaxLength(500, ErrorMessage = "Açıklama en fazla 500 karakter olabilir.")]
-        public string? Aciklama { get; set; }
 
+        public SelectList IzinTuruEnumSel { get; set; }
         [Required(ErrorMessage = "İzin türü zorunludur.")]
         [Display(Name = "İzin Türü")]
-        public IzinTuruEnum IzinTuruEnum { get; set; } 
+        public IzinTuruEnum IzinTuruEnum { get; set; }
 
+        public SelectList UcretTuruEnumSel { get; set; }
         [Required(ErrorMessage = "Ücret türü zorunludur.")]
         [Display(Name = "Ücret Türü")]
-        public UcretTuruEnum UcretTuruEnum { get; set; } 
+        public UcretTuruEnum UcretTuruEnum { get; set; }
     }
 }
+
+
+

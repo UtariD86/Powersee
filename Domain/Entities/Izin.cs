@@ -26,6 +26,6 @@ namespace Domain.Entities
         public UcretTuruEnum UcretTuruEnum { get; set; }
 
 
-        public string Aciklama { get; set; }
+        public string? Aciklama { get; set; }
     }
 }
