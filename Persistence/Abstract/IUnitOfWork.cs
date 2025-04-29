@@ -27,7 +27,7 @@ public interface IUnitOfWork
 
     IIzinRepository Izinler { get; }
 
-    IPositonRepository Positions { get; }
+    IPositionRepository Positions { get; }
 
     ISubeRepository Subeler { get; }
 

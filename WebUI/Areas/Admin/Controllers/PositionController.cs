@@ -18,12 +18,13 @@ namespace WebUI.Areas.Admin.Controllers
     public class PositionController : Controller
     {
         private readonly IPositionService _positionService;
-        //  private readonly UserManager<IdentityUser> _userManager;
+        private readonly IDepartmentService _departmentService;
 
-        public PositionController(IPositionService positionService/*, UserManager<IdentityUser> userManager*/)
+        public PositionController(IPositionService positionService,IDepartmentService departmentService)
         {
             _positionService = positionService;
-            // _userManager = userManager;
+            _departmentService = departmentService;
+           
         }
 
         public IActionResult Index()
@@ -43,6 +44,9 @@ namespace WebUI.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit([FromBody] int? id)
         {
+
+            var departments = await _departmentService.GetAll(); // Tüm departmanları çek
+
             var model = new PositionDto();
             var dummyManagers = new List<SelectListItem>
             {
@@ -66,18 +70,21 @@ namespace WebUI.Areas.Admin.Controllers
                     model.ManagerId = entity.ManagerId;
                     model.Code = entity.Code;
                     model.ManagerList = new SelectList(dummyManagers, "Value", "Text", entity.ManagerId);
+                    model.DepartmentList = new SelectList(departments.Data, "Id", "Name", entity.DepartmentId);
                 }
                 else
                 {
                     ModelState.AddModelError("ErrorDetail", "Pozisyon bulunamadı.");
                     model.ManagerList = new SelectList(dummyManagers, "Value", "Text");
-
+                    model.DepartmentList = new SelectList(departments.Data, "Id", "Name"); // BURAYA EKLEDİM
                 }
             }
             else
             {
                 model.ManagerList = new SelectList(dummyManagers, "Value", "Text");
+                model.DepartmentList = new SelectList(departments.Data, "Id", "Name"); // BURAYA EKLEDİM
             }
+
 
 
             return PartialView(model);
@@ -115,7 +122,9 @@ namespace WebUI.Areas.Admin.Controllers
                 Salary = salary, // Salary burada geçerli bir decimal olarak atanır
                 Active = model.Active.HasValue ? model.Active.Value : false,
                 Code = model.Code,
-                ManagerId = model.ManagerId
+                ManagerId = model.ManagerId,
+                DepartmentId = model.DepartmentId ?? 0
+
             };
 
             // Servis üzerinden pozisyonu düzenleme işlemi

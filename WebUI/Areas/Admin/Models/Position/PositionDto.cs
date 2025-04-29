@@ -28,5 +28,8 @@ namespace WebUI.Areas.Admin.Models.Position
 
         public bool? Active { get; set; }
 
+        public int? DepartmentId { get; set; }
+        public SelectList?  DepartmentList { get; set; } // SelectList için
+
     }
 }

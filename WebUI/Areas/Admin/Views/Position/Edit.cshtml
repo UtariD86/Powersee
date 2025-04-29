@@ -88,6 +88,17 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
+                            <div class="form-floating mb-3">
+                                @Html.DropDownListFor(model => model.DepartmentId, Model.DepartmentList, "Departman Seçiniz", new { @class = "form-select", id = "departmentId" })
+                                <label for="departmentId">Departman</label>
+                                <div class="invalid-feedback">
+                                    @Html.ValidationMessageFor(model => model.DepartmentId)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
                             <div class="form-check form-switch mb-3">
                                 @{
                                     var isActive = Model.Active.HasValue && Model.Active.Value;

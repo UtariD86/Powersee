@@ -1,5 +1,6 @@
 ﻿using Core.Dtos.Abstract;
 using Core.Dtos.Concrete;
+using Domain.Dtos;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace Application.Services.Abstract
         Task<IDataResult<IList<Position>>> GetAll();
 
        
-        Task<IDataResult<PageResponse<Position>>> GetToGrid(PageRequest request);
+        Task<IDataResult<PageResponse<PositionDetailsDto>>> GetToGrid(PageRequest request);
 
         Task<IDataResult<Position>> Edit(Position position);
 

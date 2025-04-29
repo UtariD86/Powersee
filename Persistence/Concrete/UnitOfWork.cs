@@ -44,7 +44,7 @@ public class UnitOfWork : IUnitOfWork
 
     public IIzinRepository Izinler => _IzinRepository ?? new EfIzinRepository(_context, this);
 
-    public IPositonRepository Positions => _positionRepository ?? new EFPositionRepository(_context, this);
+    public IPositionRepository Positions => _positionRepository ?? new EFPositionRepository(_context, this);
 
     public ISubeRepository Subeler => _subeRepository ?? new EfSubeRepository(_context, this);
 

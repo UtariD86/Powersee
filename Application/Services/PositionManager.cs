@@ -4,6 +4,7 @@ using Core.Dtos.Abstract;
 using Core.Dtos.Concrete;
 using Core.Enums;
 using DocumentFormat.OpenXml.Bibliography;
+using Domain.Dtos;
 using Domain.Entities;
 using Persistence.Abstract;
 using System;
@@ -85,7 +86,7 @@ namespace Application.Services
             return new DataResult<IList<Position>>(ResultStatus.Error, "Hiç pozisyon bulunamadı.", null);
         }
 
-        public async Task<IDataResult<PageResponse<Position>>> GetToGrid(PageRequest request)
+       /* public async Task<IDataResult<PageResponse<Position>>> GetToGrid(PageRequest request)
         {
             try
             {
@@ -110,7 +111,7 @@ namespace Application.Services
             {
                 return new DataResult<PageResponse<Position>>(ResultStatus.Error, $"Bir hata oluştu: {ex.Message}", null);
             }
-        }
+        }*/
 
         public async Task<IDataResult<Position>> GetById(int id)
         {
@@ -128,6 +129,36 @@ namespace Application.Services
             var randomString = Guid.NewGuid().ToString("N").Substring(0, 5).ToUpper();
             return $"{shortName}-{randomString}";
         }
-       
+
+        public async Task<IDataResult<PageResponse<PositionDetailsDto>>> GetToGrid(PageRequest request)
+        {
+            try
+            {
+                Expression<Func<Position, bool>> predicate = x => !x.DeletedDate.HasValue;
+
+                if (!string.IsNullOrEmpty(request.Filter))
+                    predicate = _filterHelper.GetExpression<Position>(request.Filter, deleted: false);
+
+                var positions = await _unitOfWork.Positions.GetDtoWithPaginationAsync(
+                    pageIndex: request.PageIndex,
+                    pageSize: request.PageSize,
+                    predicate: predicate,
+                    orderBy: q => q.OrderByDescending(d => d.UpdatedDate)
+                );
+
+                if (positions.Items.Any())
+                {
+                    return new DataResult<PageResponse<PositionDetailsDto>>(ResultStatus.Success, positions);
+                }
+
+                return new DataResult<PageResponse<PositionDetailsDto>>(ResultStatus.Error, "Hiç pozisyon bulunamadı", null);
+            }
+            catch (Exception ex)
+            {
+                return new DataResult<PageResponse<PositionDetailsDto>>(ResultStatus.Error, $"Bir hata oluştu: {ex.Message}", null);
+            }
+        }
+
+
     }
 }
