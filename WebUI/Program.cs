@@ -30,6 +30,7 @@ builder.Services.AddScoped<IIzinService, IzinManager>();                       /
 builder.Services.AddScoped<IPositionService, PositionManager>();
 builder.Services.AddScoped<ISubeService, SubeManager>();
 builder.Services.AddScoped<IPersonelService, PersonelManager>();
+builder.Services.AddScoped<IVardiyaService, VardiyaManager>();
 
 #endregion
 

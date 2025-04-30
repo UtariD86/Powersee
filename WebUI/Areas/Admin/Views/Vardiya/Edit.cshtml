@@ -1,0 +1,145 @@
+﻿@model WebUI.Areas.Admin.Models.Vardiya.VardiyaDto
+@{
+    Layout = null;
+    string AreaName = "Admin";
+}
+
+<div class="modal show" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Vardiya</h5><button class="btn-close" onclick="zuraf.closeModal('#editModal')" type="button" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm" method="post" onsubmit="return false" action="/@AreaName/save-vardiya" enctype="multipart/form-data">
+
+                    @Html.HiddenFor(Model => Model.Id)
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-floating mb-3">
+                                @Html.TextBoxFor(Model => Model.vardiyaIsmi, new
+                                    {
+                                        @class = "form-control",
+                                        id = "name"
+                                    })
+                                <label for="vardiyaIsmi">Vardiya İsmi</label>
+                                <div class="invalid-feedback">
+                                    @Html.ValidationMessageFor(Model => Model.vardiyaIsmi) 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-floating mb-3">
+                            @Html.TextBoxFor(Model => Model.baslangicSaati, new
+                                {
+                                    @class = "form-control",
+                                    id = "baslangicSaati",
+                                    
+                                })
+                            <label for="name">Başlangıç Saati</label>
+                            <div class="invalid-feedback">
+                                @Html.ValidationMessageFor(Model => Model.baslangicSaati)
+                            </div>
+                        </div>
+                        <script>$(document).ready(function () { zuraf.setDatePicker("baslangicSaati", "time") });</script>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-floating mb-3">
+                            @Html.TextBoxFor(Model => Model.calismaSuresi, new
+                                {
+                                    @class = "form-control",
+                                    id = "calismaSuresi",
+
+                                })
+                            <label for="name">Çalışma Süresi</label>
+                            <div class="invalid-feedback">
+                                @Html.ValidationMessageFor(Model => Model.calismaSuresi)
+                            </div>
+                        </div>
+                        <script>$(document).ready(function () { zuraf.setDatePicker("calismaSuresi", "time") });</script>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-floating mb-3">
+                                @Html.TextBoxFor(Model => Model.aciklama, new
+                                    {
+                                        @class = "form-control",
+                                        id = "aciklama"
+                                    })
+                                <label for="aciklama">Açıklama</label>
+                                <div class="invalid-feedback">
+                                    @Html.ValidationMessageFor(Model => Model.aciklama)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check form-switch mb-12">
+                                @{
+                                    var isListelenecek = Model.listelenecek.HasValue && Model.listelenecek.Value;
+                                }
+
+                                <input type="hidden" name="listelenecek" value="false" />
+                                <input type="checkbox"
+                                       class="form-check-input"
+                                       id="listelenecek"
+                                       name="listelenecek"
+                                       value="true"
+                                @(isListelenecek ? "checked" : "") />
+                                <label class="form-check-label" for="listelenecek">Listelenecek</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt">
+                        <div class="col-md-12">
+                            <div class="form-floating mb-3">
+                                @Html.TextBoxFor(Model => Model.ucretKatsayisi, new { @class = "form-control", id = "ucretKatsayisi", type = "Decimal" })
+                                <label for="ucretKatsayisi">Ücret Katsayısı</label>
+                                <div class="invalid-feedback">
+                                    @Html.ValidationMessageFor(Model => Model.ucretKatsayisi)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-floating mb-3">
+                            @Html.TextBoxFor(Model => Model.esneklikPayiSuresi, new
+                                {
+                                    @class = "form-control",
+                                    id = "esneklikPayiSuresi",
+
+                                })
+                            <label for="name">Esneklik Payı Süresi</label>
+                            <div class="invalid-feedback">
+                                @Html.ValidationMessageFor(Model => Model.esneklikPayiSuresi)
+                            </div>
+                        </div>
+                        <script>$(document).ready(function () { zuraf.setDatePicker("esneklikPayiSuresi", "time") });</script>
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button onclick="zuraf.closeModal('#editModal')" class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Kapat</button>
+                <button id="saveButton" class="btn btn-primary btn-sm" type="button">Kaydet</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+
+    $(document).ready(function () {
+
+        $('#saveButton').on('click', function () {
+
+            zuraf.submitForm("editForm");
+        });
+
+    });
+</script>
