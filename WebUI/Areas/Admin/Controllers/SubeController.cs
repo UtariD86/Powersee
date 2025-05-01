@@ -11,19 +11,17 @@ using WebUI.Areas.Admin.Models.Sube;
 
 namespace WebUI.Areas.Admin.Controllers
 {
-    //Bu satır arealar arasında farklı izinlere sahip endpointler oluşturabilmemizi sağlar.
+    
     [Area("Admin")]
 
-    //Bu satır yalnızca yetkilendirilmiş kullanıcıların bu controller sınıfındaki işlemleri yapabilmesini sağlar.
+
     [Authorize]
-    //Bunu daha sonra role bazında olacak şekilde düzenleyeceğiz.
 
 
-    //Controller sınıflarımız web uygulamamızda kullanacağımız endpointlerin yönlendirilmesini sağlar.
-    //Sayfalar, json veriler vb işlemlerin yönetimi ve gösterimi için kullanılır.
+
     public class SubeController : Controller
     {
-        //Tanımladığımız servis sınıfına erişim sağlamak için bir değişken tanımlıyoruz.
+
         private readonly ISubeService dm;
         public SubeController(ISubeService _dm)
         {
@@ -36,7 +34,7 @@ namespace WebUI.Areas.Admin.Controllers
             return View();
         }
 
-        //Departmanlarımızı listelemek için kullanacağımız endpoint Gride getirir
+
         [Route("{area}/get-subeler")]
         [HttpPost]
         public async Task<IActionResult> GetList([FromBody] PageRequest pageRequest)
@@ -45,7 +43,7 @@ namespace WebUI.Areas.Admin.Controllers
             return Json(data.Data);
         }
 
-        //Departman ekleme ve güncelleme işlemleri için kullanacağımız endpoint modalı açar
+
         [Route("{area}/get-sube")]
         [HttpPost]
         public async Task<IActionResult> Edit([FromBody]int? id)
@@ -71,14 +69,14 @@ namespace WebUI.Areas.Admin.Controllers
             return PartialView(model);
         }
 
-        //Departman ekleme ve güncelleme işlemleri için kullanacağımız endpoint kaydı yapar
+
         [Route("{area}/save-sube")]
         [HttpPost]
         public async Task<IActionResult> Edit(SubeDto model)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState); // Hatalar varsa BadRequest döner
+                return BadRequest(ModelState);
             }
             var message = "resultMessage";
             var id = model.Id;
@@ -99,7 +97,6 @@ namespace WebUI.Areas.Admin.Controllers
             return Json(message);
         }
 
-        //Departman silme işlemleri için kullanacağımız endpoint
         [Route("{area}/delete-sube")]
         [HttpPost]
         public async Task<IActionResult> Delete([FromBody] int? id)
