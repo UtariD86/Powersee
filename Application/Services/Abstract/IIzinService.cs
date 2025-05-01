@@ -1,5 +1,6 @@
 ﻿using Core.Dtos.Abstract;
 using Core.Dtos.Concrete;
+using Domain.Dtos;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace Application.Services.Abstract
 
         Task<IDataResult<IList<Izin>>> GetAll();
 
-        Task<IDataResult<PageResponse<Izin>>> GetToGrid(PageRequest request);
+        Task<IDataResult<PageResponse<IzinListDto>>> GetToGrid(PageRequest request);
 
         Task<IDataResult<Izin>> Edit(Izin izin);
 

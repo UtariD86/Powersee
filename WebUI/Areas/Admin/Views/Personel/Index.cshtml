@@ -80,7 +80,7 @@
 			searchPanel: {
 				visible: true,
 				width: 240,
-				placeholder: "Şube Ara..."
+				placeholder: "Personel Ara..."
 			},
 			editing: {
 				mode: 'none'
@@ -121,15 +121,7 @@
 					allowFiltering: true,
 					alignment: "center"
 				},
-				// {
-				//     dataField: 'CalismaTipi', // enum değeri burada tutuluyor
-				//     caption: 'Çalışma tipi',
-				//     allowFiltering: true,
-				//     alignment: "center",
-				//     cellTemplate: function (cellElement, cellInfo) {
-				//         cellElement.text(cellInfo.data.CalismaTipiStr); // Görünüm kısmı string halini kullanır
-				//     }
-				// },
+
 				{
 					dataField: 'adres',
 					caption: 'Adres',
@@ -154,6 +146,7 @@
 				createDetail('Telefon Numarası 2', options.data.telefonNumarasi2, 'badge-info'),
 				createDetail('TC Kimlik No', options.data.tcKimlik, 'badge-dark'),
 				createDetail('Doğum Tarihi', options.data.dogumTarihi, 'badge-warning'),
+				createDetail("Cinsiyet", options.data.CinsiyetStr, 'badge-secondary'),
 				createDetail('Banka Hesap No', options.data.bankaHesapNo, 'badge-warning'),
 				createDetail('Vergi No', options.data.vergiNo, 'badge-success'),
 				createDetail('Vergi Dairesi Adı', options.data.vergiDairesiAdi, 'badge-danger'),
@@ -169,7 +162,6 @@
 				createDetail('Saatlik Ücret', options.data.saatlikUcret, 'badge-light'),
 				createDetail("Fazla Mesai'ye", options.data.fazlaMesaiUygunStr, 'badge-secondary'),
 				createDetail("Çalışma Tipi", options.data.CalismaTipiStr, 'badge-secondary'),
-				createDetail("Cinsiyet", options.data.CinsiyetStr, 'badge-secondary'),
 				createDetail("Vardiya Türü", options.data.VardiyaTuruStr, 'badge-secondary'),
 				createDetail('Açıklama', options.data.aciklama, 'badge-light'),
 				createDetail('Profil Fotoğrafı', `<img src="../../${options.data.profilFotografiUrl}" alt="Profil Fotoğrafı" style ="max-width: 100px; max-height: 100px;" >`, 'badge-secondary'),

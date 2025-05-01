@@ -75,14 +75,15 @@ namespace Persistence.Repositories
                 BitisTarihi = izin.BitisTarihi,
 
                 IzinTuruEnum = izin.IzinTuruEnum,
-
                 IzinTuruStr = EnumHelper.GetDescription<IzinTuruEnum>(izin.IzinTuruEnum),
 
                 UcretTuruEnum = izin.UcretTuruEnum,
-
                 UcretTuruStr = EnumHelper.GetDescription<UcretTuruEnum>(izin.UcretTuruEnum),
 
                 Aciklama = izin.Aciklama,
+
+                FullName = context.Set<Personel>().FirstOrDefault(d => d.Id == izin.PersonelId) is { } personel ? $"{personel.isim} {personel.soyisim}" : "Bir Hata Oluştu",
+
 
             }).ToList();
 
