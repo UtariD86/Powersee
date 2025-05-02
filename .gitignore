@@ -362,3 +362,5 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /Persistence/Migrations
+/WebUI/Areas/Admin/Models/Izin/IzinDto.cs
+/WebUI/Areas/Admin/Models/Izin/IzinDto.cs
