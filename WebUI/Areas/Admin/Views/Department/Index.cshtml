@@ -157,6 +157,34 @@
                 alignment: "center"
             }
         ],
+        masterDetail: {
+     enabled: true,
+     template: function (container, options) {
+         const departmentData = options.data;
+         $('<div>')
+             .addClass('master-detail-caption')
+             .text(`${departmentData.Name} departmanına ait pozisyonlar:`)
+             .appendTo(container);
+
+         $('<div>')
+             .dxDataGrid({
+                 dataSource: new DevExpress.data.DataSource({
+                     store: new DevExpress.data.ArrayStore({
+                         key: 'Id',
+                         data: departmentData.Positions || [],
+                     }),
+                 }),
+                 columnAutoWidth: true,
+                 showBorders: true,
+                 paging: { enabled: false },
+                 columns: [
+                     { dataField: 'Name', caption: 'Pozisyon Adı',alignment: "center" },
+                     { dataField: 'Active', caption: 'Aktif Mi?', dataType: 'boolean',alignment: "center"  },
+                       { dataField: 'Salary',caption: 'Maaş',allowFiltering: true,alignment: "center", format: { type: 'currency',currency: 'TRY',precision: 2 }  }
+                 ],
+             }).appendTo(container);
+         }
+    },
             toolbar: {
                 items: [
                     {

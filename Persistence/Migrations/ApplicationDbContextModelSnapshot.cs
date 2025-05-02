@@ -88,7 +88,6 @@ namespace Persistence.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Aciklama")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("BaslangicTarihi")
@@ -150,11 +149,9 @@ namespace Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("adres")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("bankaHesapNo")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("baslangicTarihi")
@@ -163,7 +160,7 @@ namespace Persistence.Migrations
                     b.Property<DateTime?>("bitisTarihi")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("departmanId")
+                    b.Property<int?>("departmanId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("dogumTarihi")
@@ -179,16 +176,16 @@ namespace Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("performansNotu")
+                    b.Property<int?>("performansNotu")
                         .HasColumnType("int");
 
-                    b.Property<int>("pozisyonId")
+                    b.Property<int?>("pozisyonId")
                         .HasColumnType("int");
 
                     b.Property<string>("profilFotografiUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("saatlikUcret")
+                    b.Property<decimal?>("saatlikUcret")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("sgkSicilNo")
@@ -198,7 +195,7 @@ namespace Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("subeId")
+                    b.Property<int?>("subeId")
                         .HasColumnType("int");
 
                     b.Property<string>("tcKimlik")
@@ -210,18 +207,15 @@ namespace Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("telefonNumarasi2")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("vergiDairesiAdi")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("vergiNo")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("yillikIzinGunSayisi")
+                    b.Property<int?>("yillikIzinGunSayisi")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

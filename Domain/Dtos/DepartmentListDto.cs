@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Dtos;
 
 namespace Domain.Dtos
 {
@@ -24,5 +25,8 @@ namespace Domain.Dtos
 
         public CalismaTuru CalismaTuruCal { get; set; } // Enum alan
         public string CalismaTuruStr => CalismaTuruCal.ToString(); // Enum string dönüşü
+        public List<PositionDetailsDto> Positions { get; set; }
+        public List<string> PositionNames { get; set; }
+        public List<bool> PositionActives { get; set; }
     }
 }

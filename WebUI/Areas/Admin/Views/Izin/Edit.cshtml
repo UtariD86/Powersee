@@ -14,21 +14,21 @@
                 <form id="editForm" method="post" onsubmit="return false" action="/@AreaName/save-izin" enctype="multipart/form-data">
 
                     @Html.HiddenFor(Model => Model.Id)
-@* 					<div class="row">
+					<div class="row">
 						<div class="col-md-12">
 							<div class="form-floating mb-3">
-								@Html.DropDownListFor(model => model.departmanId,
-																	new SelectList(Model.DepartmentSel, "Value", "Text", Model.departmanId),
+								@Html.DropDownListFor(model => model.PersonelId,
+																	new SelectList(Model.personelResultSel, "Value", "Text", Model.PersonelId),
 																	"Seçiniz",
-																	new { @class = "form-control form-select", id = "departmanId" }) <!-- farklı bir id -->
-								<label for="calismaturu2">Departman</label>
+																	new { @class = "form-control form-select", id = "personelId" }) <!-- farklı bir id -->
+								<label for="calismaturu2">Personel</label>
 								<div class="invalid-feedback">
-									@Html.ValidationMessageFor(model => model.departmanId)
+									@Html.ValidationMessageFor(model => model.PersonelId)
 								</div>
 							</div>
 						</div>
-					</div> *@
-					<div class="row">
+					</div>
+				@* 	<div class="row">
 						<div class="col-md-12">
 							<div class="form-floating mb-3">
 								@Html.DropDownListFor(model => model.PersonelId,
@@ -41,7 +41,7 @@
 								</div>
 							</div>
 						</div>
-					</div>
+					</div> *@
 					<div class="row">
 						<div class="col-md-12">
 							<div class="form-floating mb-3">
@@ -50,7 +50,7 @@
 										@class = "form-control",
 										id = "isim"
 									})
-								<label for="isim">İsim</label>
+								<label for="isim">Açıklama</label>
 								<div class="invalid-feedback">
 									@Html.ValidationMessageFor(Model => Model.Aciklama)
 								</div>

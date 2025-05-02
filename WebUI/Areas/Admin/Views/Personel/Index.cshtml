@@ -150,9 +150,12 @@
 			}
 
 			detailContainer.append(
+
 				createDetail('Telefon Numarası 1', options.data.telefonNumarasi1, 'badge-primary'),
 				createDetail('Telefon Numarası 2', options.data.telefonNumarasi2, 'badge-info'),
 				createDetail('TC Kimlik No', options.data.tcKimlik, 'badge-dark'),
+												createDetail('Vesikalık Fotoğrafı', `<img src="../../${options.data.profilFotografiUrl}" alt="Profil Fotoğrafı" style ="max-width: 100px; max-height: 100px;" >`, 'badge-secondary'),
+
 				createDetail('Doğum Tarihi', options.data.dogumTarihi, 'badge-warning'),
 				createDetail('Banka Hesap No', options.data.bankaHesapNo, 'badge-warning'),
 				createDetail('Vergi No', options.data.vergiNo, 'badge-success'),
@@ -172,7 +175,6 @@
 				createDetail("Cinsiyet", options.data.CinsiyetStr, 'badge-secondary'),
 				createDetail("Vardiya Türü", options.data.VardiyaTuruStr, 'badge-secondary'),
 				createDetail('Açıklama', options.data.aciklama, 'badge-light'),
-				createDetail('Profil Fotoğrafı', `<img src="../../${options.data.profilFotografiUrl}" alt="Profil Fotoğrafı" style ="max-width: 100px; max-height: 100px;" >`, 'badge-secondary'),
 
 
 			);
