@@ -38,9 +38,9 @@ public class EfEntityRepositoryBase<TEntity> : IEntityRepository<TEntity>
         return entity;
     }
 
-    public Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate)
+    public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate)
     {
-        throw new NotImplementedException();
+        return await _context.Set<TEntity>().AnyAsync(predicate);
     }
 
     public async Task BulkInsert(IList<TEntity> entities)

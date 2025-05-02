@@ -19,8 +19,8 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<Department> Departments { get; set; }
     public DbSet<Domain.Entities.Position> Positions { get; set; }// NetTopologySuite.GeometriesGraph.Position diye birşey olduğu içn böyle yazdım
     public DbSet<Sube> Subeler { get; set; }
-
-    public DbSet<Izin> Izinler { get; set; } // Izinler tablosu için DbSet
+    public DbSet<Izin> Izinler { get; set; }
+    public DbSet<Kesinti> Kesintiler { get; set; }
 
 
 
@@ -34,7 +34,8 @@ public class ApplicationDbContext : IdentityDbContext
         // Tablo Konfigürasyonları için oluşturulmuş mapping sınıfları burada apply edilir.
         modelBuilder.ApplyConfiguration(new DepartmentMap());
         modelBuilder.ApplyConfiguration(new PositionMap());
-
         modelBuilder.ApplyConfiguration(new SubeMap());
+        modelBuilder.ApplyConfiguration(new IzinMap());      //Kesintiyi yaparken farkettim izin için yazmamışım.
+        modelBuilder.ApplyConfiguration(new KesintiMap());
     }
 }

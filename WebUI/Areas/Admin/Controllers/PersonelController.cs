@@ -163,10 +163,10 @@ public class PersonelController : Controller
                 profilFotografiUrl = model.profilFotografiUrl
             };
 
-            var result = _personelService.Edit(personel);
+            var result = await _personelService.Edit(personel);
 
-            string message = result?.Result?.Message ?? "İşlem tamamlandı.";
-            return Json(message);
+            return Json(result.Message);
+
         }
 
         //Departman silme işlemleri için kullanacağımız endpoint

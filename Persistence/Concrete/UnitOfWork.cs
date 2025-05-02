@@ -24,6 +24,7 @@ public class UnitOfWork : IUnitOfWork
     //Repository sınıflarını buraya ekleyebilirsiniz.
     private EfDepartmentRepository? _departmentRepository;
     private EfIzinRepository? _IzinRepository;
+    private EfKesintiRepository? _KesintiRepository;
     private EFPositionRepository? _positionRepository;
     private EfSubeRepository? _subeRepository;
 
@@ -43,6 +44,8 @@ public class UnitOfWork : IUnitOfWork
     public IDepartmentRepository Departments => _departmentRepository ?? new EfDepartmentRepository(_context, this);
 
     public IIzinRepository Izinler => _IzinRepository ?? new EfIzinRepository(_context, this);
+
+    public IKesintiRepository Kesintiler => _KesintiRepository ?? new EfKesintiRepository(_context, this);
 
     public IPositionRepository Positions => _positionRepository ?? new EFPositionRepository(_context, this);
 

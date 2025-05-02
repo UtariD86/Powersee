@@ -9,16 +9,16 @@ using System.Threading.Tasks;
 
 namespace Application.Services.Abstract
 {
-    public interface ISubeService
+    public interface IKesintiService
     {
-        Task<IDataResult<IList<Sube>>> GetAll();
+        Task<IDataResult<IList<Kesinti>>> GetAll();
 
-        Task<IDataResult<PageResponse<Sube>>> GetToGrid(PageRequest request);
+        Task<IDataResult<PageResponse<Kesinti>>> GetToGrid(PageRequest request);
 
-        Task<IDataResult<Sube>> Edit(Sube sube);
+        Task<IDataResult<Kesinti>> Edit(Kesinti kesinti);
 
         Task<IResult> Delete(int Id);
 
-        Task<IDataResult<Sube>> GetById(int id);
+        Task<IDataResult<Kesinti>> GetById(int id);
     }
 }

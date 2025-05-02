@@ -1,0 +1,191 @@
+﻿@{
+    // Sayfa adını Kesintiler olarak güncelliyoruz
+    string PageName = "Kesintiler";
+    string AreaName = "Admin";
+}
+
+<div class="card">
+    <div class="card-body">
+        @* Grid için container div *@
+        <div id="gridContainer" class="border"></div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+
+        $('#gridContainer').dxDataGrid({
+            dataSource: {
+                load: function (loadOptions) {
+                    var data = {
+                        PageSize: loadOptions.take || 10,
+                        PageIndex: Math.floor((loadOptions.skip || 0) / (loadOptions.take || 10)),
+                        Filter: loadOptions.filter ? JSON.stringify(loadOptions.filter) : null,
+                    };
+                    return $.ajax({
+                        // URL'yi Kesinti verilerini getirecek şekilde güncelliyoruz
+                        url: '/@AreaName/get-kesintiler',
+                        method: 'POST',
+                        data: JSON.stringify(data),
+                        dataType: 'json',
+                        contentType: 'application/json',
+                    }).then(function (response) {
+                        // Sube'deki lookup set etme kodu burada gereksizse kaldırılabilir veya Kesinti için uyarlanabilir.
+                        // Şimdilik Sube'deki gibi bırakıldı, ihtiyaç yoksa silinebilir.
+                        let gridInstance = $('#gridContainer').dxDataGrid('instance');
+                        if (response && !gridInstance.__lookupSet) {
+                             gridInstance.beginUpdate();
+                             // if (response.SomeKesintiLookup) { // Örnek: Kesinti için lookup gerekirse
+                             //     gridInstance.option('columns[X].lookup.dataSource', response.SomeKesintiLookup);
+                             // }
+                             gridInstance.endUpdate();
+                             gridInstance.__lookupSet = true;
+                        }
+
+                        // Response yapısı Sube ile aynı varsayılıyor (Items ve Count)
+                        if (response && response.Items) {
+                            return {
+                                data: response.Items,
+                                totalCount: response.Count
+                            };
+                        } else {
+                            return {
+                                data: [],
+                                totalCount: 0
+                            };
+                        }
+                    }).catch(function (error) {
+                        console.error("Grid data loading error:", error); // Hata loglama eklendi
+                        return {
+                            data: [],
+                            totalCount: 0
+                        };
+                    });
+                }
+            },
+            filterRow: { visible: true },
+            // remoteOperations: Sube'deki gibi ayarlandı, subePaging kaldırıldı
+            remoteOperations: { paging: true, filtering: true, sorting: true },
+            paging: {
+                pageSize: 10,
+                pageIndex: 0,
+                enabled: true
+            },
+            pager: {
+                showPageSizeSelector: true,
+                allowedPageSizes: [10, 20, 30],
+                showNavigationButtons: true,
+                visible: true,
+                showInfo: true
+            },
+            keyExpr: 'Id', // Anahtar alan Kesinti için de Id varsayılıyor
+            showBorders: true,
+            headerFilter: {
+                visible: false
+            },
+            searchPanel: {
+                visible: true,
+                width: 240,
+                // Placeholder Kesinti için güncellendi
+                placeholder: "Kesinti Ara..."
+            },
+            editing: {
+                mode: 'none' // Grid üzerinden direkt düzenleme kapalı
+            },
+            columns: [
+                {
+                    // Düzenle/Sil sütunu
+                    dataField: 'Id', // Id üzerinden işlem yapılacak
+                    caption: 'İşlemler', // Başlık güncellendi
+                    width: 80, // Genişlik ayarlandı
+                    alignment: "center", // Ortalama eklendi
+                    cellTemplate: function (container, options) {
+                        // Düzenle ikonu: URL güncellendi
+                        $('<a class="edit-icon me-2" style="color:#0085cf; cursor:pointer;" title="Düzenle"><i class="fas fa-pen-nib" style="font-size: 15px;"></i></a>')
+                            .on('click', function () {
+                                var id = options.data.Id;
+                                // URL Kesinti için güncellendi
+                                zuraf.getById('/@AreaName/get-kesinti', id, '#gridContainer');
+                            }).appendTo(container);
+
+                        // Sil ikonu: URL güncellendi
+                        $('<a class="delete-icon text-danger" style="cursor:pointer;" title="Sil"><i class="far fa-trash-alt" style="font-size: 15px;"></i></a>')
+                            .on('click', function () {
+                                var id = options.data.Id;
+                                // URL Kesinti için güncellendi
+                                zuraf.deleteById('/@AreaName/delete-kesinti', id, '#gridContainer', true);
+                            }).appendTo(container);
+                    },
+                    allowFiltering: false, // İşlem sütununda filtreleme olmaz
+                    allowSorting: false   // İşlem sütununda sıralama olmaz
+                },
+                // Kesinti için veri sütunları
+                {
+                    dataField: 'PersonelId', // Entity'deki property adı
+                    caption: 'Personel ID',
+                    allowFiltering: true,
+                    alignment: "center"
+                    // Not: İleride DTO kullanınca burası Personel Adı olabilir ve lookup eklenebilir
+                },
+                 {
+                    dataField: 'PlanlanmisVardiyaSnapshotId', // Entity'deki property adı
+                    caption: 'Snapshot ID',
+                    allowFiltering: true,
+                    alignment: "center"
+                    // Not: İleride DTO kullanınca burası Snapshot Tarihi vb. olabilir
+                },
+                {
+                    dataField: 'UygulanacakTarih', // Entity'deki property adı
+                    caption: 'Uygulanacak Tarih',
+                    dataType: 'date', // Veri tipi tarih olarak belirtildi
+                    format: 'dd.MM.yyyy', // Tarih formatı
+                    allowFiltering: true,
+                    alignment: "center"
+                },
+                 {
+                    dataField: 'CezaMiktari', // Entity'deki property adı
+                    caption: 'Ceza Miktarı',
+                     dataType: 'number', // Veri tipi sayı olarak belirtildi
+                     format: { type: 'fixedPoint', precision: 2 }, // Sayı formatı (örn: 123.45)
+                    allowFiltering: true,
+                    alignment: "center"
+                }
+                // İstenirse CreatedDate, UpdatedDate gibi base alanlar da eklenebilir
+            ],
+            toolbar: {
+                items: [
+                    {
+                        location: 'before',
+                        template: function () {
+                            // PageName güncellendi
+                            return '<div class="headline"><h7><i class="fas fa-calendar-times me-2"></i>@PageName</h7></div>'; // İkon değiştirildi
+                        }
+                    },
+                    {
+                        location: 'after',
+                        template: function () {
+                            // Ekle butonu URL'si güncellendi
+                            return ' <a onclick="zuraf.getById(\'/@AreaName/get-kesinti\',null,\'#gridContainer\')" id="addButton" class="btn btn-primary mr-1 mb-1" ><i class="fa fa-plus"></i> &nbsp; Ekle</a>';
+                        }
+                    },
+                ]
+            },
+            onContentReady: function (e) {
+                if (!e.component.__ready) {
+                    e.component.__ready = true;
+                }
+            },
+            groupPanel: {
+                visible: false // Gruplama paneli kapalı
+            },
+            grouping: {
+                autoExpandAll: false
+            },
+            groupExpandMode: "rowClick",
+            columnChooser: {
+                enabled: true // Sütun seçici aktif
+            }
+        });
+    });
+</script>

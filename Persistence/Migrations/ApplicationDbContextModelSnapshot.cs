@@ -83,41 +83,93 @@ namespace Persistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("Id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Aciklama")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
+                        .HasColumnName("Aciklama");
 
                     b.Property<DateTime>("BaslangicTarihi")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("BaslangicTarihi");
 
                     b.Property<DateTime>("BitisTarihi")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("BitisTarihi");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreatedDate");
 
                     b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DeletedDate");
 
                     b.Property<int>("IzinTuruEnum")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("IzinTuru");
 
                     b.Property<int>("PersonelId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("PersonelId");
 
                     b.Property<int>("UcretTuruEnum")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("UcretTuru");
 
                     b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("UpdatedDate");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Izinler");
+                    b.ToTable("Izinler", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.Kesinti", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("Id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("CezaMiktari")
+                        .HasColumnType("decimal(10, 2)")
+                        .HasColumnName("cezaMiktari");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreatedDate");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DeletedDate");
+
+                    b.Property<int>("PersonelId")
+                        .HasColumnType("int")
+                        .HasColumnName("personelId");
+
+                    b.Property<int>("PlanlanmisVardiyaSnapshotId")
+                        .HasColumnType("int")
+                        .HasColumnName("planlanmisVardiyaSnapshotId");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("UpdatedDate");
+
+                    b.Property<DateTime>("UygulanacakTarih")
+                        .HasColumnType("date")
+                        .HasColumnName("uygulanacakTarih");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Kesintiler", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Personel", b =>
@@ -150,11 +202,9 @@ namespace Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("adres")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("bankaHesapNo")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("baslangicTarihi")
@@ -163,7 +213,7 @@ namespace Persistence.Migrations
                     b.Property<DateTime?>("bitisTarihi")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("departmanId")
+                    b.Property<int?>("departmanId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("dogumTarihi")
@@ -179,16 +229,16 @@ namespace Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("performansNotu")
+                    b.Property<int?>("performansNotu")
                         .HasColumnType("int");
 
-                    b.Property<int>("pozisyonId")
+                    b.Property<int?>("pozisyonId")
                         .HasColumnType("int");
 
                     b.Property<string>("profilFotografiUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("saatlikUcret")
+                    b.Property<decimal?>("saatlikUcret")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("sgkSicilNo")
@@ -198,7 +248,7 @@ namespace Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("subeId")
+                    b.Property<int?>("subeId")
                         .HasColumnType("int");
 
                     b.Property<string>("tcKimlik")
@@ -210,18 +260,15 @@ namespace Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("telefonNumarasi2")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("vergiDairesiAdi")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("vergiNo")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("yillikIzinGunSayisi")
+                    b.Property<int?>("yillikIzinGunSayisi")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
