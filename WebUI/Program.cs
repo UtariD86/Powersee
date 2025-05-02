@@ -31,6 +31,7 @@ builder.Services.AddScoped<IKesintiService, KesintiManager>();
 builder.Services.AddScoped<IPositionService, PositionManager>();
 builder.Services.AddScoped<ISubeService, SubeManager>();
 builder.Services.AddScoped<IPersonelService, PersonelManager>();
+builder.Services.AddScoped<IVardiyaService, VardiyaManager>();
 
 #endregion
 

@@ -11,17 +11,15 @@ namespace Domain.Enums
     {
         [Display(Name = "Yıllık")]
         Yillik = 1,
-
         [Display(Name = "Mazeret")]
         Mazeret,
-
         [Display(Name = "Hastalık")]
         Hastalik,
-
         [Display(Name = "Doğum")]
         Dogum,
-
         [Display(Name = "Diğer")]
         Diger
     }
+
 }
+

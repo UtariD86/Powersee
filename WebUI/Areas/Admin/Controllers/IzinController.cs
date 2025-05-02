@@ -1,22 +1,18 @@
-﻿using Application.Services.Abstract;
+﻿using Application.Helpers.Concrete.Filtering;
+using Application.Services.Abstract;
 using Core.Dtos.Concrete;
 using Core.Enums;
+using DocumentFormat.OpenXml.Office2010.Excel;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Domain.Entities;
+using Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Dynamic;
 using WebUI.Areas.Admin.Models.Izin;
-
-// Buradan aşağıdakiler deneme
-using Domain.Enums;
-using WebUI.Areas.Admin.Models.Department;
 using WebUI.Areas.Admin.Models.Personel;
-using WebUI.Areas.Admin.Models.Position;
-using WebUI.Areas.Admin.Models.Sube;
-// Buraya kadar
 
 namespace WebUI.Areas.Admin.Controllers
 {
@@ -57,7 +53,7 @@ namespace WebUI.Areas.Admin.Controllers
                 if (entity != null && result.ResultStatus == ResultStatus.Success)
                 {
                     model.Id = entity.Id;
-                    model.PersonelId = entity.PersonelId.ToString();
+                    model.PersonelId = entity.PersonelId;
                     model.Aciklama = entity.Aciklama;
                     model.BaslangicTarihi = entity.BaslangicTarihi;
                     model.BitisTarihi = entity.BitisTarihi;
@@ -71,10 +67,15 @@ namespace WebUI.Areas.Admin.Controllers
             }
 
             var personelResult = await _personelService.GetAll();
-           
 
-            model.personelResultSel = new SelectList(personelResult?.Data, "Id", "İsim", "Soyisim");
-            
+            var personelData = personelResult.Data.Select(x => new
+            {
+                Id = x.Id,
+                FullName= $"{x.isim} {x.soyisim}"
+            });
+
+            model.personelResultSel = new SelectList(personelData, "Id", "FullName");
+
 
             return PartialView(model);
         }
@@ -93,7 +94,7 @@ namespace WebUI.Areas.Admin.Controllers
             var izin = new Izin()
             {
                 Id = model.Id,
-                PersonelId = int.TryParse(model.PersonelId, out int PersonelIdInt) ? PersonelIdInt : 227,
+                PersonelId = model.PersonelId.Value,
                 Aciklama = model.Aciklama,
                 BaslangicTarihi = model.BaslangicTarihi,
                 BitisTarihi = model.BitisTarihi,

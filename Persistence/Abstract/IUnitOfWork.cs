@@ -33,6 +33,8 @@ public interface IUnitOfWork
     ISubeRepository Subeler { get; }
 
     IPersonelRepository Personels { get; }
+
+    IVardiyaRepository Vardiyalar { get; }
     /// <summary>
     /// Veritabanı işlemlerini kaydetmek için kullanılır.
     /// </summary>

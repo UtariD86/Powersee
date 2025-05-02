@@ -13,5 +13,7 @@ namespace Domain.Dtos
         public string? IzinTuruStr { get; set; }
 
         public string? UcretTuruStr { get; set; }
+
+        public string? FullName { get; set; }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Core.Dtos.Abstract;
 using Core.Dtos.Concrete;
-using Domain.Dtos;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -10,18 +9,19 @@ using System.Threading.Tasks;
 
 namespace Application.Services.Abstract
 {
-    public interface IIzinService
+
+    public interface IVardiyaService
     {
 
-        Task<IDataResult<IList<Izin>>> GetAll();
+        Task<IDataResult<IList<Vardiya>>> GetAll();
 
-        Task<IDataResult<PageResponse<IzinListDto>>> GetToGrid(PageRequest request);
+        Task<IDataResult<PageResponse<Vardiya>>> GetToGrid(PageRequest request);
 
-        Task<IDataResult<Izin>> Edit(Izin izin);
+        Task<IDataResult<Vardiya>> Edit(Vardiya vardiya);
 
         Task<IResult> Delete(int Id);
 
 
-        Task<IDataResult<Izin>> GetById(int id);
+        Task<IDataResult<Vardiya>> GetById(int id);
     }
 }

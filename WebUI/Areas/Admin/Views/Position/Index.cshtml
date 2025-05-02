@@ -127,7 +127,8 @@
                 dataField: 'Salary',
                 caption: 'Maaş',
                 allowFiltering: true,
-                alignment: "center"
+                alignment: "center",
+                 format: { type: 'currency',currency: 'TRY',precision: 2 }
             },
             {
                 dataField: 'DepartmentName',
@@ -141,8 +142,9 @@
                 dataField: 'Active',
                 caption: 'Aktif',
                 allowFiltering: true,
-                alignment: "center"
-            }
+                 dataType: 'boolean',
+            alignment: "center"
+            }    
         ],
             toolbar: {
                 items: [

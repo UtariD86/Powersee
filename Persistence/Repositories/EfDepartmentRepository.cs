@@ -31,64 +31,70 @@ namespace Persistence.Repositories
             this.unitOfWork = unitOfWork;
         }
 
-        public async Task<PageResponse<DepartmentListDto>> GetDtoWithPaginationAsync(int pageIndex, int pageSize, Expression<Func<Department, bool>>? predicate = null, Func<IQueryable<Department>, IOrderedQueryable<Department>>? orderBy = null)
+        public async Task<PageResponse<DepartmentListDto>> GetDtoWithPaginationAsync(
+    int pageIndex,
+    int pageSize,
+    Expression<Func<Department, bool>>? predicate = null,
+    Func<IQueryable<Department>, IOrderedQueryable<Department>>? orderBy = null)
         {
             IQueryable<Department> query = context.Set<Department>();
 
-            // Apply filter if any
             if (predicate != null)
-            {
                 query = query.Where(predicate);
-            }
 
-            // Apply ordering if provided
             if (orderBy != null)
-            {
                 query = orderBy(query);
-            }
 
-            // Get paginated data
             var items = await query
-                .Skip(Math.Max(0, (pageIndex - 1) * pageSize)) // Skip for pagination, ensure non-negative offset
-                .Take(pageSize) // Take the page size limit
+                .Skip(Math.Max(0, (pageIndex - 1) * pageSize))
+                .Take(pageSize)
                 .ToListAsync();
 
-            // Get the total count for pagination
             var totalCount = await query.CountAsync();
-
-            // Calculate the total number of pages
             var totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
 
             var dummyManagers = new List<SelectListItem>
-{
-    new SelectListItem { Value = "1", Text = "Ahmet Yılmaz" },
-    new SelectListItem { Value = "2", Text = "Elif Demir" },
-    new SelectListItem { Value = "3", Text = "Mehmet Kaya" }
-};
+    {
+        new SelectListItem { Value = "1", Text = "Ahmet Yılmaz" },
+        new SelectListItem { Value = "2", Text = "Elif Demir" },
+        new SelectListItem { Value = "3", Text = "Mehmet Kaya" }
+    };
 
-            var result = items.Select(dept => new DepartmentListDto
+            var result = items.Select(dept =>
             {
-                Id = dept.Id,
-                Name = dept.Name,
-                Description = dept.Description,
-                Adres = dept.Adres,
-                Managerid = dept.Managerid,
-                Active = dept.Active,
-                CreatedDate = dept.CreatedDate,
-                UpdatedDate = dept.UpdatedDate,
-                DeletedDate = dept.DeletedDate,
-                ManagerName = dummyManagers
-                                .FirstOrDefault(m => m.Value == dept.Managerid.ToString())?.Text ?? "Bilinmiyor",
-                ActiveStr = dept.Active.HasValue ? (dept.Active.Value ? "Aktif" : "Pasif") : "Bilinmiyor",
+                var positions = context.Positions
+                    .Where(p => p.DepartmentId == dept.Id && p.DeletedDate == null)
+                    .Select(p => new PositionDetailsDto
+                    {
+                        Id = p.Id,
+                        Name = p.Name,
+                        Active = p.Active,
+                        Salary = p.Salary,
+                       
+                    }).ToList();
 
-                UniqueCode = dept.UniqueCode,
-                UniqueCodeStr = dept.UniqueCode,
-
-                CalismaTuruCal = dept.CalismaTuru,
-
+                return new DepartmentListDto
+                {
+                    Id = dept.Id,
+                    Name = dept.Name,
+                    Description = dept.Description,
+                    Adres = dept.Adres,
+                    Managerid = dept.Managerid,
+                    Active = dept.Active,
+                    CreatedDate = dept.CreatedDate,
+                    UpdatedDate = dept.UpdatedDate,
+                    DeletedDate = dept.DeletedDate,
+                    ManagerName = dummyManagers
+                        .FirstOrDefault(m => m.Value == dept.Managerid.ToString())?.Text ?? "Bilinmiyor",
+                    ActiveStr = dept.Active.HasValue ? (dept.Active.Value ? "Aktif" : "Pasif") : "Bilinmiyor",
+                    UniqueCode = dept.UniqueCode,
+                    UniqueCodeStr = dept.UniqueCode,
+                    CalismaTuruCal = dept.CalismaTuru,
+                    Positions = positions // yeni eklendi
+                };
             }).ToList();
 
-            // Return paginated response
+
             return new PageResponse<DepartmentListDto>
             {
                 Index = pageIndex,
@@ -100,5 +106,6 @@ namespace Persistence.Repositories
                 Items = result
             };
         }
+
     }
 }
