@@ -7,35 +7,36 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Dynamic;
-using WebUI.Areas.Admin.Models.Sube;
+using WebUI.Areas.Admin.Models.Vardiya;
 
 namespace WebUI.Areas.Admin.Controllers
 {
     
     [Area("Admin")]
 
-
+    
     [Authorize]
+    
 
 
 
-    public class SubeController : Controller
+    public class VardiyaController : Controller
     {
-
-        private readonly ISubeService dm;
-        public SubeController(ISubeService _dm)
+        
+        private readonly IVardiyaService dm;
+        public VardiyaController(IVardiyaService _dm)
         {
             dm = _dm;
         }
 
-        //Index Sayfamıza yönlendirme yapar
+        
         public IActionResult Index()
         {
             return View();
         }
 
-
-        [Route("{area}/get-subeler")]
+        
+        [Route("{area}/get-vardiyalar")]
         [HttpPost]
         public async Task<IActionResult> GetList([FromBody] PageRequest pageRequest)
         {
@@ -43,12 +44,12 @@ namespace WebUI.Areas.Admin.Controllers
             return Json(data.Data);
         }
 
-
-        [Route("{area}/get-sube")]
+        
+        [Route("{area}/get-vardiya")]
         [HttpPost]
-        public async Task<IActionResult> Edit([FromBody]int? id)
+        public async Task<IActionResult> Edit([FromBody] int? id)
         {
-            var model = new SubeDto();
+            var model = new VardiyaDto();
             if (id.HasValue)
             {
                 var result = await dm.GetById(id.Value);
@@ -56,39 +57,47 @@ namespace WebUI.Areas.Admin.Controllers
                 if (entity != null && result.ResultStatus == ResultStatus.Success)
                 {
                     model.Id = entity.Id;
-                    model.Subeisim = entity.Subeisim;
-                    model.Adres = entity.Adres;
-                    model.TelefonNumarasi1 = entity.TelefonNumarasi1;
+                    model.vardiyaIsmi = entity.vardiyaIsmi;
+                    model.baslangicSaati = entity.baslangicSaati;
+                    model.calismaSuresi = entity.calismaSuresi;
+                    model.aciklama = entity.aciklama;
+                    model.listelenecek = entity.listelenecek;
+                    model.ucretKatsayisi = entity.ucretKatsayisi.ToString();
+                    model.esneklikPayiSuresi = entity.esneklikPayiSuresi;
                 }
                 else
                 {
-                    ModelState.AddModelError("ErrorDetail", "Şube bulunamadı.");
+                    ModelState.AddModelError("ErrorDetail", "Vardiya bulunamadı.");
                 }
 
             }
             return PartialView(model);
         }
 
-
-        [Route("{area}/save-sube")]
+        
+        [Route("{area}/save-vardiya")]
         [HttpPost]
-        public async Task<IActionResult> Edit(SubeDto model)
+        public async Task<IActionResult> Edit(VardiyaDto model)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequest(ModelState); 
             }
             var message = "resultMessage";
             var id = model.Id;
-            var sube = new Sube()
+            var vardiya = new Vardiya()
             {
                 Id = model.Id,
-                Subeisim = model.Subeisim,
-                Adres = model.Adres,
-                TelefonNumarasi1 = model.TelefonNumarasi1,
+                vardiyaIsmi = model.vardiyaIsmi,
+                baslangicSaati = model.baslangicSaati,
+                calismaSuresi = model.calismaSuresi,
+                aciklama = model.aciklama,
+                listelenecek = model.listelenecek,
+                ucretKatsayisi = decimal.TryParse(model.ucretKatsayisi, out decimal ucretKatsayisiDec) ? ucretKatsayisiDec : 0,
+                esneklikPayiSuresi = model.esneklikPayiSuresi,
             };
-            sube.Id = id;
-            var result = dm.Edit(sube);
+            vardiya.Id = id;
+            var result = dm.Edit(vardiya);
             if (!string.IsNullOrEmpty(result.Result.Message))
             {
                 message = result.Result.Message;
@@ -97,7 +106,7 @@ namespace WebUI.Areas.Admin.Controllers
             return Json(message);
         }
 
-        [Route("{area}/delete-sube")]
+        [Route("{area}/delete-vardiya")]
         [HttpPost]
         public async Task<IActionResult> Delete([FromBody] int? id)
         {

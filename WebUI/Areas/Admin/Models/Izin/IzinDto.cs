@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Core.Enums; 
 using Domain.Enums;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WebUI.Areas.Admin.Models.Izin
@@ -12,11 +13,13 @@ namespace WebUI.Areas.Admin.Models.Izin
 
         [Required(ErrorMessage = "Personel ID alanı zorunludur.")]
 
+        public int? PersonelId { get; set; }
 
-        public SelectList personelResultSel { get; set; }
-        public string? PersonelId { get; set; }
+        [BindNever]
+        public SelectList? personelResultSel { get; set; }
 
-        [Required(ErrorMessage = "Açıklama alanı zorunludur.")]
+
+
         [MinLength(5, ErrorMessage = "Açıklama en az 5 karakter olmalıdır.")]
         [MaxLength(500, ErrorMessage = "Açıklama en fazla 500 karakter olabilir.")]
         public string? Aciklama { get; set; }
@@ -31,13 +34,16 @@ namespace WebUI.Areas.Admin.Models.Izin
         [Display(Name = "Bitiş Tarihi")]
         public DateTime BitisTarihi { get; set; }
 
+        [BindNever]
+        public SelectList? IzinTuruEnumSel { get; set; }
 
-        public SelectList IzinTuruEnumSel { get; set; }
         [Required(ErrorMessage = "İzin türü zorunludur.")]
         [Display(Name = "İzin Türü")]
         public IzinTuruEnum IzinTuruEnum { get; set; }
 
-        public SelectList UcretTuruEnumSel { get; set; }
+        [BindNever]
+        public SelectList? UcretTuruEnumSel { get; set; }
+
         [Required(ErrorMessage = "Ücret türü zorunludur.")]
         [Display(Name = "Ücret Türü")]
         public UcretTuruEnum UcretTuruEnum { get; set; }

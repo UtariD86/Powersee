@@ -1,10 +1,13 @@
-﻿using Application.Helpers.Concrete.Filtering;
+﻿using Core.Helpers.Abstract;
+using Application.Helpers.Concrete;
+using Application.Helpers.Concrete.Filtering;
 using Application.Services.Abstract;
 using Azure.Core;
 using Core.Dtos.Abstract;
 using Core.Dtos.Concrete;
 using Core.Enums;
 using DocumentFormat.OpenXml.Bibliography;
+using Domain.Dtos;
 using Domain.Entities;
 using Persistence.Abstract;
 using System;
@@ -117,23 +120,23 @@ namespace Application.Services
         public async Task<IDataResult<IList<Izin>>> GetAll()
         {
 
-            var izinler = await _unitOfWork.Izinler.GetAllAsync(
+            var personels = await _unitOfWork.Izinler.GetAllAsync(
                 predicate: d => !d.DeletedDate.HasValue,
                 orderBy: q => q.OrderByDescending(d => d.UpdatedDate)
             );
 
 
-            if (izinler.Count > -1)
+            if (personels.Count > -1)
             {
 
-                return new DataResult<IList<Izin>>(ResultStatus.Success, izinler);
+                return new DataResult<IList<Izin>>(ResultStatus.Success, personels);
             }
 
             return new DataResult<IList<Izin>>(ResultStatus.Error, "Hiç İzin bulunamadı", null);
         }
 
 
-        public async Task<IDataResult<PageResponse<Izin>>> GetToGrid(PageRequest request)
+        public async Task<IDataResult<PageResponse<IzinListDto>>> GetToGrid(PageRequest request)
         {
             try
             {
@@ -143,26 +146,26 @@ namespace Application.Services
                     predicate = _filterHelper.GetExpression<Izin>(request.Filter, deleted: false);
 
 
-                var izinler = await _unitOfWork.Izinler.GetEntitiesWithPaginationAsync(
-                    request.PageIndex,
-                    request.PageSize,
+                var izinler = await _unitOfWork.Izinler.GetAllIzinsAsync(
                     predicate: predicate,
-                    orderBy: q => q.OrderByDescending(d => d.UpdatedDate)
+                    orderBy: q => q.OrderByDescending(d => d.UpdatedDate),
+                    request.PageIndex,
+                    request.PageSize
                 );
 
 
                 if (izinler.Items.Any())
                 {
-                    return new DataResult<PageResponse<Izin>>(ResultStatus.Success, izinler);
+                    return new DataResult<PageResponse<IzinListDto>>(ResultStatus.Success, izinler);
                 }
 
 
-                return new DataResult<PageResponse<Izin>>(ResultStatus.Error, "Hiç İzin bulunamadı", null);
+                return new DataResult<PageResponse<IzinListDto>>(ResultStatus.Error, "Hiç Izin bulunamadı", null);
             }
             catch (Exception ex)
             {
 
-                return new DataResult<PageResponse<Izin>>(ResultStatus.Error, $"Bir hata oluştu: {ex.Message}", null);
+                return new DataResult<PageResponse<IzinListDto>>(ResultStatus.Error, $"Bir hata oluştu: {ex.Message}", null);
             }
         }
 
@@ -181,7 +184,7 @@ namespace Application.Services
                 return new DataResult<Izin>(ResultStatus.Success, izin);
             }
 
-            return new DataResult<Izin>(ResultStatus.Error, "İzin bulunamadı", null);
+            return new DataResult<Izin>(ResultStatus.Error, "Personel bulunamadı", null);
         }
 
     }

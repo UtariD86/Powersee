@@ -30,8 +30,8 @@
 
                         if (response && !gridInstance.__lookupSet) {
                             gridInstance.beginUpdate();
-                            if (response.IzinTuruSel) {
-                                gridInstance.option('columns[5].lookup.dataSource', response.IzinTuruSel);
+                            if (response.GenderSel) {
+                                gridInstance.option('columns[5].lookup.dataSource', response.GenderSel);
                             }
                             gridInstance.endUpdate();
 
@@ -105,7 +105,7 @@
                     allowFiltering: false
                 },
                 {
-                    dataField: 'PersonelIsim',
+                    dataField: 'FullName',
                     caption: 'Personel',
                     allowFiltering: true,
                     alignment: "center"
@@ -133,30 +133,17 @@
                     alignment: "center"
                 },
                 {
-                    dataField: 'IzinTuru',
+                    dataField: 'IzinTuruStr',
                     caption: 'İzin Türü',
-                    lookup: {
-                        dataSource: [],
-                        displayExpr: 'Text',
-                        valueExpr: 'Value'
-                    },
                     allowFiltering: true,
                     alignment: "center"
                 },
                 {
-                    dataField: 'UcretTuru',
+                    dataField: 'UcretTuruStr',
                     caption: 'Ücret Türü',
-                    lookup: {
-                        dataSource: [
-                            { Value: 'Ucretli', Text: 'Ücretli' },
-                            { Value: 'Ucretsiz', Text: 'Ücretsiz' }
-                        ],
-                        displayExpr: 'Text',
-                        valueExpr: 'Value'
-                    },
                     allowFiltering: true,
                     alignment: "center"
-                }
+                },
             ],
             toolbar: {
                 items: [

@@ -19,13 +19,11 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<Department> Departments { get; set; }
     public DbSet<Domain.Entities.Position> Positions { get; set; }// NetTopologySuite.GeometriesGraph.Position diye birşey olduğu içn böyle yazdım
     public DbSet<Sube> Subeler { get; set; }
-
     public DbSet<Izin> Izinler { get; set; } // Izinler tablosu için DbSet
-
-
-
-
     public DbSet<Personel> Personels { get; set; }
+    public DbSet<Vardiya> Vardiyalar { get; set; }
+
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -34,7 +32,9 @@ public class ApplicationDbContext : IdentityDbContext
         // Tablo Konfigürasyonları için oluşturulmuş mapping sınıfları burada apply edilir.
         modelBuilder.ApplyConfiguration(new DepartmentMap());
         modelBuilder.ApplyConfiguration(new PositionMap());
-
         modelBuilder.ApplyConfiguration(new SubeMap());
+        modelBuilder.ApplyConfiguration(new IzinMap());
+        modelBuilder.ApplyConfiguration(new PersonelMap());
+        modelBuilder.ApplyConfiguration(new VardiyaMap());
     }
 }

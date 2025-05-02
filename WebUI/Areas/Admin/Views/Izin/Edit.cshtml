@@ -1,19 +1,19 @@
 ﻿@model WebUI.Areas.Admin.Models.Izin.IzinDto
 @{
-    Layout = null;
-    string AreaName = "Admin";
+	Layout = null;
+	string AreaName = "Admin";
 }
 
 <div class="modal show" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">İzin</h5><button class="btn-close" onclick="zuraf.closeModal('#editModal')" type="button" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="editForm" method="post" onsubmit="return false" action="/@AreaName/save-izin" enctype="multipart/form-data">
+	<div class="modal-dialog modal-dialog-centered modal" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">İzin</h5><button class="btn-close" onclick="zuraf.closeModal('#editModal')" type="button" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<form id="editForm" method="post" onsubmit="return false" action="/@AreaName/save-izin" enctype="multipart/form-data">
 
-                    @Html.HiddenFor(Model => Model.Id)
+					@Html.HiddenFor(Model => Model.Id)
 					<div class="row">
 						<div class="col-md-12">
 							<div class="form-floating mb-3">
@@ -28,7 +28,7 @@
 							</div>
 						</div>
 					</div>
-				@* 	<div class="row">
+					@* 	<div class="row">
 						<div class="col-md-12">
 							<div class="form-floating mb-3">
 								@Html.DropDownListFor(model => model.PersonelId,
@@ -65,12 +65,12 @@
 									id = "BaslangicTarihi",
 									placeholder = "GG/AA/YYYY SS:DD",
 								})
-							<label for="name">Doğum Tarihi</label>
+							<label for="name">Başlangıç Tarihi</label>
 							<div class="invalid-feedback">
 								@Html.ValidationMessageFor(Model => Model.BaslangicTarihi)
 							</div>
 						</div>
-						<script>$(document).ready(function () { zuraf.setDatePicker("BaslangicTarihi") });</script>
+						<script>$(document).ready(function () { zuraf.setDatePicker("BaslangicTarihi" , "date") });</script>
 					</div>
 					<div class="col-md-12">
 						<div class="form-floating mb-3">
@@ -80,16 +80,16 @@
 									id = "BitisTarihi",
 									placeholder = "GG/AA/YYYY SS:DD",
 								})
-							<label for="name">Doğum Tarihi</label>
+							<label for="name">Bitiş Tarihi</label>
 							<div class="invalid-feedback">
 								@Html.ValidationMessageFor(Model => Model.BitisTarihi)
 							</div>
 						</div>
-						<script>$(document).ready(function () { zuraf.setDatePicker("BitisTarihi") });</script>
+						<script>$(document).ready(function () { zuraf.setDatePicker("BitisTarihi" , "date") });</script>
 					</div>
 					<div class="row mt-3">
 						<div class="col-md-12">
-							<label class="form-label">Çalışma Tipi</label>
+							<label class="form-label">İzin Türü</label>
 							@Html.DropDownListFor(Model => Model.IzinTuruEnum,
 																new SelectList(new[] {
 							new { Value = "1", Text = "Yıllık" },
@@ -121,26 +121,26 @@
 							</div>
 						</div>
 					</div>
-                </form>
+				</form>
 
-            </div>
-            <div class="modal-footer">
-                <button onclick="zuraf.closeModal('#editModal')" class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Kapat</button>
-                <button id="saveButton" class="btn btn-primary btn-sm" type="button">Kaydet</button>
-            </div>
-        </div>
-    </div>
+			</div>
+			<div class="modal-footer">
+				<button onclick="zuraf.closeModal('#editModal')" class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Kapat</button>
+				<button id="saveButton" class="btn btn-primary btn-sm" type="button">Kaydet</button>
+			</div>
+		</div>
+	</div>
 </div>
 
 <script>
 
 
-    $(document).ready(function () {
+	$(document).ready(function () {
 
-        $('#saveButton').on('click', function () {
+		$('#saveButton').on('click', function () {
 
-            zuraf.submitForm("editForm");
-        });
+			zuraf.submitForm("editForm");
+		});
 
-    });
+	});
 </script>
