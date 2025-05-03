@@ -26,7 +26,6 @@ namespace Domain.Entities
         public bool? Active { get; set; }
 
         public int DepartmentId { get; set; }
-        public virtual Department? Department { get; set; }
 
     }
 }

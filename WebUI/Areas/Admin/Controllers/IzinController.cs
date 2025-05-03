@@ -59,7 +59,7 @@ namespace WebUI.Areas.Admin.Controllers
                     model.BitisTarihi = entity.BitisTarihi;
                     model.IzinTuruEnum = entity.IzinTuruEnum;
                     model.UcretTuruEnum = entity.UcretTuruEnum;
-                }
+                }   
                 else
                 {
                     ModelState.AddModelError("ErrorDetail", "İzin bulunamadı.");
@@ -102,13 +102,9 @@ namespace WebUI.Areas.Admin.Controllers
                 UcretTuruEnum = model.UcretTuruEnum
             };
             izin.Id = id;
-            var result = _izinService.Edit(izin);
-            if (!string.IsNullOrEmpty(result.Result.Message))
-            {
-                message = result.Result.Message;
-            }
+            var result = await _izinService.Edit(izin);
 
-            return Json(message);
+            return Json(result.Message);
         }
 
         [Route("{area}/delete-izin")]

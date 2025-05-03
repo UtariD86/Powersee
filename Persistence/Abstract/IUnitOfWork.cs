@@ -26,6 +26,7 @@ public interface IUnitOfWork
     IDepartmentRepository Departments { get; }
 
     IIzinRepository Izinler { get; }
+    IKesintiRepository Kesintiler { get; }
 
     IPositionRepository Positions { get; }
 

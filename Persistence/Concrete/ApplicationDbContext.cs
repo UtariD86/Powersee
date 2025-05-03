@@ -19,9 +19,13 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<Department> Departments { get; set; }
     public DbSet<Domain.Entities.Position> Positions { get; set; }// NetTopologySuite.GeometriesGraph.Position diye birşey olduğu içn böyle yazdım
     public DbSet<Sube> Subeler { get; set; }
-    public DbSet<Izin> Izinler { get; set; } // Izinler tablosu için DbSet
+
     public DbSet<Personel> Personels { get; set; }
     public DbSet<Vardiya> Vardiyalar { get; set; }
+    public DbSet<Izin> Izinler { get; set; }
+    public DbSet<Kesinti> Kesintiler { get; set; }
+
+
 
     public DbSet<Talep> Taleps { get; set; }
 
@@ -34,6 +38,8 @@ public class ApplicationDbContext : IdentityDbContext
         modelBuilder.ApplyConfiguration(new DepartmentMap());
         modelBuilder.ApplyConfiguration(new PositionMap());
         modelBuilder.ApplyConfiguration(new SubeMap());
+
+        modelBuilder.ApplyConfiguration(new KesintiMap());
         modelBuilder.ApplyConfiguration(new IzinMap());
         modelBuilder.ApplyConfiguration(new PersonelMap());
         modelBuilder.ApplyConfiguration(new VardiyaMap());

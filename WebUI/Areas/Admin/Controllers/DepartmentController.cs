@@ -120,11 +120,10 @@ namespace WebUI.Areas.Admin.Controllers
                 UniqueCode = model.UniqueCode,
             };
 
-            var result = dm.Edit(department);
-            var message = result.Result.Message ?? "İşlem başarılı";
-            if (result.Result.ResultStatus == ResultStatus.Error)
-                return BadRequest(result.Result.Message);
-            return Json(message);
+            var result = await dm.Edit(department);
+
+
+            return Json(result.Message);
         }
 
         [Route("{area}/delete-department")]
