@@ -23,6 +23,7 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<Personel> Personels { get; set; }
     public DbSet<Vardiya> Vardiyalar { get; set; }
 
+    public DbSet<Talep> Taleps { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -36,5 +37,6 @@ public class ApplicationDbContext : IdentityDbContext
         modelBuilder.ApplyConfiguration(new IzinMap());
         modelBuilder.ApplyConfiguration(new PersonelMap());
         modelBuilder.ApplyConfiguration(new VardiyaMap());
+        modelBuilder.ApplyConfiguration(new TalepMap());
     }
 }

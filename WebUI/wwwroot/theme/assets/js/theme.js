@@ -4702,7 +4702,9 @@ var currentMonth = dayjs && dayjs().format('MM');
 var prevMonth = dayjs && dayjs().subtract(1, 'month').format('MM');
 var nextMonth = dayjs && dayjs().add(1, 'month').format('MM');
 var currentYear = dayjs && dayjs().format('YYYY');
-var events = [{
+var events = [
+    {
+    id: "1",
     title: 'Boot Camp',
     start: "".concat(currentYear, "-").concat(currentMonth, "-01 10:00:00"),
     end: "".concat(currentYear, "-").concat(currentMonth, "-03 16:00:00"),
@@ -4727,11 +4729,13 @@ var events = [{
         description: 'Time to start the conference and will briefly describe all information about the event.  ',
         className: 'event-bg-soft-success'
     }, {
+        id: "3",
         title: 'Lunch',
         start: "".concat(currentYear, "-").concat(currentMonth, "-").concat(currentDay, " 14:00:00"),
         description: 'Lunch facility for all the attendance in the conference.',
         className: 'event-bg-soft-success'
-    }, {
+        }, {
+        id: "5",
         title: 'Contest',
         start: "".concat(currentYear, "-").concat(currentMonth, "-").concat(currentDay, " 16:00:00"),
         description: 'The starting of the programming contest',
