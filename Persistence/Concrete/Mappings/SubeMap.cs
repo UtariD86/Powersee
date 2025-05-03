@@ -23,7 +23,28 @@ public class SubeMap : IEntityTypeConfiguration<Sube>
         builder.Property(d => d.UpdatedDate).HasColumnName("UpdatedDate");
         builder.Property(d => d.DeletedDate).HasColumnName("DeletedDate");
 
+        var sehirler = new[] { "İstanbul", "Ankara", "İzmir", "Bursa", "Konya", "Adana", "Antalya", "Gaziantep", "Eskişehir", "Kayseri" };
+        var subeTipleri = new[] { "Merkez", "Sanayi", "Teknopark", "Üniversite", "Organize", "AVM", "Bölge", "Ofis", "Depo", "Ar-Ge" };
 
+        var random = new Random();
+        var subeler = new List<Sube>();
+
+        for (int i = 1; i <= 100; i++)
+        {
+            var sehir = sehirler[random.Next(sehirler.Length)];
+            var tip = subeTipleri[random.Next(subeTipleri.Length)];
+
+            subeler.Add(new Sube
+            {
+                Id = i,
+                Subeisim = $"{sehir} {tip} Şubesi",
+                Adres = $"{sehir} Mahallesi, {tip} Caddesi No:{i}",
+                TelefonNumarasi1 = $"0{random.Next(500, 560)}{random.Next(1000000, 9999999)}",
+                CreatedDate = DateTime.Now
+            });
+        }
+
+        builder.HasData(subeler);
     }
 }
 

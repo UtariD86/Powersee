@@ -56,8 +56,8 @@ namespace Persistence.Repositories
                               {
                                   Id = pos.Id,
                                   Name = pos.Name,
-                                  DepartmentName = dept.Name,
-                                  Code=pos.Code,
+                                  DepartmentName = dept != null ? dept.Name : "Bilinmiyor",
+                                  Code =pos.Code,
                                   Salary=pos.Salary,
                                   Active=pos.Active
 
