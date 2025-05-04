@@ -1234,6 +1234,7 @@ var formValidationInit = function formValidationInit() {
         }, false);
     });
 };
+theme.js içinde değişecek kısım
 /* -------------------------------------------------------------------------- */
 
 /*                                FullCalendar                                */
@@ -1250,15 +1251,16 @@ var renderCalendar = function renderCalendar(el, option) {
         initialView: 'dayGridMonth',
         editable: true,
         direction: document.querySelector('html').getAttribute('dir'),
+        locale: 'tr',
         headerToolbar: {
             left: 'prev,next today',
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
         buttonText: {
-            month: 'Month',
-            week: 'Week',
-            day: 'Day'
+            month: 'Ay',
+            week: 'Hafta',
+            day: 'Gün'
         }
     }, option);
     var calendar = new window.FullCalendar.Calendar(el, options);

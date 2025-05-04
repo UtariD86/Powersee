@@ -31,6 +31,7 @@ public class UnitOfWork : IUnitOfWork
     private EfPersonelRepository? _personelRepository;
     private EfVardiyaRepository? _vardiyaRepository;
     private EfTalepRepository? _talepRepository;
+    private EfPlanlanmisVardiyaRepository? _planlanmisVardiyaRepository;
 
     /// <param name="context"></param>
 
@@ -58,6 +59,8 @@ public class UnitOfWork : IUnitOfWork
     public IVardiyaRepository Vardiyalar => _vardiyaRepository ?? new EfVardiyaRepository(_context, this);
 
     public ITalepRepository Taleps =>_talepRepository ?? new EfTalepRepository(_context, this);
+
+    public IPlanlanmisVardiyaRepository PlanlanmisVardiyalar => _planlanmisVardiyaRepository ?? new EfPlanlanmisVardiyaRepository(_context, this);
 
     /// <summary>
     /// Dispose: UnitOfWork sınıfı ile işimiz bittiğinde context nesnesini bellekten temizlemek için kullanılır.

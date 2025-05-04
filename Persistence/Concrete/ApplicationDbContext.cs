@@ -26,6 +26,8 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<Kesinti> Kesintiler { get; set; }
 
 
+    public DbSet<PlanlanmisVardiya> PlanlanmisVardiyalar { get; set; }
+
 
     public DbSet<Talep> Taleps { get; set; }
 
@@ -43,6 +45,7 @@ public class ApplicationDbContext : IdentityDbContext
         modelBuilder.ApplyConfiguration(new IzinMap());
         modelBuilder.ApplyConfiguration(new PersonelMap());
         modelBuilder.ApplyConfiguration(new VardiyaMap());
+        modelBuilder.ApplyConfiguration(new PlanlanmisVardiyaMap());
         modelBuilder.ApplyConfiguration(new TalepMap());
     }
 }

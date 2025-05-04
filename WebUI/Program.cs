@@ -33,6 +33,7 @@ builder.Services.AddScoped<ISubeService, SubeManager>();
 builder.Services.AddScoped<IPersonelService, PersonelManager>();
 builder.Services.AddScoped<IVardiyaService, VardiyaManager>();
 builder.Services.AddScoped<ITalepService, TalepManager>();
+builder.Services.AddScoped<IPlanlanmisVardiyaService, PlanlanmisVardiyaManager>();
 
 #endregion
 
