@@ -108,6 +108,38 @@ namespace WebUI.Areas.Admin.Controllers
             return PartialView("Edit", model); // Edit.cshtml'i model ile döndür
         }
 
+        // Ekleme/Düzenleme modal'ını getiren endpoint
+        [Route("{area}/get-kesintiByPlanlanmisVardiya")] // Route Kesinti için güncellendi
+        [HttpPost]
+        public async Task<IActionResult> Edit([FromBody] int? id, string _ = "")
+        {
+           
+            var model = new KesintiDto();
+
+            var personelResult = await _personelService.GetAll(); // Tüm aktif personelleri al
+            if (personelResult.ResultStatus == ResultStatus.Success)
+            {
+                model.PersonelListesi = personelResult.Data
+                                            .Select(p => new SelectListItem { Text = $"{p.isim} {p.soyisim}", Value = p.Id.ToString() })
+                                            .ToList();
+            }
+            else
+            {
+                model.PersonelListesi = new List<SelectListItem>(); // Hata durumunda boş liste
+                // Opsiyonel: Hata loglanabilir veya kullanıcıya mesaj gösterilebilir
+            }
+
+            model.SnapshotListesi = new List<SelectListItem>(); // Şimdilik boş liste
+
+
+            if (id.HasValue && id.Value > 0) // ID varsa düzenleme modundayız
+            {
+                model.PlanlanmisVardiyaSnapshotId = id;
+            }
+            // ID yoksa veya kayıt bulunamazsa, boş DTO (ama dropdown listeleri dolu) ile PartialView döndürülür
+            return PartialView("Edit", model); // Edit.cshtml'i model ile döndür
+        }
+
         // Ekleme/Güncelleme işlemini yapan endpoint
         [Route("{area}/save-kesinti")] // Route Kesinti için güncellendi
         [HttpPost]

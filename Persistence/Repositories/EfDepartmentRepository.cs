@@ -32,27 +32,11 @@ namespace Persistence.Repositories
         }
 
         public async Task<PageResponse<DepartmentListDto>> GetDtoWithPaginationAsync(
-    int pageIndex,
-    int pageSize,
-    Expression<Func<Department, bool>>? predicate = null,
-    Func<IQueryable<Department>, IOrderedQueryable<Department>>? orderBy = null)
+      int pageIndex,
+      int pageSize,
+      Expression<Func<Department, bool>>? predicate = null,
+      Func<IQueryable<Department>, IOrderedQueryable<Department>>? orderBy = null)
         {
-            IQueryable<Department> query = context.Set<Department>();
-
-            if (predicate != null)
-                query = query.Where(predicate);
-
-            if (orderBy != null)
-                query = orderBy(query);
-
-            var items = await query
-                .Skip(Math.Max(0, (pageIndex - 1) * pageSize))
-                .Take(pageSize)
-                .ToListAsync();
-
-            var totalCount = await query.CountAsync();
-            var totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
-
             var dummyManagers = new List<SelectListItem>
     {
         new SelectListItem { Value = "1", Text = "Ahmet Yılmaz" },
@@ -60,40 +44,64 @@ namespace Persistence.Repositories
         new SelectListItem { Value = "3", Text = "Mehmet Kaya" }
     };
 
-            var result = items.Select(dept =>
-            {
-                var positions = context.Positions
-                    .Where(p => p.DepartmentId == dept.Id && p.DeletedDate == null)
-                    .Select(p => new PositionDetailsDto
-                    {
-                        Id = p.Id,
-                        Name = p.Name,
-                        Active = p.Active,
-                        Salary = p.Salary,
-                       
-                    }).ToList();
+            // Önce filtrelenmiş ve sıralanmış departmentları al
+            var baseQuery = context.Departments.AsQueryable();
 
-                return new DepartmentListDto
+            if (predicate != null)
+                baseQuery = baseQuery.Where(predicate);
+
+            if (orderBy != null)
+                baseQuery = orderBy(baseQuery);
+
+            var totalCount = await baseQuery.CountAsync();
+            var totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
+
+            // Dümdüz JOIN: Department x Position
+            var joinedData = await (
+                from dept in baseQuery
+                join pos in context.Positions.Where(p => p.DeletedDate == null)
+                    on dept.Id equals pos.DepartmentId into posGroup
+                from pos in posGroup.DefaultIfEmpty()
+                select new
                 {
-                    Id = dept.Id,
-                    Name = dept.Name,
-                    Description = dept.Description,
-                    Adres = dept.Adres,
-                    Managerid = dept.Managerid,
-                    Active = dept.Active,
-                    CreatedDate = dept.CreatedDate,
-                    UpdatedDate = dept.UpdatedDate,
-                    DeletedDate = dept.DeletedDate,
-                    ManagerName = dummyManagers
-                        .FirstOrDefault(m => m.Value == dept.Managerid.ToString())?.Text ?? "Bilinmiyor",
-                    ActiveStr = dept.Active.HasValue ? (dept.Active.Value ? "Aktif" : "Pasif") : "Bilinmiyor",
-                    UniqueCode = dept.UniqueCode,
-                    UniqueCodeStr = dept.UniqueCode,
-                    CalismaTuruCal = dept.CalismaTuru,
-                    Positions = positions // yeni eklendi
-                };
-            }).ToList();
+                    Department = dept,
+                    Position = pos
+                }
+            )
+            .ToListAsync();
 
+            // Gruplama: Department başına bir grup
+            var grouped = joinedData
+                .GroupBy(x => x.Department)
+                .Skip(Math.Max(0, (pageIndex - 1) * pageSize))
+                .Take(pageSize)
+                .Select(g => new DepartmentListDto
+                {
+                    Id = g.Key.Id,
+                    Name = g.Key.Name,
+                    Description = g.Key.Description,
+                    Adres = g.Key.Adres,
+                    Managerid = g.Key.Managerid,
+                    Active = g.Key.Active,
+                    CreatedDate = g.Key.CreatedDate,
+                    UpdatedDate = g.Key.UpdatedDate,
+                    DeletedDate = g.Key.DeletedDate,
+                    ManagerName = dummyManagers.FirstOrDefault(m => m.Value == g.Key.Managerid.ToString())?.Text ?? "Bilinmiyor",
+                    ActiveStr = g.Key.Active.HasValue ? (g.Key.Active.Value ? "Aktif" : "Pasif") : "Bilinmiyor",
+                    UniqueCode = g.Key.UniqueCode,
+                    UniqueCodeStr = g.Key.UniqueCode,
+                    CalismaTuruCal = g.Key.CalismaTuru,
+                    Positions = g
+                        .Where(x => x.Position != null)
+                        .Select(p => new PositionDetailsDto
+                        {
+                            Id = p.Position.Id,
+                            Name = p.Position.Name,
+                            Active = p.Position.Active,
+                            Salary = p.Position.Salary
+                        }).ToList()
+                })
+                .ToList();
 
             return new PageResponse<DepartmentListDto>
             {
@@ -103,7 +111,7 @@ namespace Persistence.Repositories
                 Pages = totalPages,
                 HasPrevious = pageIndex > 1,
                 HasNext = pageIndex < totalPages,
-                Items = result
+                Items = grouped
             };
         }
 

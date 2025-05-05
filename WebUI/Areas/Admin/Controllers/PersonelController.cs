@@ -54,7 +54,8 @@ public class PersonelController : Controller
         public async Task<IActionResult> Edit([FromBody] int? id)
         {
             var model = new PersonelDto();
-
+            model.baslangicTarihi = DateTime.Now;
+            model.dogumTarihi = DateTime.Now;
             if (id.HasValue)
             {
                 var result = await _personelService.GetById(id.Value);

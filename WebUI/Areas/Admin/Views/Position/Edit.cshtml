@@ -41,30 +41,7 @@
                             </div>
                         </div>
                     </div>
-                 @*    <script>
-                        $(document).ready(function() {
-                            // Sayı ve ondalık girişi için input'u kontrol et
-                            $('#salary').on('input', function() {
-                                var value = $(this).val();
-
-                                // Sadece sayı ve ondalık girişine izin ver (noktayı virgülle değiştireceğiz)
-                                var validValue = value.replace(/[^0-9,\.]/g, ''); // Sadece rakamlar ve virgül/nokta izin ver
-
-                                // Eğer değer, nokta ise virgüle çeviriyoruz
-                                validValue = validValue.replace(".", ",");
-
-                                // Virgülden sonra en fazla iki haneli sayı olmasına izin ver
-                                var parts = validValue.split(',');
-                                if (parts.length > 1) {
-                                    parts[1] = parts[1].slice(0, 2); // Virgülden sonra sadece iki rakam al
-                                    validValue = parts.join(',');
-                                }
-
-                                // Sonuç olarak sayıyı yerleştir
-                                $(this).val(validValue);
-                            });
-                        });
-                    </script> *@
+                 
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-floating mb-3">

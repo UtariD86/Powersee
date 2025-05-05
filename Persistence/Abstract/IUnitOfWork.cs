@@ -35,6 +35,9 @@ public interface IUnitOfWork
     IPersonelRepository Personels { get; }
 
     IVardiyaRepository Vardiyalar { get; }
+
+    IPlanlanmisVardiyaRepository PlanlanmisVardiyalar { get; }
+    ITalepRepository Taleps { get; }
     /// <summary>
     /// Veritabanı işlemlerini kaydetmek için kullanılır.
     /// </summary>

@@ -66,7 +66,7 @@ namespace WebUI.Areas.Admin.Controllers
                     model.Id = entity.Id;
                     model.Name = entity.Name;
                     model.Salary = entity.Salary.ToString("F", CultureInfo.InvariantCulture);
-                    model.Active = entity.Active;
+                    model.Active = entity.Active ?? false;
                     model.ManagerId = entity.ManagerId;
                     model.Code = entity.Code;
                     model.ManagerList = new SelectList(dummyManagers, "Value", "Text", entity.ManagerId);

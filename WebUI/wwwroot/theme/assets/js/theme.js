@@ -1250,15 +1250,16 @@ var renderCalendar = function renderCalendar(el, option) {
         initialView: 'dayGridMonth',
         editable: true,
         direction: document.querySelector('html').getAttribute('dir'),
+        locale: 'tr',
         headerToolbar: {
             left: 'prev,next today',
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
         buttonText: {
-            month: 'Month',
-            week: 'Week',
-            day: 'Day'
+            month: 'Ay',
+            week: 'Hafta',
+            day: 'Gün'
         }
     }, option);
     var calendar = new window.FullCalendar.Calendar(el, options);
@@ -4702,7 +4703,9 @@ var currentMonth = dayjs && dayjs().format('MM');
 var prevMonth = dayjs && dayjs().subtract(1, 'month').format('MM');
 var nextMonth = dayjs && dayjs().add(1, 'month').format('MM');
 var currentYear = dayjs && dayjs().format('YYYY');
-var events = [{
+var events = [
+    {
+    id: "1",
     title: 'Boot Camp',
     start: "".concat(currentYear, "-").concat(currentMonth, "-01 10:00:00"),
     end: "".concat(currentYear, "-").concat(currentMonth, "-03 16:00:00"),
@@ -4727,11 +4730,13 @@ var events = [{
         description: 'Time to start the conference and will briefly describe all information about the event.  ',
         className: 'event-bg-soft-success'
     }, {
+        id: "3",
         title: 'Lunch',
         start: "".concat(currentYear, "-").concat(currentMonth, "-").concat(currentDay, " 14:00:00"),
         description: 'Lunch facility for all the attendance in the conference.',
         className: 'event-bg-soft-success'
-    }, {
+        }, {
+        id: "5",
         title: 'Contest',
         start: "".concat(currentYear, "-").concat(currentMonth, "-").concat(currentDay, " 16:00:00"),
         description: 'The starting of the programming contest',
@@ -5141,10 +5146,98 @@ var getStackIcon = function getStackIcon(icon, transform) {
     return "\n  <span class=\"fa-stack ms-n1 me-3\">\n    <i class=\"fas fa-circle fa-stack-2x text-200\"></i>\n    <i class=\"".concat(icon, " fa-stack-1x text-primary\" data-fa-transform=").concat(transform, "></i>\n  </span>\n");
 };
 
+
 var getTemplate = function getTemplate(event) {
-    return "\n<div class=\"modal-header bg-light ps-card pe-5 border-bottom-0\">\n  <div>\n    <h5 class=\"modal-title mb-0\">".concat(event.title, "</h5>\n    ").concat(event.extendedProps.organizer ? "<p class=\"mb-0 fs--1 mt-1\">\n        by <a href=\"#!\">".concat(event.extendedProps.organizer, "</a>\n      </p>") : '', "\n  </div>\n  <button type=\"button\" class=\"btn-close position-absolute end-0 top-0 mt-3 me-3\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button>\n</div>\n<div class=\"modal-body px-card pb-card pt-1 fs--1\">\n  ").concat(event.extendedProps.description ? "\n      <div class=\"d-flex mt-3\">\n        ".concat(getStackIcon('fas fa-align-left'), "\n        <div class=\"flex-1\">\n          <h6>Description</h6>\n          <p class=\"mb-0\">\n            \n          ").concat(event.extendedProps.description.split(' ').slice(0, 30).join(' '), "\n          </p>\n        </div>\n      </div>\n    ") : '', " \n  <div class=\"d-flex mt-3\">\n    ").concat(getStackIcon('fas fa-calendar-check'), "\n    <div class=\"flex-1\">\n        <h6>Date and Time</h6>\n        <p class=\"mb-1\">\n          ").concat(window.dayjs && window.dayjs(event.start).format('dddd, MMMM D, YYYY, h:mm A'), " \n          ").concat(event.end ? "\u2013 <br/>".concat(window.dayjs && window.dayjs(event.end).subtract(1, 'day').format('dddd, MMMM D, YYYY, h:mm A')) : '', "\n        </p>\n    </div>\n  </div>\n  ").concat(event.extendedProps.location ? "\n        <div class=\"d-flex mt-3\">\n          ".concat(getStackIcon('fas fa-map-marker-alt'), "\n          <div class=\"flex-1\">\n              <h6>Location</h6>\n              <p class=\"mb-0\">").concat(event.extendedProps.location, "</p>\n          </div>\n        </div>\n      ") : '', "\n  ").concat(event.schedules ? "\n        <div class=\"d-flex mt-3\">\n        ".concat(getStackIcon('fas fa-clock'), "\n        <div class=\"flex-1\">\n            <h6>Schedule</h6>\n            \n            <ul class=\"list-unstyled timeline mb-0\">\n              ").concat(event.schedules.map(function (schedule) {
-        return "<li>".concat(schedule.title, "</li>");
-    }).join(''), "\n            </ul>\n        </div>\n      ") : '', "\n  </div>\n</div>\n<div class=\"modal-footer d-flex justify-content-end bg-light px-card border-top-0\">\n  <a href=\"").concat(document.location.href.split('/').slice(0, 5).join('/'), "/app/events/create-an-event.html\" class=\"btn btn-falcon-default btn-sm\">\n    <span class=\"fas fa-pencil-alt fs--2 mr-2\"></span> Edit\n  </a>\n  <a href='").concat(document.location.href.split('/').slice(0, 5).join('/'), "/app/events/event-detail.html' class=\"btn btn-falcon-primary btn-sm\">\n    See more details\n    <span class=\"fas fa-angle-right fs--2 ml-1\"></span>\n  </a>\n</div>\n");
+    // Geçerli tarihi al
+    const currentDate = new Date();
+
+    // Etkinliğin başlangıç ve bitiş tarihlerini al
+    const startDate = new Date(event.start);
+    const endDate = new Date(event.end);
+
+    // Eğer etkinlik tarihi geçmişteyse veya başlangıç saati şu andan önceyse
+    const isEventPast = startDate < currentDate || endDate < currentDate;
+
+    return `
+    <div class="modal-header bg-light ps-card pe-5 border-bottom-0">
+      <div>
+        <h5 class="modal-title mb-0">${event.title}</h5>
+        ${event.extendedProps.organizer ? `
+          <p class="mb-0 fs--1 mt-1">
+            by <a href="#!">${event.extendedProps.organizer}</a>
+          </p>
+        ` : ''}
+      </div>
+      <button type="button" class="btn-close position-absolute end-0 top-0 mt-3 me-3" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body px-card pb-card pt-1 fs--1">
+      ${event.extendedProps.description ? `
+        <div class="d-flex mt-3">
+          ${getStackIcon('fas fa-align-left')}
+          <div class="flex-1">
+            <h6>Grup | Salon</h6>
+            <p class="mb-0">
+              ${event.extendedProps.description.split(' ').slice(0, 30).join(' ')}
+            </p>
+          </div>
+        </div>
+      ` : ''}
+      <div class="d-flex mt-3">
+        ${getStackIcon('fas fa-calendar-check')}
+        <div class="flex-1">
+          <h6>Tarih ve Saat</h6>
+          <p class="mb-1">
+            ${window.dayjs && window.dayjs(event.start).format('D MMMM dddd, YYYY')}
+            ${event.start ? `<br/>${window.dayjs && window.dayjs(event.start).subtract(1, 'day').format('H:mm')}` : ''}
+            ${event.end ? ` - ${window.dayjs && window.dayjs(event.end).subtract(1, 'day').format('H:mm')}` : ''}
+          </p>
+        </div>
+      </div>
+      ${event.extendedProps.note ? `
+        <div class="d-flex mt-3">
+          ${getStackIcon('fas fa-map-marker-alt')}
+          <div class="flex-1">
+            <h6>Not</h6>
+            <p class="mb-0">${event.extendedProps.note}</p>
+          </div>
+        </div>
+      ` : ''}
+      ${event.schedules ? `
+        <div class="d-flex mt-3">
+          ${getStackIcon('fas fa-clock')}
+          <div class="flex-1">
+            <h6>Schedule</h6>
+            <ul class="list-unstyled timeline mb-0">
+              ${event.schedules.map(function (schedule) {
+        return `<li>${schedule.title}</li>`;
+    }).join('')}
+            </ul>
+          </div>
+        </div>
+      ` : ''}
+    </div>
+    <div class="modal-footer d-flex justify-content-end bg-light px-card border-top-0">
+        <a onclick="eventKesinti(${event.id})" class="btn btn-falcon-warning btn-sm">
+          <span class="far fa-calendar-check fs--2 mr-2"></span> Kesinti Gir
+        </a>
+        <a onclick="eventIzin(${event.id})" class="btn btn-falcon-warning btn-sm">
+          <span class="far fa-calendar-check fs--2 mr-2"></span> İzin Ekle
+        </a>
+        <a onclick="eventTalep(${event.id})" class="btn btn-falcon-warning btn-sm">
+          <span class="far fa-calendar-check fs--2 mr-2"></span> Talep Gönder
+        </a>
+    ${!isEventPast ? `
+
+        <a onclick="eventEdit(${event.id})" class="btn btn-falcon-info btn-sm">
+          <span class="fas fa-pencil-alt fs--2 mr-2"></span> Düzenle
+        </a>
+        <a onclick="eventDelete(${event.id})" class="btn btn-falcon-danger btn-sm">
+          <span class="far fa-trash-alt fs--2 mr-2"></span> Sil
+        </a>
+
+    ` : ''}
+    </div>
+  `;
 };
 /* -------------------------------------------------------------------------- */
 

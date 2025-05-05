@@ -6,11 +6,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Enums;
 
 namespace Persistence.Concrete.Mappings;
 
 public class PersonelMap : IEntityTypeConfiguration<Personel>
 {
+    private static Random _random = new Random();
     public void Configure(EntityTypeBuilder<Personel> builder)
     {
         builder.ToTable("Personels").HasKey(d => d.Id);
@@ -64,8 +66,80 @@ public class PersonelMap : IEntityTypeConfiguration<Personel>
         builder.Property(d => d.UpdatedDate).HasColumnName("UpdatedDate");
         builder.Property(d => d.DeletedDate).HasColumnName("DeletedDate");
 
-
+        builder.HasData(GenerateSeedData());
     }
+
+    private List<Personel> GenerateSeedData()
+    {
+        var list = new List<Personel>();
+
+        // 50 farklı isim ve soyisim - Tek indeksler erkek, çift indeksler kadın
+        var isimler = new List<string>
+    {
+        "Mehmet", "Zeynep", "Faik", "Ayşe", "Tolga", "Emine", "Hüseyin", "Fatma", "Murat", "Elif",
+        "Hasan", "Seda", "Kemal", "Zeynep", "Mustafa", "Ayşe", "Murat", "Seda", "Deniz", "Büşra",
+        "Cem", "Havva", "Burak", "Gizem", "Emre", "Sibel", "Murat", "Zeynep", "Kaan", "Rabia",
+        "Gökhan", "Aylin", "Can", "Derya", "Serkan", "Eda", "Kemal", "Neslihan", "Ömer", "Büşra",
+        "Murat", "Cemre", "İsmail", "Tuğba", "Hakan", "Rüya", "Serkan", "Selin", "Baran", "Ayşegül"
+    };
+
+        var soyisimler = new List<string>
+    {
+        "Yılmaz", "Kaya", "Demir", "Çelik", "Şahin", "Polat", "Karadeniz", "Öztürk", "Kocabaş", "Koç",
+        "Aydın", "Güzel", "Aksoy", "Yıldız", "Sarı", "Beyaz", "Ünal", "Arslan", "Işık", "Güneş",
+        "Celik", "Sevgi", "Aydoğan", "Kılıç", "Çetin", "Başaran", "Yalçın", "Tekin", "Özdemir", "Türkmen",
+        "Çakır", "Erdem", "Savaş", "Balcı", "Mert", "Çakmak", "Erdoğan", "Demirtaş", "Keskin", "Aslan",
+        "Yüksek", "Toprak", "Karaca", "Akın", "İnce", "Gök", "Kurtuluş", "Sevim", "Kurt", "Özkan"
+    };
+
+        for (int i = 1; i <= 100; i++)
+        {
+            var isimIndex = _random.Next(isimler.Count);
+            var soyisimIndex = _random.Next(soyisimler.Count);
+            var isim = isimler[isimIndex];
+            var soyisim = soyisimler[soyisimIndex];
+
+            // Tek indexler için erkek, çift indexler için kadın cinsiyeti belirle
+            Cinsiyet cinsiyet = (isimIndex % 2 == 0) ? Cinsiyet.Erkek : Cinsiyet.Kadin;
+
+            list.Add(new Personel
+            {
+                Id = i,
+                isim = isim,
+                soyisim = soyisim,
+                adres = $"Adres {i}",
+                telefonNumarasi1 = $"0500{i:D7}",
+                telefonNumarasi2 = $"0555{i:D7}",
+                tcKimlik = $"{_random.Next(100000000, 999999999)}{_random.Next(10)}",
+                bankaHesapNo = $"TR{i:D2}0000000000000000{i:D4}",
+                vergiNo = $"{_random.Next(100000000, 999999999)}",
+                vergiDairesiAdi = $"Vergi Dairesi {i}",
+                aciklama = $"Açıklama {i}",
+                profilFotografiUrl = $"https://fakeimg.pl/100x100/?text=User{i}",
+                departmanId = _random.Next(1, 101),
+                pozisyonId = _random.Next(1, 101),
+                subeId = _random.Next(1, 101),
+                yillikIzinGunSayisi = _random.Next(0, 30),
+                performansNotu = _random.Next(1, 101),
+                sgkSicilNo = i,
+                haftalikSaat = _random.Next(30, 50),
+                saatlikUcret = _random.Next(100, 500),
+                dogumTarihi = new DateTime(1990, 1, 1).AddDays(_random.Next(1000, 10000)),
+                baslangicTarihi = new DateTime(2020, 1, 1).AddDays(_random.Next(0, 1500)),
+                bitisTarihi = null, // isteğe göre eklenebilir
+                fazlaMesaiUygun = _random.Next(0, 2) == 1,
+                CalismaTipi = (CalismaTipi)_random.Next(1, Enum.GetValues(typeof(CalismaTipi)).Length),
+                Cinsiyet = cinsiyet,
+                VardiyaTuru = (VardiyaTuru)_random.Next(1,Enum.GetValues(typeof(VardiyaTuru)).Length),
+                CreatedDate = DateTime.Now,
+                UpdatedDate = DateTime.Now,
+                DeletedDate = null
+            });
+        }
+
+        return list;
+    }
+
 }
 
 

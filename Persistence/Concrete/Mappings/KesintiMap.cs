@@ -24,5 +24,25 @@ public class KesintiMap : IEntityTypeConfiguration<Kesinti>
         builder.Property(k => k.CreatedDate).HasColumnName("CreatedDate").IsRequired();
         builder.Property(k => k.UpdatedDate).HasColumnName("UpdatedDate");
         builder.Property(k => k.DeletedDate).HasColumnName("DeletedDate");
+
+
+        // Seed verisi
+        var random = new Random();
+        var kesintiler = new List<Kesinti>();
+
+        for (int i = 1; i <= 100; i++)
+        {
+            kesintiler.Add(new Kesinti
+            {
+                Id = i,
+                PersonelId = random.Next(1, 101),
+                UygulanacakTarih = new DateTime(2024, 1, 1).AddDays(random.Next(0, 180)),
+                CezaMiktari = Math.Round((decimal)(random.NextDouble() * 500 + 50), 2), // 50 ile 550 arasında rastgele
+                PlanlanmisVardiyaSnapshotId = random.Next(1, 101),
+                CreatedDate = DateTime.Now
+            });
+        }
+
+        builder.HasData(kesintiler);
     }
 }

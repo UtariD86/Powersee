@@ -80,6 +80,31 @@ namespace WebUI.Areas.Admin.Controllers
             return PartialView(model);
         }
 
+        [Route("{area}/get-izinByPlanlanmisVardiya")]
+        [HttpPost]
+        public async Task<IActionResult> Edit([FromBody] int? id, string _ = "")
+        {
+            var model = new IzinDto();
+            if (id.HasValue)
+            {
+                //model.planlanmisVardiyaSnapshotId = id;
+                //??Burada planlanmış vardiya bilgisi de olmayacak mıydı?
+            }
+
+            var personelResult = await _personelService.GetAll();
+
+            var personelData = personelResult.Data.Select(x => new
+            {
+                Id = x.Id,
+                FullName= $"{x.isim} {x.soyisim}"
+            });
+
+            model.personelResultSel = new SelectList(personelData, "Id", "FullName");
+
+
+            return PartialView(model);
+        }
+
         [Route("{area}/save-izin")]
         [HttpPost]
         public async Task<IActionResult> Edit(IzinDto model)
