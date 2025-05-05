@@ -112,7 +112,7 @@ public class PersonelController : Controller
         [HttpPost]
         public async Task<IActionResult> Edit(PersonelDto model)
 
-        {
+            {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
