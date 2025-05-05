@@ -61,7 +61,7 @@ namespace WebUI.Areas.Admin.Controllers
                     model.aciklama = entity.aciklama;
                     model.aliciId = entity.aliciId;
                     model.Durum = entity.Durum;
-                    model.TalepTuru = entity.TalepTuru; 
+                    model.TalepTuru = entity.TalepTuru;
                     // Alici seçili yapılacak
                     model.aliciSel = new SelectList(personelResult.Data, "Id", "isim", entity.aliciId);
 
@@ -108,19 +108,38 @@ namespace WebUI.Areas.Admin.Controllers
             return PartialView(model);
         }
 
+        [Route("{area}/get-talepByPlanlanmisVardiya")]
+        [HttpPost]
+        public async Task<IActionResult> Edit([FromBody] int? id, string _ = "")
+        {
+            var personelResult = await _personelService.GetAll();
+            var model = new TalepDto();
+            model.aliciSel = new SelectList(personelResult.Data, "Id", "isim"); // Alici Sel boş
+            model.TalepTurusel = EnumHelper.ToSelectList<TalepTuru>();
+            model.Durumsel = EnumHelper.ToSelectList<Durum>();
+            model.Durum = Durum.Beklemede;
 
+
+            if (id.HasValue)
+            {
+                model.planlanmisVardiyaId = id.Value;
+            }
+
+
+            return PartialView(model);
+        }
 
         [Route("{area}/save-talep")]
-[HttpPost]
-public async Task<IActionResult> Edit(TalepDto model)
-{
+        [HttpPost]
+        public async Task<IActionResult> Edit(TalepDto model)
+        {
             model.gondericiId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             ModelState.Remove("gondericiId");
 
             if (!ModelState.IsValid)
-    {
-        return BadRequest(ModelState);
-    }
+            {
+                return BadRequest(ModelState);
+            }
 
             var userName = User.Identity?.Name;
             if (string.IsNullOrEmpty(userName))
@@ -131,20 +150,20 @@ public async Task<IActionResult> Edit(TalepDto model)
             var user = await _userManager.FindByNameAsync(userName);
 
             var talep = new Talep()
-    {
-        Id = model.Id,
-        aciklama = model.aciklama,
-        aliciId = model.aliciId,
-        Durum = model.Durum,
-        TalepTuru = model.TalepTuru,
-        gondericiId = user.Id,
-        planlanmisVardiyaId=model.planlanmisVardiyaId
-    };
+            {
+                Id = model.Id,
+                aciklama = model.aciklama,
+                aliciId = model.aliciId,
+                Durum = model.Durum,
+                TalepTuru = model.TalepTuru,
+                gondericiId = user.Id,
+                planlanmisVardiyaId = model.planlanmisVardiyaId
+            };
 
-    var result = _talepService.Edit(talep);
-    string message = result?.Result?.Message ?? "İşlem tamamlandı.";
-    return Json(message);
-}
+            var result = _talepService.Edit(talep);
+            string message = result?.Result?.Message ?? "İşlem tamamlandı.";
+            return Json(message);
+        }
 
         //Departman silme işlemleri için kullanacağımız endpoint
         [Route("{area}/delete-talep")]

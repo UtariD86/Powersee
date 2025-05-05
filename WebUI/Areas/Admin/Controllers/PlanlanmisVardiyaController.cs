@@ -141,8 +141,8 @@ namespace WebUI.Areas.Admin.Controllers
             }
             return Json(message);
         }
-        [HttpGet]
-        [Route("Admin/PlanlanmisVardiya/GetEvents")]
+        [HttpPost]
+        [Route("{area}/get-all-vardiya-events")]
         public async Task<IActionResult> GetEvents()
         {
             var vardiyalarResult = await dm.GetAll();

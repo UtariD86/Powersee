@@ -1,72 +1,746 @@
 ﻿@{
-	string PageName = "Planlanmış Vardiya";
-	string AreaName = "Admin";
+    string PageName = "Planlanmış Vardiya";
+    string AreaName = "Admin";
 }
 
 
 <div class="card overflow-hidden">
-	<div class="card-header">
-		<div class="row gx-0 align-items-center">
-			<div class="col-auto d-flex justify-content-end order-md-1"><button class="btn icon-item icon-item-sm shadow-none p-0 me-1 ms-md-2" type="button" data-event="prev" data-bs-toggle="tooltip" title="Previous"><span class="fas fa-arrow-left"></span></button><button class="btn icon-item icon-item-sm shadow-none p-0 me-1 me-lg-2" type="button" data-event="next" data-bs-toggle="tooltip" title="Next"><span class="fas fa-arrow-right"></span></button></div>
-			<div class="col-auto col-md-auto order-md-2">
-				<h4 class="mb-0 fs-0 fs-sm-1 fs-lg-2 calendar-title"></h4>
-			</div>
-			<div class="col col-md-auto d-flex justify-content-end order-md-3"><button class="btn btn-falcon-primary btn-sm" type="button" data-event="today">Today</button></div>
-			<div class="col-md-auto d-md-none">
-				<hr />
-			</div>
-			<div class="col-auto d-flex order-md-0"><button class="btn btn-primary btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#addEventModal"> <span class="fas fa-plus me-2"></span>Planlanmış Vardiya Ekle</button></div>
-			<div class="col-auto d-flex order-md-0"><button class="btn btn-primary btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#addEventModal"> <span class="fas fa-plus me-2"></span>Talep Ekle</button></div>
-			<div class="col-auto d-flex order-md-0"><button class="btn btn-primary btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#addEventModal"> <span class="fas fa-plus me-2"></span>İzin Ekle</button></div>
-			<div class="col-auto d-flex order-md-0"><button class="btn btn-primary btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#addEventModal"> <span class="fas fa-plus me-2"></span>Kesinti Ekle</button></div>
-			<div class="col d-flex justify-content-end order-md-2">
-				<div class="dropdown font-sans-serif me-md-2">
-					<button class="btn btn-falcon-default text-600 btn-sm dropdown-toggle dropdown-caret-none" type="button" id="email-filter" data-bs-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false"><span data-view-title="data-view-title">Month View</span><span class="fas fa-sort ms-2 fs--1"></span></button>
-					<div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="email-filter"><a class="active dropdown-item d-flex justify-content-between" href="#!" data-fc-view="dayGridMonth">Month View<span class="icon-check"><span class="fas fa-check" data-fa-transform="down-4 shrink-4"></span></span></a><a class="dropdown-item d-flex justify-content-between" href="#!" data-fc-view="timeGridWeek">Week View<span class="icon-check"><span class="fas fa-check" data-fa-transform="down-4 shrink-4"></span></span></a><a class="dropdown-item d-flex justify-content-between" href="#!" data-fc-view="timeGridDay">Day View<span class="icon-check"><span class="fas fa-check" data-fa-transform="down-4 shrink-4"></span></span></a><a class="dropdown-item d-flex justify-content-between" href="#!" data-fc-view="listWeek">List View<span class="icon-check"><span class="fas fa-check" data-fa-transform="down-4 shrink-4"></span></span></a><a class="dropdown-item d-flex justify-content-between" href="#!" data-fc-view="listYear">Year View<span class="icon-check"><span class="fas fa-check" data-fa-transform="down-4 shrink-4"></span></span></a></div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="card-body p-0 scrollbar">
-		<div class="calendar-outline" id="appCalendar"></div>
-	</div>
+    <div class="card-header">
+        <!--Takvim Navbar Başlangıç-->
+        <div class="row gx-0 align-items-center">
+
+            <!--Navigation Başlangıç-->
+            <div class="col-auto d-flex justify-content-end order-md-1">
+                <button onclick="loadCalendarPage()" class="btn icon-item icon-item-sm shadow-none p-0 me-1 ms-md-2" type="button" data-event="prev" data-bs-toggle="tooltip" title="Geri">
+                    <span class="fas fa-arrow-left">
+                    </span>
+                </button>
+                <button onclick="loadCalendarPage()" class="btn icon-item icon-item-sm shadow-none p-0 me-1 me-lg-2" type="button" data-event="next" data-bs-toggle="tooltip" title="İleri">
+                    <span class="fas fa-arrow-right">
+                    </span>
+                </button>
+            </div>
+            <div class="col-auto col-md-auto order-md-2">
+                <h4 class="mb-0 fs-0 fs-sm-1 fs-lg-2 calendar-title"></h4>
+            </div>
+            <div class="col col-md-auto d-flex justify-content-end order-md-3">
+                <button onclick="loadCalendarPage()" class="btn btn-falcon-primary btn-sm" type="button" data-event="today">
+                    Bugün
+                </button>
+            </div>
+            <div class="col-md-auto d-md-none">
+                <hr />
+            </div>
+            <!--Navigation Bitiş-->
+
+            <div class="modal fade" id="eventDetailsModal" style="z-index:1051 !important;" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content border"></div>
+                </div>
+            </div>
+
+            <!--Custom Button Başlangıç-->
+            <div class="col-auto d-flex order-md-0">
+                <button onclick="zuraf.getById('/@AreaName/get-planlanmisvardiya',null,'')" class="btn btn-primary btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#addEventModal">
+                    <span class="fas fa-plus me-2">
+                    </span>
+                    Antrenman Ekle
+                </button>
+            </div>
+            <!--Custom Button Bitiş-->
+            <!--Sağa Yasla Başlangıç-->
+            <div class="col d-flex justify-content-end order-md-2">
+
+                <!--Görünüm Dropdown Başlangıç-->
+                <div class="dropdown font-sans-serif me-md-2">
+                    <button class="btn btn-falcon-default text-600 btn-sm dropdown-toggle dropdown-caret-none" type="button" id="email-filter" data-bs-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false">
+                        <span data-view-title="data-view-title">
+                            Aylık Görünüm
+                        </span>
+                        <span class="fas fa-sort ms-2 fs--1">
+                        </span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="email-filter">
+                        <a class="active dropdown-item d-flex justify-content-between" href="#!" data-fc-view="dayGridMonth">
+                            Aylık Görünüm
+                            <span class="icon-check">
+                                <span class="fas fa-check" data-fa-transform="down-4 shrink-4">
+                                </span>
+                            </span>
+                        </a>
+                        <a class="dropdown-item d-flex justify-content-between" href="#!" data-fc-view="timeGridWeek">
+                            Haftalık Görünüm
+                            <span class="icon-check">
+                                <span class="fas fa-check" data-fa-transform="down-4 shrink-4">
+                                </span>
+                            </span>
+                        </a>
+                        <a class="dropdown-item d-flex justify-content-between" href="#!" data-fc-view="timeGridDay">
+                            Günlük Görünüm
+                            <span class="icon-check">
+                                <span class="fas fa-check" data-fa-transform="down-4 shrink-4">
+                                </span>
+                            </span>
+                        </a>
+                        <a class="dropdown-item d-flex justify-content-between" href="#!" data-fc-view="listWeek">
+                            Liste Görünümü
+                            <span class="icon-check">
+                                <span class="fas fa-check" data-fa-transform="down-4 shrink-4">
+                                </span>
+                            </span>
+                        </a>
+                        <a class="dropdown-item d-flex justify-content-between" href="#!" data-fc-view="listYear">
+                            Year View<span class="icon-check">
+                                <span class="fas fa-check" data-fa-transform="down-4 shrink-4">
+                                </span>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+                <!--Görünüm Dropdown Bitiş-->
+
+            </div>
+            <!--Sağa Yasla Başlangıç-->
+
+        </div>
+        <!--Takvim Navbar Bitiş-->
+
+    </div>
+    <div class="card-body p-0 scrollbar">
+        <div id="loading-calendar" style="position: absolute; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 9998;">
+            <div style="position: fixed;top: 50%;left: 50%;" class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <style>
+            </style>
+        </div>
+        <div class="calendar-outline" id="calendarContainer"></div>
+    </div>
 </div>
 
 
+@*<script>
+        function eventEdit(id) {
+            zuraf.getById('/@AreaName/get-planlanmisvardiya', id, '');
+            $('#eventDetailsModal').modal('hide');
+        }
+
+        function eventDelete(id) {
+            zuraf.deleteById('/@AreaName/delete-training', id, '', true, function (result) {
+                $('#eventDetailsModal').modal('hide');
+                loadCalendarPage();
+            });
+        }
+
+        function eventKesinti(id) {
+            zuraf.getById('/@AreaName/get-kesinti', id, '');
+            $('#eventDetailsModal').modal('hide');
+        }
+
+        function eventTalep(id) {
+            zuraf.getById('/@AreaName/get-talep', id, '');
+            $('#eventDetailsModal').modal('hide');
+        }
+
+        function eventIzin(id) {
+            zuraf.getById('/@AreaName/get-izin', id, '');
+            $('#eventDetailsModal').modal('hide');
+        }
+
+        $(document).ready(function () {
+            var calendarEl = document.getElementById('appCalendar');
+            var Selectors = {
+                EVENT_DETAILS_MODAL_CONTENT: '#eventDetailsModal .modal-content'
+            };
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: 'tr',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                },
+                events: {
+                    url: '/Admin/PlanlanmisVardiya/GetEvents',
+                    method: 'GET',
+                    failure: function () {
+                        alert('Etkinlikler yüklenemedi!');
+                    }
+                },
+                eventClick: function (info) {
+                    if (info.event.url) {
+                        window.open(info.event.url, '_blank');
+                        info.jsEvent.preventDefault();
+                    } else {
+                        var template = getTemplate(info.event);
+                        $(Selectors.EVENT_DETAILS_MODAL_CONTENT).html(template);
+                        $('#eventDetailsModal').modal('show');
+                    }
+                },
+            });
+
+            calendar.render();
+        });
+    </script>*@
 
 <script>
+       function eventEdit(id) {
+           zuraf.getById('/@AreaName/get-planlanmisvardiya', id, '')
+        $('#eventDetailsModal').modal('hide');
 
-	document.addEventListener('DOMContentLoaded', function () {
-		var calendarEl = document.getElementById('appCalendar');
+    }
+    function eventKesinti(id) {
 
-		var calendar = new FullCalendar.Calendar(calendarEl, {
-			initialView: 'dayGridMonth',
-			locale: 'tr',
-			headerToolbar: {
-				left: 'prev,next today',
-				center: 'title',
-				right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-			},
-			events: {
-				url: '/Admin/PlanlanmisVardiya/GetEvents',
-				method: 'GET',
-				failure: function () {
-					alert('Etkinlikler yüklenemedi!');
-				}
-			},
-	eventClick: function(info) {
-		var id = parseInt(info.event.id); // 🔸 ID'nin sayı olduğundan emin ol
+        zuraf.getById('/@AreaName/get-kesintiByPlanlanmisVardiya', id, '', '')
+        $('#eventDetailsModal').modal('hide');
 
-		// Modalı açmak için DataGrid ile aynı fonksiyonu çağır
-		zuraf.getById('/Admin/get-planlanmisvardiya', id, '#gridContainer');
+    }
+    function eventIzin(id) {
 
+        zuraf.getById('/@AreaName/get-izinByPlanlanmisVardiya', id, '', '')
+        $('#eventDetailsModal').modal('hide');
 
-	}
-		});
+    }
+    function eventTalep(id) {
 
-		calendar.render();
-	});
+        zuraf.getById('/@AreaName/get-talepByPlanlanmisVardiya', id, '', '')
+        $('#eventDetailsModal').modal('hide');
+
+    }
+    function eventDelete(id) {
+        zuraf.deleteById('/@AreaName/delete-planlanmisvardiya', id, '', true, function (result) {
+            $('#eventDetailsModal').modal('hide');
+
+            loadCalendarPage();
+
+        });
+    }
 
 
+    // Global değişkenler: Takvim nesnesi ve etkinlik listesi
+    var calendar = null;
+    var eventList = [];
 
+
+
+    //TODO VURASI SADECE MODAL TESTİ İÇİN VAR VERİTABANINDAN LİSTELEME ÇALIŞIYORSA BURASI SİLİNECEK
+    var eventList = [
+        {
+            id: "1",
+            title: 'Boot Camp',
+            start: "".concat(currentYear, "-").concat(currentMonth, "-01 10:00:00"),
+            end: "".concat(currentYear, "-").concat(currentMonth, "-03 16:00:00"),
+            description: "Boston Harbor Now in partnership with the Friends of Christopher Columbus Park, the Wharf District Council and the City of Boston is proud to announce the New Year's Eve Midnight Harbor Fireworks! This beloved nearly 40-year old tradition is made possible by the generous support of local waterfront organizations and businesses and the support of the City of Boston and the Office of Mayor Marty Walsh.",
+            className: 'bg-soft-success',
+            location: 'Boston Harborwalk, Christopher Columbus Park, <br /> Boston, MA 02109, United States',
+            organizer: 'Boston Harbor Now'
+        }, {
+            id: "1",
+            title: 'Crain\'s New York Business ',
+            start: "".concat(currentYear, "-").concat(currentMonth, "-11"),
+            description: "Crain's 2020 Hall of Fame. Sponsored Content By Crain's Content Studio. Crain's Content Studio Presents: New Jersey: Perfect for Business. Crain's Business Forum: Letitia James, New York State Attorney General. Crain's NYC Summit: Examining racial disparities during the pandemic",
+            className: 'bg-soft-primary'
+        }, {
+            id: "1",
+            title: 'Toplantı',
+            start: "".concat(currentYear, "-").concat(currentMonth, "-").concat(currentDay),
+            description: 'The Milken Institute Global Conference gathered the best minds in the world to tackle some of its most stubborn challenges. It was a unique experience in which individuals with the power to enact change connected with experts who are reinventing health, technology, philanthropy, industry, and media.',
+            className: 'bg-soft-success',
+            allDay: true,
+            schedules: [{
+                id: "1",
+                title: 'Reporting',
+                start: "".concat(currentYear, "-").concat(currentMonth, "-").concat(currentDay, " 11:00:00"),
+                description: 'Time to start the conference and will briefly describe all information about the event.  ',
+                className: 'event-bg-soft-success'
+            }, {
+                id: "3",
+                title: 'Lunch',
+                start: "".concat(currentYear, "-").concat(currentMonth, "-").concat(currentDay, " 14:00:00"),
+                description: 'Lunch facility for all the attendance in the conference.',
+                className: 'event-bg-soft-success'
+            }, {
+                id: "5",
+                title: 'Contest',
+                start: "".concat(currentYear, "-").concat(currentMonth, "-").concat(currentDay, " 16:00:00"),
+                description: 'The starting of the programming contest',
+                className: 'event-bg-soft-success'
+                }, {
+                id: "1",
+                title: 'Dinner',
+                start: "".concat(currentYear, "-").concat(currentMonth, "-").concat(currentDay, " 22:00:00"),
+                description: 'Dinner facility for all the attendance in the conference',
+                className: 'event-bg-soft-success'
+            }]
+        }, {
+            id: "1",
+            title: "ICT Expo ".concat(currentYear, " - Product Release"),
+            start: "".concat(currentYear, "-").concat(currentMonth, "-16 10:00:00"),
+            description: "ICT Expo ".concat(currentYear, " is the largest private-sector exposition aimed at showcasing IT and ITES products and services in Switzerland."),
+            end: "".concat(currentYear, "-").concat(currentMonth, "-18 16:00:00"),
+            className: 'bg-soft-warning'
+        }, {
+            id: "1",
+            title: 'Meeting',
+            start: "".concat(currentYear, "-").concat(currentMonth, "-07 10:00:00"),
+            description: 'Discuss about the upcoming projects in current year and assign all tasks to the individuals'
+        }, {
+            id: "1",
+            title: 'Contest',
+            start: "".concat(currentYear, "-").concat(currentMonth, "-14 10:00:00"),
+            description: 'PeaceX is an international peace and amity organisation that aims at casting a pall at the striking issues surmounting the development of peoples and is committed to impacting the lives of young people all over the world.'
+        }, {
+            id: "1",
+            title: 'Event With Url',
+            start: "".concat(currentYear, "-").concat(currentMonth, "-23"),
+            description: 'Sample example of a event with url. Click the event, will redirect to the given link.',
+            className: 'bg-soft-success',
+            url: 'http://google.com'
+        }, {
+            id: "1",
+            title: 'Competition',
+            start: "".concat(currentYear, "-").concat(currentMonth, "-26"),
+            description: 'The Future of Zambia – Top 30 Under 30 is an annual award, ranking scheme, and recognition platform for young Zambian achievers under the age of 30, who are building brands, creating jobs, changing the game, and transforming the country.',
+            className: 'bg-soft-danger'
+        }, {
+            id: "1",
+            title: 'Birthday Party',
+            start: "".concat(currentYear, "-").concat(nextMonth, "-05"),
+            description: 'Will celebrate birthday party with my friends and family',
+            className: 'bg-soft-primary'
+        }, {
+            id: "1",
+            title: 'Click for Google',
+            url: 'http://google.com/',
+            start: "".concat(currentYear, "-").concat(prevMonth, "-10"),
+            description: 'Applications are open for the New Media Writing Prize 2020. The New Media Writing Prize (NMWP) showcases exciting and inventive stories and poetry that integrate a variety of formats, platforms, and digital media.',
+            className: 'bg-soft-primary'
+        }];
+    //TODO VURASI SADECE MODAL TESTİ İÇİN VAR VERİTABANINDAN LİSTELEME ÇALIŞIYORSA BURASI SİLİNECEK
+
+    // Önayarlar: Selector’lar, event isimleri, data key’ler ve class isimleri gibi
+    var Selectors = {
+        ACTIVE: '.active',
+        ADD_EVENT_FORM: '#addEventForm',
+        ADD_EVENT_MODAL: '#addEventModal',
+        CALENDAR: '#calendarContainer',
+        CALENDAR_TITLE: '.calendar-title',
+        DATA_CALENDAR_VIEW: '[data-fc-view]',
+        DATA_EVENT: '[data-event]',
+        DATA_VIEW_TITLE: '[data-view-title]',
+        EVENT_DETAILS_MODAL: '#eventDetailsModal',
+        EVENT_DETAILS_MODAL_CONTENT: '#eventDetailsModal .modal-content',
+        EVENT_START_DATE: '#addEventModal [name="startDate"]',
+        INPUT_TITLE: '[name="title"]'
+    };
+
+    var Events = {
+        CLICK: 'click',
+        SHOWN_BS_MODAL: 'shown.bs.modal',
+        SUBMIT: 'submit'
+    };
+    var DataKeys = {
+        EVENT: 'event',
+        FC_VIEW: 'fc-view'
+    };
+    var ClassNames = {
+        ACTIVE: 'active'
+    };
+
+    // Takvim verilerini ajax ile yükleyen fonksiyon
+    function loadCalendarData() {
+
+        // Eğer takvim oluşturulmuşsa mevcut görünüm aralığındaki tarihleri kullanır,
+        // aksi halde bugünün tarihini kullanır.
+        // Aşağıdaki yorum satırındaki kod, eski bir alternatif yöntem olarak kalmış:
+        // var startDate = calendar ? calendar.view.currentStart.toISOString() : new Date().toISOString();
+        // var endDate = calendar ? calendar.view.currentEnd.toISOString() : new Date().toISOString();
+
+        // Güncellenmiş yöntem; aktif başlangıç ve bitiş tarihleri kullanılıyor.
+        var startDate = calendar ? calendar.view.activeStart.toISOString() : new Date().toISOString();
+        var endDate = calendar ? calendar.view.activeEnd.toISOString() : new Date().toISOString();
+
+        //var filterData = {};
+
+        //if (selectedFilters.GroupGroupType) {
+        //    filterData.GroupGroupType = selectedFilters.GroupGroupType;
+        //}
+        //if (selectedFilters.GroupId) {
+        //    filterData.GroupId = selectedFilters.GroupId;
+        //}
+        //if (selectedFilters.RoomId) {
+        //    filterData.RoomId = selectedFilters.RoomId;
+        //}
+
+        // Ajax isteği ile takvim verilerini sunucudan çekiyoruz.
+        $.ajax({
+            url: '/@AreaName/get-all-vardiya-events',
+            method: 'POST',
+            dataType: 'json',
+            contentType: 'application/json',
+            //data: JSON.stringify({
+            //    Start: startDate, // Sunucu tarafında Start ile eşleşmeli
+            //    End: endDate,      // Sunucu tarafında End ile eşleşmeli
+            //    //Filter: Object.keys(filterData).length ? JSON.stringify(filterData) : null // Filtre varsa JSON string olarak gönder
+            //}),
+            success: function (response) {
+                // Eğer beklenen formatta veri geldiyse (Items array şeklinde)
+                if (response.Items && Array.isArray(response.Items)) {
+
+                    // Gelen her etkinlik için gerekli dönüşümler yapılıyor.
+                    //eventList = response.Items.map(function (event) {
+                    //    let eventDate = new Date(event.StartDate);
+                    //    let today = new Date();
+
+                    //    // Yalnızca yıl, ay ve günü karşılaştırabilmek için tarihi normalize ediyoruz.
+                    //    let eventDateOnly = new Date(eventDate.getFullYear(), eventDate.getMonth(), eventDate.getDate());
+                    //    let todayOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+                    //    // Varsayılan class name belirleniyor.
+                    //    let className = "bg-soft-primary"; // Varsayılan: bugüne eşitse primary tipi
+                    //    if (eventDateOnly < todayOnly) {
+                    //        className = "bg-soft-secondary"; // Geçmiş tarih ise secondary
+                    //    } else if (eventDateOnly > todayOnly) {
+                    //        className = "bg-soft-info"; // Gelecek tarih ise info
+                    //    }
+                    //    return {
+                    //        id: event.Id,
+                    //        title: event.Name,
+                    //        start: event.StartDate,
+                    //        end: event.EndDate,
+                    //        classNames: className,
+                    //        allDay: false,
+                    //        extendedProps: {
+                    //            description: "🏐" + event.GroupName + " <br> 🚩" + event.RoomName, // Ek açıklama bilgisi
+                    //            time: new Date(event.StartDate).toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" }) +
+                    //                "-" + new Date(event.EndDate).toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" }),
+                    //            note: event.Note      // Organizasyon bilgisi
+                    //        }
+                    //    };
+                    eventList = response;
+               
+
+                    // Eğer takvim (calendar) daha önce oluşturulmuşsa, önceki etkinlikleri kaldırıp yeni verileri ekliyoruz.
+                    if (calendar) {
+                        calendar.removeAllEvents();
+                        eventList.forEach(function (evt) {
+                            calendar.addEvent(evt);
+                        });
+                        updateTitle(calendar.currentData.viewTitle);
+                    }
+                } else {
+                    // Beklenen formatta veri alınamadığında hata mesajı gösterilir.
+                    toastr.error('Beklenen formatta veri alınamadı.');
+                }
+            },
+            error: function (xhr) {
+                    console.log(xhr);
+                     if (xhr.responseJSON && xhr.responseJSON.redirectUrl) {
+                window.location.href = xhr.responseJSON.redirectUrl;
+            }
+                // Hata durumunda yükleme ekranı kaldırılır ve hata detaylarına göre ilgili inputlara hata eklenir.
+                $('#loading-overlay').remove();
+                if (xhr.status === 400 || xhr.status === 404) {
+                    let response = xhr.responseJSON;
+                    if (response) {
+                        $(".is-invalid").removeClass("is-invalid");
+                        $(".invalid-feedback").html("");
+
+                        $.each(response, function (key, errorMessages) {
+                            let input = $("[name='" + key + "']");
+                            input.addClass("is-invalid");
+
+                            let errorDiv = input.siblings(".invalid-feedback");
+                            if (errorDiv.length) {
+                                errorDiv.html(Array.isArray(errorMessages) ? errorMessages.join("<br>") : errorMessages);
+                            }
+
+                            if (key == "ErrorDetail") {
+                                toastr.error((Array.isArray(errorMessages) ? errorMessages.join("<br>") : errorMessages), "", { timeOut: 5000 });
+                            }
+                        });
+
+                    } else {
+                        console.error("Beklenmeyen hata formatı:", xhr.responseText);
+                    }
+                }
+
+            }
+        });
+    }
+
+    // Takvim başlığını güncelleyen yardımcı fonksiyon
+    function updateTitle(title) {
+        document.querySelector(Selectors.CALENDAR_TITLE).textContent = title;
+    }
+
+    // Takvim sayfasını yükleme fonksiyonu; önce loading ekranı gösterir, ardından verileri yükler.
+    function loadCalendarPage() {
+        console.log("Yükleme ekranı açılıyor...");
+        $("#loading-calendar").show();
+
+        setTimeout(() => {
+            loadCalendarData();
+            setTimeout(() => {
+                console.log("Yükleme ekranı kapanıyor...");
+                $("#loading-calendar").hide();
+            }, 500);
+        }, 500);
+    }
+
+    // Sayfa tamamen yüklendiğinde çalışacak işlemler
+    $(document).ready(function () {
+
+        // Takvimi initialize eden fonksiyon
+        function initCalendar() {
+            var appCalendar = document.querySelector(Selectors.CALENDAR);
+            var addEventForm = document.querySelector(Selectors.ADD_EVENT_FORM);
+            var addEventModal = document.querySelector(Selectors.ADD_EVENT_MODAL);
+            var eventDetailsModal = document.querySelector(Selectors.EVENT_DETAILS_MODAL);
+
+            if (appCalendar) {
+                // Takvim oluşturulurken başlangıçta eventList boş olarak veriliyor; sonrasında ajax ile güncellenecek.
+                calendar = renderCalendar(appCalendar, {
+                    locale: 'tr',
+                    firstDay: 1,
+                    lazyFetching: false,
+                    noEventsText: 'Gösterilecek etkinlik yok',
+                    headerToolbar: false,
+                    dayMaxEvents: 2,
+                    height: 800,
+                    stickyHeaderDates: false,
+                    eventContent: function (arg) {
+                        return {
+                            html: `<div>
+                                    <div class="fc-event-title"> ⏰ ${arg.event.extendedProps.time} <br>  🤾 ${arg.event.title}</div>
+                                    <strong style="color: #696969 !important;">${arg.event.extendedProps.description}</strong>
+                                  </div>`
+                        };
+                    },
+                    views: {
+                        week: {
+                            eventLimit: 3
+                        },
+                        month: {
+                            displayEventTime: false
+                        },
+                        agendaWeek: {
+                            displayEventTime: true
+                        },
+                        agendaDay: {
+                            displayEventTime: true
+                        },
+                        listWeek: {
+                            displayEventTime: true
+                        }
+                    },
+                    eventTimeFormat: {
+                        hour: 'numeric',
+                        minute: '2-digit',
+                        omitZeroMinute: true,
+                        meridiem: true
+                    },
+                    viewRender: function (view, element) {
+                        // Görünüm değiştiğinde mevcut tüm etkinlikleri alıp,
+                        // ay görünümünde etkinlikleri all-day (tüm gün) olarak ayarlıyoruz.
+                        var currentEvents = $('#calendar').fullCalendar('clientEvents');
+                        var isMonthView = (view.name === 'month');
+                        currentEvents.forEach(function (event) {
+                            event.allDay = isMonthView ? true : event.originalAllDay;
+                        });
+                        // Değişiklikleri uygulamak için etkinlikleri yeniden render ediyoruz.
+                        $('#calendar').fullCalendar('rerenderEvents');
+                    },
+                    events: eventList,
+                    eventClick: function (info) {
+                        // Eğer etkinliğin URL bilgisi varsa yeni sekmede açar
+                        if (info.event.url) {
+                            window.open(info.event.url, '_blank');
+                            info.jsEvent.preventDefault();
+                        } else {
+                            // Aksi halde etkinlik detaylarını bir modal içinde gösterir
+                            var template = getTemplate(info.event);
+                            document.querySelector(Selectors.EVENT_DETAILS_MODAL_CONTENT).innerHTML = template;
+                            var modal = new window.bootstrap.Modal(eventDetailsModal);
+                            modal.show();
+                        }
+                    },
+                    // dateClick eventi: Tarihe tıklanınca yapılacak işlemleri belirler.
+                    // Aşağıdaki yorum satırındaki kod, alternatif bir dateClick fonksiyonunun örneğidir:
+                    // dateClick: function (info) {
+                    //  var modal = new window.bootstrap.Modal(addEventModal);
+                    //  modal.show();
+                    //  var flatpickr = document.querySelector(Selectors.EVENT_START_DATE)._flatpickr;
+                    //  flatpickr.setDate([info.dateStr]);
+                    //}
+                    dateClick: function (info) {
+                        // Seçilen tarihi al ve sadece tarih karşılaştırması yapabilmek için saat bilgilerini sıfırla.
+                        var selectedDate = new Date(info.dateStr);
+                        var today = new Date();
+                        today.setHours(0, 0, 0, 0);
+
+                        // Geçmiş tarih seçilmişse uyarı ver ve işlemi iptal et.
+                        if (selectedDate < today) {
+                            toastr.warning('Geçmiş tarihe antrenman eklenemez!', 'Uyarı', { timeOut: 3000 });
+                            return;
+                        }
+
+                        info.jsEvent.preventDefault();
+                        // Eğer düzenleme modalı zaten açıksa yeni işlem yapmaz.
+                        if ($('#editModal').hasClass('show')) {
+                            return;
+                        }
+                        // Seçilen tarih için ajax isteği yapılarak ilgili eğitim bilgileri çekilir.
+                        
+                        $.ajax({
+                            url: '/@AreaName/get-planlanmisvardiyaByDate', // URL, route ile uyumlu olmalı.
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify(info.dateStr.replace(/-/g, '.')),
+                            success: function (result) {
+                                $('#partialEditContent').html(result);  // Gelen içeriği ilgili alana ekle.
+                                // Modalı açar.
+                                $('#editModal').modal({
+                                    backdrop: 'static',
+                                    keyboard: false
+                                }).modal('show');
+                            },
+                            error: function (xhr) {
+                                 if (xhr.responseJSON && xhr.responseJSON.redirectUrl) {
+                window.location.href = xhr.responseJSON.redirectUrl;
+            }
+                                toastr.error(xhr.responseJSON?.message || 'Beklenmeyen bir hata oluştu.', 'Hata', { timeOut: 5000 });
+                            }
+                        });
+                    }
+                });
+                // Fonksiyon: Ekran genişliğine göre görünümü ayarla ve dropdown'ı güncelle
+                function updateCalendarView() {
+                    if (window.innerWidth <= 768) {
+                        calendar.changeView('listWeek');
+                        document.querySelector(Selectors.DATA_VIEW_TITLE).textContent = 'Liste Görünümü';
+
+                        // Dropdown içerisindeki listWeek öğesini aktif hale getiriyoruz
+                        document.querySelectorAll(Selectors.DATA_CALENDAR_VIEW).forEach(function (el) {
+                            el.classList.remove(ClassNames.ACTIVE);
+                        });
+                        var listViewItem = document.querySelector(Selectors.DATA_CALENDAR_VIEW + '[data-fc-view="listWeek"]');
+                        if (listViewItem) {
+                            listViewItem.classList.add(ClassNames.ACTIVE);
+                        }
+                    } else {
+                        calendar.changeView('dayGridMonth');
+                        document.querySelector(Selectors.DATA_VIEW_TITLE).textContent = 'Aylık Görünüm';
+
+                        // Dropdown içerisindeki dayGridMonth öğesini aktif hale getiriyoruz
+                        document.querySelectorAll(Selectors.DATA_CALENDAR_VIEW).forEach(function (el) {
+                            el.classList.remove(ClassNames.ACTIVE);
+                        });
+                        var monthViewItem = document.querySelector(Selectors.DATA_CALENDAR_VIEW + '[data-fc-view="dayGridMonth"]');
+                        if (monthViewItem) {
+                            monthViewItem.classList.add(ClassNames.ACTIVE);
+                        }
+                    }
+                    updateTitle(calendar.currentData.viewTitle);
+                    loadCalendarPage(); // Görünüm değiştiğinde takvim verilerini yeniden yükle
+                }
+
+                // İlk açılışta ekran genişliğine göre görünümü ayarla
+                updateCalendarView();
+
+                // Pencere yeniden boyutlandırıldığında görünümü güncelle
+                window.addEventListener('resize', function () {
+                    updateCalendarView();
+                });
+
+                // Takvim başlığını güncelle
+                updateTitle(calendar.currentData.viewTitle);
+
+                // Navigasyon butonları: Önceki, sonraki ve bugünkü tarihe gitmek için
+                document.querySelectorAll(Selectors.DATA_EVENT).forEach(function (button) {
+                    button.addEventListener(Events.CLICK, function (e) {
+                        var el = e.currentTarget;
+                        var type = utils.getData(el, DataKeys.EVENT);
+                        switch (type) {
+                            case 'prev':
+                                calendar.prev();
+                                updateTitle(calendar.currentData.viewTitle);
+                                break;
+                            case 'next':
+                                calendar.next();
+                                updateTitle(calendar.currentData.viewTitle);
+                                break;
+                            case 'today':
+                                calendar.today();
+                                updateTitle(calendar.currentData.viewTitle);
+                                break;
+                            default:
+                                calendar.today();
+                                updateTitle(calendar.currentData.viewTitle);
+                                break;
+                        }
+                    });
+                });
+
+                // Görünüm değiştirme linkleri: Örneğin hafta, ay, liste gibi farklı görünüm seçenekleri için
+                document.querySelectorAll(Selectors.DATA_CALENDAR_VIEW).forEach(function (link) {
+                    link.addEventListener(Events.CLICK, function (e) {
+                        e.preventDefault();
+                        var el = e.currentTarget;
+                        var text = el.textContent;
+                        // Aktif class'ı güncelleme
+                        el.parentElement.querySelector(Selectors.ACTIVE).classList.remove(ClassNames.ACTIVE);
+                        el.classList.add(ClassNames.ACTIVE);
+                        // Seçilen görünüm başlığını güncelle
+                        document.querySelector(Selectors.DATA_VIEW_TITLE).textContent = text;
+                        // Takvim görünümünü değiştir
+                        calendar.changeView(utils.getData(el, DataKeys.FC_VIEW));
+                        updateTitle(calendar.currentData.viewTitle);
+                        loadCalendarPage();
+                    });
+
+                });
+
+                // Etkinlik ekleme formunun submit işlemleri
+                if (addEventForm) {
+                    addEventForm.addEventListener(Events.SUBMIT, function (e) {
+                        e.preventDefault();
+                        var _e$target = e.target,
+                            title = _e$target.title,
+                            startDate = _e$target.startDate,
+                            endDate = _e$target.endDate,
+                            label = _e$target.label,
+                            description = _e$target.description,
+                            allDay = _e$target.allDay;
+
+                        // Formdan alınan bilgilerle yeni bir etkinlik eklenir.
+                        calendar.addEvent({
+                            title: title.value,
+                            start: startDate.value,
+                            end: endDate.value ? endDate.value : null,
+                            allDay: allDay.checked,
+                            className: allDay.checked && label.value ? "bg-soft-" + label.value : '',
+                            description: description.value
+                        });
+                        e.target.reset();
+                        window.bootstrap.Modal.getInstance(addEventModal).hide();
+                    });
+                }
+
+                // Etkinlik ekleme modal'ı açıldığında title input'unu otomatik odaklama
+                if (addEventModal) {
+                    addEventModal.addEventListener(Events.SHOWN_BS_MODAL, function (e) {
+                        e.currentTarget.querySelector(Selectors.INPUT_TITLE).focus();
+                    });
+                }
+
+                // Takvim initialize edildikten sonra sayfa yükleme fonksiyonu çağrılarak ajax ile veriler güncellenir.
+                loadCalendarPage();
+            }
+        }
+
+        // Sayfa yüklendiğinde takvim initialize edilir.
+        initCalendar();
+    });
 </script>
