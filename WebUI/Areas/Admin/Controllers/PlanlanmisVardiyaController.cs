@@ -60,6 +60,7 @@ namespace WebUI.Areas.Admin.Controllers
             {
                 var result = await dm.GetById(id.Value);
                 var entity = result.Data;
+                
                 if (entity != null && result.ResultStatus == ResultStatus.Success)
                 {
                     model.Id = entity.Id;
@@ -74,14 +75,18 @@ namespace WebUI.Areas.Admin.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("ErrorDetail", "Şube bulunamadı.");
+                    ModelState.AddModelError("ErrorDetail", "Planlanmış varidiya bulunamadı.");
                 }
 
+            }
+            else
+            {
+                model.baslangicZamani = DateTime.Now;
+                model.bitisZamani = DateTime.Now;
             }
 
             var personelResult = await _personelService.GetAll();
             var vardiyaResult = await _vardiyaService.GetAll();
-
             model.personelIdSel = new SelectList(personelResult?.Data?.Select(p => new SelectListItem{Value = p.Id.ToString(),Text = $"{p.isim} {p.soyisim}"}).ToList(),"Value","Text");
             model.vardiyaIdSel = new SelectList(vardiyaResult?.Data, "Id", "vardiyaIsmi");
 

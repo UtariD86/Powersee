@@ -1,4 +1,4 @@
-﻿@model WebUI.Areas.Admin.Models.PlanlanmisVardiya.PlanlanmisVardiyaDto
+﻿    @model WebUI.Areas.Admin.Models.PlanlanmisVardiya.PlanlanmisVardiyaDto
 @{
     Layout = null;
     string AreaName = "Admin";
@@ -63,7 +63,7 @@
                                 @Html.ValidationMessageFor(Model => Model.baslangicZamani)
                             </div>
                         </div>
-                        <script>$(document).ready(function () { zuraf.setDatePicker("baslangicZamani", "date") });</script>
+                        <script>$(document).ready(function () { zuraf.setDatePicker("baslangicZamani") });</script>
                     </div>
                     <div class="col-md-12">
                         <div class="form-floating mb-3">
@@ -78,7 +78,7 @@
                                 @Html.ValidationMessageFor(Model => Model.bitisZamani)
                             </div>
                         </div>
-                        <script>$(document).ready(function () { zuraf.setDatePicker("bitisZamani", "date") });</script>
+                        <script>$(document).ready(function () { zuraf.setDatePicker("bitisZamani") });</script>
                     </div>
                     <div class="col-md-12">
                         <div class="form-floating mb-3">
@@ -93,7 +93,7 @@
                                 @Html.ValidationMessageFor(Model => Model.girisZamani)
                             </div>
                         </div>
-                        <script>$(document).ready(function () { zuraf.setDatePicker("girisZamani", "date") });</script>
+                        <script>$(document).ready(function () { zuraf.setDatePicker("girisZamani", "time") });</script>
                     </div>
                     <div class="col-md-12">
                         <div class="form-floating mb-3">
@@ -108,7 +108,7 @@
                                 @Html.ValidationMessageFor(Model => Model.cikisZamani)
                             </div>
                         </div>
-                        <script>$(document).ready(function () { zuraf.setDatePicker("cikisZamani", "date") });</script>
+                        <script>$(document).ready(function () { zuraf.setDatePicker("cikisZamani", "time") });</script>
                     </div>
 
                     <div class="row mt-3">

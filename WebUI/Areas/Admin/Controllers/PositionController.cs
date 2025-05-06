@@ -19,12 +19,12 @@ namespace WebUI.Areas.Admin.Controllers
     {
         private readonly IPositionService _positionService;
         private readonly IDepartmentService _departmentService;
-
-        public PositionController(IPositionService positionService,IDepartmentService departmentService)
+        private readonly IPersonelService _personelService;
+        public PositionController(IPositionService positionService,IDepartmentService departmentService, IPersonelService personelService)
         {
             _positionService = positionService;
             _departmentService = departmentService;
-           
+            _personelService = personelService;
         }
 
         public IActionResult Index()
@@ -44,17 +44,12 @@ namespace WebUI.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit([FromBody] int? id)
         {
+            var personelResult = await _personelService.GetAll();
 
             var departments = await _departmentService.GetAll(); // Tüm departmanları çek
 
             var model = new PositionDto();
-            var dummyManagers = new List<SelectListItem>
-            {
-                new SelectListItem { Value = "1", Text = "Ahmet Yılmaz" },
-                new SelectListItem { Value = "2", Text = "Elif Demir" },
-                new SelectListItem { Value = "3", Text = "Mehmet Kaya" }
-            };
-
+          
 
             if (id.HasValue)
             {
@@ -69,19 +64,31 @@ namespace WebUI.Areas.Admin.Controllers
                     model.Active = entity.Active ?? false;
                     model.ManagerId = entity.ManagerId;
                     model.Code = entity.Code;
-                    model.ManagerList = new SelectList(dummyManagers, "Value", "Text", entity.ManagerId);
+                    model.ManagerList = new SelectList(
+                          personelResult.Data.Select(p => new SelectListItem
+                          {
+                              Value = p.Id.ToString(),
+                              Text = $"{p.isim} {p.soyisim}" // Veya $"{p.isim} - {p.unvan}" gibi
+                          }),
+                             "Value", "Text", entity.ManagerId);
                     model.DepartmentList = new SelectList(departments.Data, "Id", "Name", entity.DepartmentId);
                 }
                 else
                 {
                     ModelState.AddModelError("ErrorDetail", "Pozisyon bulunamadı.");
-                    model.ManagerList = new SelectList(dummyManagers, "Value", "Text");
+                    model.ManagerList = new SelectList(
+                        personelResult.Data.Select(p => new SelectListItem
+                        {
+                            Value = p.Id.ToString(),
+                            Text = $"{p.isim} {p.soyisim}" // Veya $"{p.isim} - {p.unvan}" gibi
+                        }),
+                           "Value", "Text");
                     model.DepartmentList = new SelectList(departments.Data, "Id", "Name"); // BURAYA EKLEDİM
                 }
             }
             else
             {
-                model.ManagerList = new SelectList(dummyManagers, "Value", "Text");
+                model.ManagerList = new SelectList(personelResult.Data.Select(p => new SelectListItem { Value = p.Id.ToString(), Text = $"{p.isim} {p.soyisim}" }), "Value", "Text");
                 model.DepartmentList = new SelectList(departments.Data, "Id", "Name"); // BURAYA EKLEDİM
             }
 

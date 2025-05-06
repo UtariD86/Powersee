@@ -9,11 +9,13 @@ namespace WebUI.Areas.Admin.Models.PlanlanmisVardiya
         public int Id { get; set; }
 
 
-        
+        [Required(ErrorMessage = "Personel alanı zorunludur.")]
+
         public SelectList? personelIdSel { get; set; }
 
         [Required(ErrorMessage = "Personel alanı zorunludur.")]
         public int personelId { get; set; }
+        [Required(ErrorMessage = "Vardiya alanı zorunludur.")]
 
         public SelectList? vardiyaIdSel { get; set; }
 

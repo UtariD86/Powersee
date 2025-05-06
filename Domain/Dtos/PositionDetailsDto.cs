@@ -11,5 +11,7 @@ namespace Domain.Dtos
     public class PositionDetailsDto :Position 
     {
         public string DepartmentName { get; set; }
+        public string PersonelName { get; set; }
+
     }
 }

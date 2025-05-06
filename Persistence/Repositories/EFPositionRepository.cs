@@ -3,6 +3,7 @@ using Core.Dtos.Concrete;
 using Domain.Dtos;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence.Abstract;
 using Persistence.Concrete;
@@ -51,17 +52,20 @@ namespace Persistence.Repositories
             // Join işlemi
             var joinedQuery = from pos in query
                               join dept in context.Departments on pos.DepartmentId equals dept.Id
-                              where (pos.DeletedDate == null && dept.DeletedDate == null)
+                              join personel in context.Personels on pos.ManagerId equals personel.Id into personelGroup
+                              from manager in personelGroup.DefaultIfEmpty()
+                              where pos.DeletedDate == null && dept.DeletedDate == null
                               select new PositionDetailsDto
                               {
                                   Id = pos.Id,
                                   Name = pos.Name,
-                                  DepartmentName = dept != null ? dept.Name : "Bilinmiyor",
-                                  Code =pos.Code,
-                                  Salary=pos.Salary,
-                                  Active=pos.Active
-
+                                  DepartmentName = dept.Name ?? "Bilinmiyor",
+                                  Code = pos.Code,
+                                  Salary = pos.Salary,
+                                  Active = pos.Active,
+                                  PersonelName = manager != null ? $"{manager.isim} {manager.soyisim}" : "Bir Hata Oluştu"
                               };
+
 
             // Toplam kayıt sayısı
             var totalCount = await joinedQuery.CountAsync();
