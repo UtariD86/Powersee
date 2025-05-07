@@ -20,10 +20,12 @@ namespace WebUI.Areas.Admin.Controllers
     {
         [ActivatorUtilitiesConstructor]
         private readonly IDepartmentService dm;
+        private readonly IPersonelService _personelService;
 
-        public DepartmentController(IDepartmentService _dm)
+        public DepartmentController(IDepartmentService _dm, IPersonelService personelService)
         {
             dm = _dm;
+            _personelService = personelService;
         }
 
         public IActionResult Index()
@@ -44,13 +46,7 @@ namespace WebUI.Areas.Admin.Controllers
         public async Task<IActionResult> Edit([FromBody] int? id)
         {
             var model = new DepartmentDto();
-
-            var dummyManagers = new List<SelectListItem>
-            {
-                new SelectListItem { Value = "1", Text = "Ahmet Yılmaz" },
-                new SelectListItem { Value = "2", Text = "Elif Demir" },
-                new SelectListItem { Value = "3", Text = "Mehmet Kaya" }
-            };
+            var personelResult = await _personelService.GetAll();
 
             if (id.HasValue)
             {
@@ -63,7 +59,13 @@ namespace WebUI.Areas.Admin.Controllers
                     model.Description = entity.Description;
                     model.Active = entity.Active;
                     model.Managerid = entity.Managerid;
-                    model.ManagerList = new SelectList(dummyManagers, "Value", "Text", entity.Managerid);
+                    model.ManagerList = new SelectList(
+                          personelResult.Data.Select(p => new SelectListItem
+                          {
+                              Value = p.Id.ToString(),
+                              Text = $"{p.isim} {p.soyisim}" // Veya $"{p.isim} - {p.unvan}" gibi
+                          }),
+                             "Value", "Text", entity.Managerid);
                     model.Adres = entity.Adres;
                     model.CalismaTuru = entity.CalismaTuru;
                     model.UniqueCode = entity.UniqueCode;
@@ -86,13 +88,18 @@ namespace WebUI.Areas.Admin.Controllers
                 else
                 {
                     ModelState.AddModelError("ErrorDetail", "Departman bulunamadı.");
-                    model.ManagerList = new SelectList(dummyManagers, "Value", "Text");
-                    model.CalismaTurusel = EnumHelper.ToSelectList<CalismaTuru>();
+                    
+                    
                 }
             }
             else
             {
-                model.ManagerList = new SelectList(dummyManagers, "Value", "Text");
+                model.ManagerList = new SelectList(
+                 personelResult.Data.Select(p => new SelectListItem
+                 {
+                     Value = p.Id.ToString(),
+                     Text = $"{p.isim} {p.soyisim}" // Veya $"{p.isim} - {p.unvan}" gibi
+                 }), "Value", "Text");
                 model.CalismaTurusel = EnumHelper.ToSelectList<CalismaTuru>();
             }
 

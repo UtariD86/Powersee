@@ -1,5 +1,6 @@
 ﻿using Core.Dtos.Abstract;
 using Core.Dtos.Concrete;
+using Domain.Dtos;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace Application.Services.Abstract
     {
         Task<IDataResult<IList<Kesinti>>> GetAll();
 
-        Task<IDataResult<PageResponse<Kesinti>>> GetToGrid(PageRequest request);
+        Task<IDataResult<PageResponse<KesintiListDto>>> GetToGrid(PageRequest request);
 
         Task<IDataResult<Kesinti>> Edit(Kesinti kesinti);
 
