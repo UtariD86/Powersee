@@ -5175,7 +5175,7 @@ var getTemplate = function getTemplate(event) {
         <div class="d-flex mt-3">
           ${getStackIcon('fas fa-align-left')}
           <div class="flex-1">
-            <h6>Grup | Salon</h6>
+            <h6>Giriş Saati | Çıkış Saati</h6>
             <p class="mb-0">
               ${event.extendedProps.description.split(' ').slice(0, 30).join(' ')}
             </p>

@@ -63,7 +63,13 @@ namespace WebUI.Areas.Admin.Controllers
                     model.Durum = entity.Durum;
                     model.TalepTuru = entity.TalepTuru;
                     // Alici seçili yapılacak
-                    model.aliciSel = new SelectList(personelResult.Data, "Id", "isim", entity.aliciId);
+                    model.aliciSel = new SelectList(
+                          personelResult.Data.Select(p => new SelectListItem
+                             {
+                                 Value = p.Id.ToString(),
+                              Text = $"{p.isim} {p.soyisim}" // Veya $"{p.isim} - {p.unvan}" gibi
+                             }),
+                             "Value", "Text", entity.aliciId);
 
                     // GondericiId'yi manuel olarak set et
                     model.gondericiId = entity.gondericiId;
@@ -99,7 +105,11 @@ namespace WebUI.Areas.Admin.Controllers
             else
             {
 
-                model.aliciSel = new SelectList(personelResult.Data, "Id", "isim"); // Alici Sel boş
+                model.aliciSel = new SelectList(
+                 personelResult.Data.Select(p => new SelectListItem
+                     {  Value = p.Id.ToString(),
+                        Text = $"{p.isim} {p.soyisim}" // Veya $"{p.isim} - {p.unvan}" gibi
+                         }),"Value", "Text"); // Alici Sel boş
                 model.TalepTurusel = EnumHelper.ToSelectList<TalepTuru>();
                 model.Durumsel = EnumHelper.ToSelectList<Durum>();
                 model.Durum = Durum.Beklemede;
@@ -114,7 +124,12 @@ namespace WebUI.Areas.Admin.Controllers
         {
             var personelResult = await _personelService.GetAll();
             var model = new TalepDto();
-            model.aliciSel = new SelectList(personelResult.Data, "Id", "isim"); // Alici Sel boş
+            model.aliciSel = new SelectList(
+        personelResult.Data.Select(p => new SelectListItem
+          {
+             Value = p.Id.ToString(),
+              Text = $"{p.isim} {p.soyisim}" // Veya $"{p.isim} - {p.unvan}" gibi
+            }), "Value", "Text"); // Alici Sel boş
             model.TalepTurusel = EnumHelper.ToSelectList<TalepTuru>();
             model.Durumsel = EnumHelper.ToSelectList<Durum>();
             model.Durum = Durum.Beklemede;
@@ -149,7 +164,7 @@ namespace WebUI.Areas.Admin.Controllers
 
             var user = await _userManager.FindByNameAsync(userName);
 
-            var talep = new Talep()
+             var talep = new Talep()
             {
                 Id = model.Id,
                 aciklama = model.aciklama,

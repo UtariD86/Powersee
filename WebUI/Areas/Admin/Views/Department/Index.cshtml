@@ -178,6 +178,26 @@
                  showBorders: true,
                  paging: { enabled: false },
                  columns: [
+                    {
+                dataField: 'Id',
+                caption: 'Düzenle',
+                width: 70,
+                cellTemplate: function (container, options) {
+                    $('<a class="edit-icon" style="color:#0085cf; margin-right:20%; cursor:pointer;" title="Düzenle"><i class="fas fa-pen-nib" style="font-size: 15px;"></i></a>')
+                        .on('click', function () {
+                            var id = options.data.Id;
+                            zuraf.getById('/@AreaName/get-position', id, '#gridContainer');
+                        }).appendTo(container);
+
+                    $('<a class="delete-icon text-danger" style="cursor:pointer;" title="Sil"><i class="far fa-trash-alt" style="font-size: 15px;"></i></a>')
+                        .on('click', function () {
+                            var id = options.data.Id;
+                            zuraf.deleteById('/@AreaName/delete-position', id, '#gridContainer', true);
+                        }).appendTo(container);
+                },
+                allowFiltering: false
+            },
+
                      { dataField: 'Name', caption: 'Pozisyon Adı',alignment: "center" },
                      { dataField: 'Active', caption: 'Aktif Mi?', dataType: 'boolean',alignment: "center"  },
                        { dataField: 'Salary',caption: 'Maaş',allowFiltering: true,alignment: "center", format: { type: 'currency',currency: 'TRY',precision: 2 }  }

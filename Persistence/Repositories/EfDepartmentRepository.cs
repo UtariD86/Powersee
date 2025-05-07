@@ -98,7 +98,10 @@ namespace Persistence.Repositories
                             Id = p.Position.Id,
                             Name = p.Position.Name,
                             Active = p.Position.Active,
-                            Salary = p.Position.Salary
+                            Salary = p.Position.Salary,
+                            ManagerId=p.Position.ManagerId,
+                            
+
                         }).ToList()
                 })
                 .ToList();
