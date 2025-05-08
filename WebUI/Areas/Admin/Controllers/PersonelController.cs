@@ -2,6 +2,7 @@
 using Application.Services.Abstract;
 using Core.Dtos.Concrete;
 using Core.Enums;
+using Core.Helpers.Concrete.QR;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Domain.Entities;
@@ -18,9 +19,9 @@ using WebUI.Areas.Admin.Models.Sube;
 
 namespace WebUI.Areas.Admin.Controllers
 {
-  [Area("Admin")]
- [Authorize]
-public class PersonelController : Controller
+    [Area("Admin")]
+    [Authorize]
+    public class PersonelController : Controller
     {
         private readonly IPersonelService _personelService;
         private readonly IDepartmentService _departmentService;
@@ -109,11 +110,36 @@ public class PersonelController : Controller
             return PartialView(model);
         }
 
+        [Route("{area}/get-personelqr")]
+        [HttpPost]
+        public async Task<IActionResult> PersonelQrCode([FromBody] int? id)
+        {
+            var model = new QrCodeDto();
+            if (id.HasValue)
+            {
+                var result = await _personelService.GetById(id.Value);
+                var entity = result.Data;
+
+                var qr = QrHelper.QRKodOlustur(entity.Code);
+                model.FullName = $"{entity.isim} {entity.soyisim}";
+                model.QRCode = qr;
+                model.Code = entity.Code;
+            }
+            else
+            {
+                ModelState.AddModelError("ErrorDetail", "Personel bulunamadı.");
+            }
+
+
+
+            return PartialView(model);
+        }
+
         [Route("{area}/save-personel")]
         [HttpPost]
         public async Task<IActionResult> Edit(PersonelDto model)
 
-            {
+        {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

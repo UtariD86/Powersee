@@ -67,7 +67,7 @@ const zuraf = {
      * Belirtilen formu sunucuya gönderir ve sonucu toastr ile kullanıcıya bildirir.
      * @param {string} formId - Gönderilecek formun ID'si.
      */
-    submitForm: function (formId, specialfields) {
+    submitForm: function (formId, specialfields, callback) {
 
         $('body').append(`
         <div id="loading-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 9998;">
@@ -127,6 +127,7 @@ const zuraf = {
                 zuraf.closeModal('#editModal');
                 toastr.success("İşlem Başarılı", 'Başarılı', { timeOut: 5000 });
                 zuraf.reloadDataGrid(zuraf.operationGridId);
+                if (callback) callback();
             },
             //error: function (result) {
             //    toastr.error(result.message, 'Hata', { timeOut: 5000 });
@@ -308,8 +309,9 @@ const zuraf = {
         // Parametre olarak alınan gridId ile DataGrid örneğini alıyoruz
         const grid = $(gridId).dxDataGrid("instance"); // dxDataGrid instance'ını al
 
-        // Grid'i yeniden yükleyerek görünümü tazeliyoruz
-        grid.refresh(); // Grid'i yenile
+        //// Grid'i yeniden yükleyerek görünümü tazeliyoruz
+        //grid.refresh(); // Grid'i yenile
+        if (grid) grid.refresh();
     },
 
 

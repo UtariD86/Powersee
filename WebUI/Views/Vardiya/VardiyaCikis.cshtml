@@ -1,0 +1,262 @@
+﻿@model WebUI.Models.Vardiya.VardiyaGirisDto;
+
+@{
+    ViewData["Title"] = "Vardiya Girişi";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+
+
+<!-- Mirrored from prium.github.io/falcon/v3.14.0/pages/authentication/card/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 03 Apr 2023 19:00:46 GMT -->
+<!-- Added by HTTrack -->
+<meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- ===============================================-->
+    <!--    Document Title-->
+    <!-- ===============================================-->
+    <title>Vardiya Çıkış</title>
+
+    @Html.Partial("/Areas/Admin/Views/Shared/Resources/_DefaultResources.cshtml")
+    @Html.Partial("/Areas/Admin/Views/Shared/Resources/_ThemeResources.cshtml")
+
+
+    <!-- ===============================================-->
+    <!--    Favicons-->
+    <!-- ===============================================-->
+    <link rel="apple-touch-icon" sizes="180x180" href="~/theme/assets/img/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="~/theme/assets/img/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="~/theme/assets/img/favicons/favicon-16x16.png">
+    <link rel="shortcut icon" type="image/x-icon" href="~/theme/assets/img/favicons/favicon.ico">
+    <link rel="manifest" href="~/theme/assets/img/favicons/manifest.json">
+    <meta name="msapplication-TileImage" content="~/theme/assets/img/favicons/mstile-150x150.png">
+    <meta name="theme-color" content="#ffffff">
+    <script src="~/theme/assets/js/config.js"></script>
+    <script src="~/theme/vendors/simplebar/simplebar.min.js"></script>
+
+    <!-- ===============================================-->
+    <!--    Stylesheets-->
+    <!-- ===============================================-->
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700%7cPoppins:300,400,500,600,700,800,900&amp;display=swap" rel="stylesheet">
+    <link href="~/theme/vendors/simplebar/simplebar.min.css" rel="stylesheet">
+    <link href="~/theme/assets/css/theme-rtl.min.css" rel="stylesheet" id="style-rtl">
+    <link href="~/theme/assets/css/theme.min.css" rel="stylesheet" id="style-default">
+    <link href="~/theme/assets/css/user-rtl.min.css" rel="stylesheet" id="user-style-rtl">
+    <link href="~/theme/assets/css/user.min.css" rel="stylesheet" id="user-style-default">
+    <script>
+        var isRTL = JSON.parse(localStorage.getItem('isRTL'));
+        if (isRTL) {
+            var linkDefault = document.getElementById('style-default');
+            var userLinkDefault = document.getElementById('user-style-default');
+            linkDefault.setAttribute('disabled', true);
+            userLinkDefault.setAttribute('disabled', true);
+            document.querySelector('html').setAttribute('dir', 'rtl');
+        } else {
+            var linkRTL = document.getElementById('style-rtl');
+            var userLinkRTL = document.getElementById('user-style-rtl');
+            linkRTL.setAttribute('disabled', true);
+            userLinkRTL.setAttribute('disabled', true);
+        }
+    </script>
+
+
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
+</head>
+
+<body>
+    <!-- ===============================================-->
+    <!--    Main Content-->
+    <!-- ===============================================-->
+    <main class="main" id="top">
+        <div class="container-fluid">
+            <h3 class="text-primary">Vardiya Çıkış</h3>
+            <div class="row min-vh-100 flex-center g-0">
+                <div class="col-lg-8 col-xxl-5 py-3 position-relative">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#tab-home" role="tab" aria-controls="tab-home" aria-selected="true">
+                                QR ile Giriş
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#tab-profile" role="tab" aria-controls="tab-profile" aria-selected="false">
+                                Kullanıcı Kodu ile Giriş
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content border-x border-bottom p-3" id="myTabContent">
+                        <div class="tab-pane fade show active" id="tab-home" role="tabpanel" aria-labelledby="home-tab">
+                            <div class="card">
+                                <div class="card-body overflow-hidden p-lg-12">
+                                    <div class="row align-items-center">
+                                        <div class="col-lg-12 ps-lg-4 my-5 text-center text-lg-start">
+                                            <h3 class="text-primary">Qr Okut!</h3>
+                                            <div id="reader" style="width:100%"></div>
+                                            <script>
+                                                    let lastScannedText = null;
+                                                    let scanCooldown = false;
+                                                    const cooldownDuration = 3000; // 3 saniye
+
+                                                    function onScanSuccess(decodedText, decodedResult) {
+                                                        if (scanCooldown) return;
+                                                        if (decodedText === lastScannedText) return; // Aynı kodu tekrar yollama
+
+                                                        lastScannedText = decodedText;
+                                                        scanCooldown = true;
+
+                                                        console.log(`QR Kodu: ${decodedText}`);
+
+                                                        $.ajax({
+                                                            url: '/send-code',
+                                                            type: 'POST',
+                                                            data: {
+                                                                kod1: decodedText,
+                                                                vardiyaId: @Model.VardiyaId,
+                                                                isGiris: false
+                                                            },
+                                                            success: function (response) {
+                                                                if (response.success) {
+                                                                    toastr.success('QR Girişi Başarılı!', 'Başarılı!', { timeOut: 3000 });
+                                                                } else {
+                                                                    toastr.error(response.message || 'QR Girişi Başarısız!', 'Hata!', { timeOut: 3000 });
+                                                                }
+                                                            },
+                                                            error: function (xhr, status, error) {
+                                                                toastr.error('Sunucu hatası: ' + error, 'Hata!', { timeOut: 3000 });
+                                                            },
+                                                            complete: function () {
+                                                                // 3 saniye sonra tekrar okutma izni ver
+                                                                setTimeout(() => {
+                                                                    scanCooldown = false;
+                                                                }, cooldownDuration);
+                                                            }
+                                                        });
+                                                    }
+
+                                                    function onScanFailure(error) {
+                                                        // QR okuma hatası sessiz geçilebilir
+                                                    }
+
+                                                    const html5QrCode = new Html5Qrcode("reader");
+
+                                                    Html5Qrcode.getCameras().then(devices => {
+                                                        if (devices && devices.length) {
+                                                            const cameraId = devices[0].id;
+                                                            html5QrCode.start(
+                                                                cameraId,
+                                                                {
+                                                                    fps: 10,
+                                                                    qrbox: 250
+                                                                },
+                                                                onScanSuccess,
+                                                                onScanFailure
+                                                            );
+                                                        }
+                                                    }).catch(err => {
+                                                        console.error("Kamera erişimi sağlanamadı:", err);
+                                                    });
+                                            </script>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="tab-profile" role="tabpanel" aria-labelledby="profile-tab">
+                            <div class="card">
+                                <div class="card-body p-4 p-sm-5">
+                                    <div class="row flex-between-center mb-2">
+                                        <div class="col-auto">
+                                            <h5>Kod Gir</h5>
+                                        </div>
+                                    </div>
+                                    <form id="sendCodeForm">
+                                        <div class="form-floating mb-3">
+                                            <input id="kod1" name="kod1" class="form-control" />
+                                            <label for"kod1">Kod</label>
+                                            <div class="invalid-feedback"></div>
+                                        </div>
+                                        <script>
+                                            $(`#kod1`).inputmask("*****-*****");
+                                        </script>
+
+                                        <div class="mb-3"><button id="loginButton" class="btn btn-primary d-block w-100 mt-3" type="submit" name="submit">Gönder</button></div>
+                                    </form>
+                                    <script>
+                                        $(document).ready(function () {
+                                            $('#loginButton').click(function (e) {
+                                                e.preventDefault(); // Formun doğal olarak gönderilmesini engelle
+
+                                                var kod1 = $('#kod1').val(); // 'kod1' input değerini al
+
+                                                // Eğer kod1 boşsa hata mesajı göster
+                                                if (!kod1) {
+                                                    $('#kod1').addClass('is-invalid');
+                                                    $('#kod1').siblings('.invalid-feedback').text('Kod alanı boş olamaz.');
+                                                    return;
+                                                }
+
+                                                // Ajax isteğini yap
+                                                $.ajax({
+                                                    url: '/send-code', // Controller ve method ismini yazın
+                                                    type: 'POST',
+                                                    data: {
+                                                        kod1: kod1,
+                                                        vardiyaId: @Model.VardiyaId,
+                                                        isGiris: false
+                                                   },
+                                                    success: function (response) {
+                                                        if (response.success) {
+                                                            toastr.success('Giriş Başarılı!', 'Başarılı!', { timeOut: 5000 });
+                                                            $('#kod1').val("");
+                                                        } else {
+                                                            toastr.error('Bir hata oluştu, lütfen tekrar deneyin.', 'Hata!', { timeOut: 5000 });
+                                                        }
+                                                    },
+                                                    error: function (xhr, status, error) {
+                                                        toastr.error('Sunucu hatası: ' + error, 'Hata!', { timeOut: 5000 });
+                                                    }
+                                                });
+                                            });
+                                        });
+
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main><!-- ===============================================-->
+    <!--    End of Main Content-->
+    <!-- ===============================================-->
+    <!-- ===============================================-->
+    <!--    JavaScripts-->
+    <!-- ===============================================-->
+    <script src="~/theme/vendors/popper/popper.min.js"></script>
+    <script src="~/theme/vendors/bootstrap/bootstrap.min.js"></script>
+    <script src="~/theme/vendors/anchorjs/anchor.min.js"></script>
+    <script src="~/theme/vendors/is/is.min.js"></script>
+    <script src="~/theme/vendors/fontawesome/all.min.js"></script>
+    <script src="~/theme/vendors/lodash/lodash.min.js"></script>
+    <script src="~/theme/polyfill/polyfill.min58be.js"></script>
+    <script src="~/theme/vendors/list.js/list.min.js"></script>
+    <script src="~/theme/assets/js/theme.js"></script>
+</body>
+
+
+<!-- Mirrored from prium.github.io/falcon/v3.14.0/pages/authentication/card/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 03 Apr 2023 19:00:46 GMT -->
+</html>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

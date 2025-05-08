@@ -1,8 +1,17 @@
-﻿    @model WebUI.Areas.Admin.Models.PlanlanmisVardiya.PlanlanmisVardiyaDto
+﻿@model WebUI.Areas.Admin.Models.PlanlanmisVardiya.PlanlanmisVardiyaDto
 @{
     Layout = null;
     string AreaName = "Admin";
 }
+
+<head>
+    <!--Select2-->
+    <link href="~/theme/vendors/select2/select2.min.css" rel="stylesheet" />
+    <link href="~/theme/vendors/select2-bootstrap-5-theme/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
+    <!--Select2-->
+    <script src="~/theme/vendors/select2/select2.min.js"></script>
+    <script src="~/theme/vendors/select2/select2.full.min.js"></script>
+</head>
 
 <div class="modal show" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal" role="document">
@@ -19,15 +28,27 @@
 
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="form-floating mb-3">
-                                @Html.DropDownListFor(model => model.personelId,
-                                         new SelectList(Model.personelIdSel, "Value", "Text", Model.personelId),
-                                         "Seçiniz",
-                                         new { @class = "form-control form-select", id = "personelId" })
-                                <label for="personelId">Personel</label>
-                                <div class="invalid-feedback">
-                                    @Html.ValidationMessageFor(model => model.personelId)
-                                </div>
+                            @*<div class="form-floating mb-3">
+                                    @Html.DropDownListFor(model => model.personelId,
+                                             new SelectList(Model.personelIdSel, "Value", "Text", Model.personelId),
+                                             "Seçiniz",
+                                             new { @class = "form-control form-select", id = "personelId" })
+                                    <label for="personelId">Personel</label>
+                                    <div class="invalid-feedback">
+                                        @Html.ValidationMessageFor(model => model.personelId)
+                                    </div>
+                                </div>*@
+
+                            <select class="form-control form-control-lg form-select selectpicker" id="multiple-select" multiple="multiple" name="selectedIds" data-options='{"placeholder":"Personel Seçin!"}'>
+                                @foreach (var personel in Model.personelIdSel)
+                                {
+                                    var isSelected = Model.Personels.Any(p => p.ToString() == personel.Value);
+                                    <option value="@personel.Value" selected="@(isSelected ? "selected" : null)">@personel.Text</option>
+                                }
+                            </select>
+                            @Html.HiddenFor(model => model.personelIdsStr)
+                            <div class="invalid-feedback">
+                                @Html.ValidationMessageFor(Model => Model.personelIds)
                             </div>
                         </div>
                     </div>
@@ -80,60 +101,60 @@
                         </div>
                         <script>$(document).ready(function () { zuraf.setDatePicker("bitisZamani") });</script>
                     </div>
-                    <div class="col-md-12">
-                        <div class="form-floating mb-3">
-                            @Html.TextBoxFor(Model => Model.girisZamani, new
-                                {
-                                    @class = "form-control",
-                                    id = "girisZamani",
-                                    placeholder = "GG/AA/YYYY SS:DD",
-                                })
-                            <label for="name">Giriş Zamanı</label>
-                            <div class="invalid-feedback">
-                                @Html.ValidationMessageFor(Model => Model.girisZamani)
+                    @*<div class="col-md-12">
+                            <div class="form-floating mb-3">
+                                @Html.TextBoxFor(Model => Model.girisZamani, new
+                                    {
+                                        @class = "form-control",
+                                        id = "girisZamani",
+                                        placeholder = "GG/AA/YYYY SS:DD",
+                                    })
+                                <label for="name">Giriş Zamanı</label>
+                                <div class="invalid-feedback">
+                                    @Html.ValidationMessageFor(Model => Model.girisZamani)
+                                </div>
                             </div>
+                            <script>$(document).ready(function () { zuraf.setDatePicker("girisZamani", "time") });</script>
                         </div>
-                        <script>$(document).ready(function () { zuraf.setDatePicker("girisZamani", "time") });</script>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="form-floating mb-3">
-                            @Html.TextBoxFor(Model => Model.cikisZamani, new
-                                {
-                                    @class = "form-control",
-                                    id = "cikisZamani",
-                                    placeholder = "GG/AA/YYYY SS:DD",
-                                })
-                            <label for="name">Çıkış Zamanı</label>
-                            <div class="invalid-feedback">
-                                @Html.ValidationMessageFor(Model => Model.cikisZamani)
-                            </div>
-                        </div>
-                        <script>$(document).ready(function () { zuraf.setDatePicker("cikisZamani", "time") });</script>
-                    </div>
-
-                    <div class="row mt-3">
                         <div class="col-md-12">
                             <div class="form-floating mb-3">
-                                @Html.TextBoxFor(Model => Model.hedefUcret, new { @class = "form-control", id = "hedefUcret", type = "Decimal" })
-                                <label for="hedefUcret">Hedef Ücret</label>
+                                @Html.TextBoxFor(Model => Model.cikisZamani, new
+                                    {
+                                        @class = "form-control",
+                                        id = "cikisZamani",
+                                        placeholder = "GG/AA/YYYY SS:DD",
+                                    })
+                                <label for="name">Çıkış Zamanı</label>
                                 <div class="invalid-feedback">
-                                    @Html.ValidationMessageFor(Model => Model.hedefUcret)
+                                    @Html.ValidationMessageFor(Model => Model.cikisZamani)
+                                </div>
+                            </div>
+                            <script>$(document).ready(function () { zuraf.setDatePicker("cikisZamani", "time") });</script>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <div class="form-floating mb-3">
+                                    @Html.TextBoxFor(Model => Model.hedefUcret, new { @class = "form-control", id = "hedefUcret", type = "Decimal" })
+                                    <label for="hedefUcret">Hedef Ücret</label>
+                                    <div class="invalid-feedback">
+                                        @Html.ValidationMessageFor(Model => Model.hedefUcret)
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="row mt-3">
-                        <div class="col-md-12">
-                            <div class="form-floating mb-3">
-                                @Html.TextBoxFor(Model => Model.kazanilanUcret, new { @class = "form-control", id = "kazanilanUcret", type = "Decimal" })
-                                <label for="kazanilanUcret">Kazanılan Ücret</label>
-                                <div class="invalid-feedback">
-                                    @Html.ValidationMessageFor(Model => Model.kazanilanUcret)
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <div class="form-floating mb-3">
+                                    @Html.TextBoxFor(Model => Model.kazanilanUcret, new { @class = "form-control", id = "kazanilanUcret", type = "Decimal" })
+                                    <label for="kazanilanUcret">Kazanılan Ücret</label>
+                                    <div class="invalid-feedback">
+                                        @Html.ValidationMessageFor(Model => Model.kazanilanUcret)
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        </div>*@
 
                 </form>
 
@@ -145,17 +166,26 @@
         </div>
     </div>
 </div>
+<script>
+    function aktarSecilenleriHiddenAlana() {
+        var selectBox = document.getElementById("multiple-select");
+        var selectedValues = Array.from(selectBox.selectedOptions).map(option => option.value);
+        var hiddenInput = document.querySelector('input[name="personelIdsStr"]');
+
+        hiddenInput.value = selectedValues.join(",");
+    }
+</script>
 
 <script>
 
 
     $(document).ready(function () {
-
+        select2Init();
         $('#saveButton').on('click', function () {
-
-            zuraf.submitForm("editForm");
-
-            location.reload();
+            aktarSecilenleriHiddenAlana();
+            zuraf.submitForm("editForm", null, function () {
+                loadCalendarPage();
+            });
 
         });
 

@@ -36,6 +36,8 @@ public interface IUnitOfWork
 
     IVardiyaRepository Vardiyalar { get; }
 
+    IPlanlanmisVardiyaPersonelRepository PlanlanmisVardiyaPersoneller { get; }
+
     IPlanlanmisVardiyaRepository PlanlanmisVardiyalar { get; }
     ITalepRepository Taleps { get; }
     /// <summary>

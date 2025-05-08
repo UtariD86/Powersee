@@ -27,12 +27,13 @@ namespace WebUI.Areas.Admin.Controllers
         private readonly IPlanlanmisVardiyaService dm;
         private readonly IPersonelService _personelService;
         private readonly IVardiyaService _vardiyaService;
-        public PlanlanmisVardiyaController(IPlanlanmisVardiyaService _dm, IPersonelService personelService, IVardiyaService vardiyaService)
+        private readonly IPlanlanmisVardiyaPersonelService _planlanmisVardiyaPersonelService;
+        public PlanlanmisVardiyaController(IPlanlanmisVardiyaService _dm, IPersonelService personelService, IVardiyaService vardiyaService, IPlanlanmisVardiyaPersonelService planlanmisVardiyaPersonelService)
         {
             dm = _dm;
             _personelService = personelService;
             _vardiyaService = vardiyaService;
-
+            _planlanmisVardiyaPersonelService = planlanmisVardiyaPersonelService;
         }
 
         //Index Sayfamıza yönlendirme yapar
@@ -64,14 +65,15 @@ namespace WebUI.Areas.Admin.Controllers
                 if (entity != null && result.ResultStatus == ResultStatus.Success)
                 {
                     model.Id = entity.Id;
-                    model.personelId = entity.personelId;
+                    //model.personelId = entity.personelId;
                     model.vardiyaId = entity.vardiyaId;
                     model.baslangicZamani = entity.baslangicZamani;
                     model.bitisZamani = entity.bitisZamani;
-                    model.girisZamani = entity.girisZamani;
-                    model.cikisZamani = entity.cikisZamani;
-                    model.hedefUcret = entity.hedefUcret;
-                    model.kazanilanUcret = entity.kazanilanUcret;
+                    //model.girisZamani = entity.girisZamani;
+                    //model.cikisZamani = entity.cikisZamani;
+                    //model.hedefUcret = entity.hedefUcret;
+                    //model.kazanilanUcret = entity.kazanilanUcret;
+                    model.Personels = await _planlanmisVardiyaPersonelService.GetAllPersonelIds(entity.Id);
                 }
                 else
                 {
@@ -84,14 +86,12 @@ namespace WebUI.Areas.Admin.Controllers
                 model.baslangicZamani = DateTime.Now;
                 model.bitisZamani = DateTime.Now;
             }
-
             var personelResult = await _personelService.GetAll();
+            var personelData = personelResult?.Data?.Select(p => new { Id = p.Id.ToString(), FullName = $"{p.isim} {p.soyisim}" });
             var vardiyaResult = await _vardiyaService.GetAll();
-            model.personelIdSel = new SelectList(personelResult?.Data?.Select(p => new SelectListItem{Value = p.Id.ToString(),Text = $"{p.isim} {p.soyisim}"}).ToList(),"Value","Text");
+            model.personelIdSel = new SelectList(personelData, "Id","FullName");
             model.vardiyaIdSel = new SelectList(vardiyaResult?.Data, "Id", "vardiyaIsmi");
-
-
-
+            model.Personels = new();
             return PartialView(model);
         }
 
@@ -109,22 +109,26 @@ namespace WebUI.Areas.Admin.Controllers
             var planlanmisvardiya = new PlanlanmisVardiya()
             {
                 Id = model.Id,
-                personelId = model.personelId,
-                vardiyaId = model.vardiyaId,
-                baslangicZamani = model.baslangicZamani,
-                bitisZamani = model.bitisZamani,
-                girisZamani = model.girisZamani,
-                cikisZamani = model.cikisZamani,
-                hedefUcret = model.hedefUcret,
-                kazanilanUcret = model.kazanilanUcret,
+                //personelId = model.personelId.Value,
+                vardiyaId = model.vardiyaId.Value,
+                baslangicZamani = model.baslangicZamani.Value,
+                bitisZamani = model.bitisZamani.Value,
+                //girisZamani = model.girisZamani,
+                //cikisZamani = model.cikisZamani,
+                //hedefUcret = model.hedefUcret,
+                //kazanilanUcret = model.kazanilanUcret,
 
 
             };
-            planlanmisvardiya.Id = id;
-            var result = dm.Edit(planlanmisvardiya);
-            if (!string.IsNullOrEmpty(result.Result.Message))
+            var result = await dm.Edit(planlanmisvardiya);
+            model.personelIds = model.personelIdsStr?.Split(',')
+                       .Select(s => int.Parse(s))
+                       .ToList();
+            var atamaResult = await _planlanmisVardiyaPersonelService.UpdateVardiyaPersonel(result.Data.Id, model.personelIds);
+
+            if (!string.IsNullOrEmpty(atamaResult.Message))
             {
-                message = result.Result.Message;
+                message = atamaResult.Message;
             }
 
             return Json(message);
@@ -159,16 +163,16 @@ namespace WebUI.Areas.Admin.Controllers
 
             var events = vardiyalarResult.Data.Select(v =>
             {
-                var personel = personeller.ContainsKey(v.personelId) ? personeller[v.personelId] : null;
+                //var personel = personeller.ContainsKey(v.personelId) ? personeller[v.personelId] : null;
                 var vardiya = vardiyaTanimlari.ContainsKey(v.vardiyaId) ? vardiyaTanimlari[v.vardiyaId] : null;
 
                 return new PlanlanmisVardiyaEventDto
                 {
                     id = v.Id.ToString(),
-                    title = $"{personel?.isim} {personel?.soyisim} - {vardiya?.vardiyaIsmi}",
+                    title = $"{vardiya?.vardiyaIsmi}",
                     start = v.baslangicZamani.ToString("s"),
                     end = v.bitisZamani.ToString("s"),
-                    description = $"Giriş: {v.girisZamani?.ToString("HH:mm")} - Çıkış: {v.cikisZamani?.ToString("HH:mm")}",
+                    description = $"Giriş: {v.baslangicZamani.ToString("HH:mm")} - Çıkış: {v.bitisZamani.ToString("HH:mm")}",
                     className = "bg-soft-success"
                 };
             });

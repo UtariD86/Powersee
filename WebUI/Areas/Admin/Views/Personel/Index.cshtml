@@ -89,8 +89,18 @@
 				{
 					dataField: 'Id',
 					caption: 'Düzenle',
-					width: 70,
+					width: 150,
 					cellTemplate: function (container, options) {
+											$('<a class="edit-icon" style="color:#f0ad4e; margin-right:20%; cursor:pointer;" title="QR Kodu Görüntüle">' +
+								'<i class="fas fa-qrcode" style="font-size: 15px;"></i>' +
+							  '</a>')
+							  .on('click', function () {
+								var id = options.data.Id;
+								zuraf.getById('/@AreaName/get-personelqr', id, '#gridContainer');
+							  })
+							  .appendTo(container);
+
+
 						$('<a class="edit-icon" style="color:#0085cf; margin-right:20%; cursor:pointer;" title="Düzenle"><i class="fas fa-pen-nib" style="font-size: 15px;"></i></a>')
 							.on('click', function () {
 								var id = options.data.Id;
@@ -102,13 +112,14 @@
 								var id = options.data.Id;
 								zuraf.deleteById('/@AreaName/delete-personel', id, '#gridContainer', true);
 							}).appendTo(container);
+
 					},
 					allowFiltering: false
 				},
-				
-			
-				
-				
+
+
+
+
 				{
 					dataField: 'isim',
 					caption: 'İsim',
@@ -167,6 +178,7 @@
 				createDetail("Çalışma Tipi", options.data.CalismaTipiStr, 'badge-secondary'),
 				createDetail("Vardiya Türü", options.data.VardiyaTuruStr, 'badge-secondary'),
 				createDetail('Açıklama', options.data.aciklama, 'badge-light'),
+				createDetail('Code', options.data.Code, 'badge-light'),
 
 
 			);

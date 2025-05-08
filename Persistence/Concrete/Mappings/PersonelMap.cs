@@ -46,6 +46,7 @@ public class PersonelMap : IEntityTypeConfiguration<Personel>
         builder.Property(d => d.bitisTarihi).HasColumnName("bitisTarihi");
 
         builder.Property(d => d.fazlaMesaiUygun).HasColumnName("fazlaMesaiUygun");
+        builder.Property(d => d.Code).HasColumnName("Code");
 
         builder.Property(d => d.CalismaTipi).HasColumnName("CalismaTipi").IsRequired();
         builder.Property(d => d.Cinsiyet).HasColumnName("Cinsiyet").IsRequired();
@@ -67,6 +68,39 @@ public class PersonelMap : IEntityTypeConfiguration<Personel>
         builder.Property(d => d.DeletedDate).HasColumnName("DeletedDate");
 
         builder.HasData(GenerateSeedData());
+    }
+    private string? KodOlustur(string soyad)
+    {
+        // İlk 5 karakteri al, eksikse 'X' ile tamamla
+        string ilkBes = soyad.ToUpper().PadRight(5, 'X').Replace("Ç", "C").Replace("ç", "c")
+        .Replace("Ğ", "G").Replace("ğ", "g")
+        .Replace("İ", "I").Replace("ı", "i")
+        .Replace("Ö", "O").Replace("ö", "o")
+        .Replace("Ş", "S").Replace("ş", "s")
+        .Replace("Ü", "U").Replace("ü", "u").Substring(0, 5);
+
+        // Rastgele 5 karakter oluştur
+        string rastgeleKisim = RastgeleKodOlustur(5);
+
+        // Birleştir
+        string kod = $"{ilkBes}-{rastgeleKisim}";
+
+        return kod;
+    }
+
+    public string RastgeleKodOlustur(int uzunluk)
+    {
+        const string karakterler = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        Random random = new Random();
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < uzunluk; i++)
+        {
+            int index = random.Next(karakterler.Length);
+            sb.Append(karakterler[index]);
+        }
+
+        return sb.ToString();
     }
 
     private List<Personel> GenerateSeedData()
@@ -98,7 +132,7 @@ public class PersonelMap : IEntityTypeConfiguration<Personel>
             var soyisimIndex = _random.Next(soyisimler.Count);
             var isim = isimler[isimIndex];
             var soyisim = soyisimler[soyisimIndex];
-
+            var code = KodOlustur(soyisim);
             // Tek indexler için erkek, çift indexler için kadın cinsiyeti belirle
             Cinsiyet cinsiyet = (isimIndex % 2 == 0) ? Cinsiyet.Erkek : Cinsiyet.Kadin;
 
@@ -133,7 +167,8 @@ public class PersonelMap : IEntityTypeConfiguration<Personel>
                 VardiyaTuru = (VardiyaTuru)_random.Next(1,Enum.GetValues(typeof(VardiyaTuru)).Length),
                 CreatedDate = DateTime.Now,
                 UpdatedDate = DateTime.Now,
-                DeletedDate = null
+                DeletedDate = null,
+                Code= code
             });
         }
 

@@ -5155,8 +5155,11 @@ var getTemplate = function getTemplate(event) {
     const startDate = new Date(event.start);
     const endDate = new Date(event.end);
 
+    const endDateWithTolerance = new Date(endDate.getTime() + 60 * 60 * 1000);
+
     // Eğer etkinlik tarihi geçmişteyse veya başlangıç saati şu andan önceyse
     const isEventPast = startDate < currentDate || endDate < currentDate;
+    const isCurrent = startDate <= currentDate && endDateWithTolerance >= currentDate;
 
     return `
     <div class="modal-header bg-light ps-card pe-5 border-bottom-0">
@@ -5233,6 +5236,16 @@ var getTemplate = function getTemplate(event) {
         </a>
         <a onclick="eventDelete(${event.id})" class="btn btn-falcon-danger btn-sm">
           <span class="far fa-trash-alt fs--2 mr-2"></span> Sil
+        </a>
+
+    ` : ''}
+    ${isCurrent ? `
+
+        <a onclick="eventGiris(${event.id})" class="btn btn-falcon-info btn-sm">
+          <span class="far fa-clock fs--2 mr-2"></span> Giriş Sayfası
+        </a>
+        <a onclick="eventCikis(${event.id})" class="btn btn-falcon-danger btn-sm">
+          <span class="fas fa-sign-out-alt fs--2 mr-2"></span> Çıkış Sayfası
         </a>
 
     ` : ''}

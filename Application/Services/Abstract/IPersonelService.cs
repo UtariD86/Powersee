@@ -24,5 +24,6 @@ namespace Application.Services.Abstract
 
 
         Task<IDataResult<Personel>> GetById(int id);
+        Task<IDataResult<Personel>> GetByCode(string code);
     }
 }

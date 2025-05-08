@@ -23,6 +23,8 @@ public class Personel : EntityBase, IEntity
     public string? vergiDairesiAdi { get; set; }
     public string? aciklama { get; set; }
 
+    public string Code { get; set; }
+
     [NotMapped]
     public IFormFile? profilFotografi { get; set; }
     public string? profilFotografiUrl { get; set; }

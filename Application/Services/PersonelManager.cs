@@ -16,6 +16,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using QRCoder;
 
 namespace Application.Services
 {
@@ -67,7 +68,7 @@ namespace Application.Services
 
                     personel.UpdatedDate = DateTime.UtcNow;
                     personel.CreatedDate = DateTime.UtcNow;
-
+                    personel.Code = KodOlustur(personel.soyisim);
 
                     await _unitOfWork.Personels.AddAsync(personel);
 
@@ -185,6 +186,56 @@ namespace Application.Services
             }
 
             return new DataResult<Personel>(ResultStatus.Error, "Personel bulunamadı", null);
+        }
+
+
+        public async Task<IDataResult<Personel>> GetByCode(string code)
+        {
+
+            var personel = _unitOfWork.Personels.GetAllAsync(predicate: k => k.Code == code).GetAwaiter().GetResult().FirstOrDefault();
+
+
+            if (personel != null)
+            {
+
+                return new DataResult<Personel>(ResultStatus.Success, personel);
+            }
+
+            return new DataResult<Personel>(ResultStatus.Error, "Personel bulunamadı", null);
+        }
+
+        private string? KodOlustur(string soyad)
+        {
+            // İlk 5 karakteri al, eksikse 'X' ile tamamla
+            string ilkBes = soyad.ToUpper().PadRight(5, 'X').Replace("Ç", "C").Replace("ç", "c")
+        .Replace("Ğ", "G").Replace("ğ", "g")
+        .Replace("İ", "I").Replace("ı", "i")
+        .Replace("Ö", "O").Replace("ö", "o")
+        .Replace("Ş", "S").Replace("ş", "s")
+        .Replace("Ü", "U").Replace("ü", "u").Substring(0, 5);
+
+            // Rastgele 5 karakter oluştur
+            string rastgeleKisim = RastgeleKodOlustur(5);
+
+            // Birleştir
+            string kod = $"{ilkBes}-{rastgeleKisim}";
+
+            return kod;
+        }
+
+        public string RastgeleKodOlustur(int uzunluk)
+        {
+            const string karakterler = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            Random random = new Random();
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < uzunluk; i++)
+            {
+                int index = random.Next(karakterler.Length);
+                sb.Append(karakterler[index]);
+            }
+
+            return sb.ToString();
         }
 
     }

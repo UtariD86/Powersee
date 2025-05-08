@@ -185,6 +185,13 @@
     </script>*@
 
 <script>
+    function eventGiris(id) {
+        window.location.href = `/vardiya/${id}/giris`;
+    }
+
+       function eventCikis(id) {
+           window.location.href = `/vardiya/${id}/cikis`;
+        }
        function eventEdit(id) {
            zuraf.getById('/@AreaName/get-planlanmisvardiya', id, '')
         $('#eventDetailsModal').modal('hide');
@@ -223,101 +230,6 @@
     var eventList = [];
 
 
-
-    //TODO VURASI SADECE MODAL TESTİ İÇİN VAR VERİTABANINDAN LİSTELEME ÇALIŞIYORSA BURASI SİLİNECEK
-    // var eventList = [
-    //     {
-    //         id: "1",
-    //         title: 'Boot Camp',
-    //         start: "".concat(currentYear, "-").concat(currentMonth, "-01 10:00:00"),
-    //         end: "".concat(currentYear, "-").concat(currentMonth, "-03 16:00:00"),
-    //         description: "Boston Harbor Now in partnership with the Friends of Christopher Columbus Park, the Wharf District Council and the City of Boston is proud to announce the New Year's Eve Midnight Harbor Fireworks! This beloved nearly 40-year old tradition is made possible by the generous support of local waterfront organizations and businesses and the support of the City of Boston and the Office of Mayor Marty Walsh.",
-    //         className: 'bg-soft-success',
-    //         location: 'Boston Harborwalk, Christopher Columbus Park, <br /> Boston, MA 02109, United States',
-    //         organizer: 'Boston Harbor Now'
-    //     }, {
-    //         id: "1",
-    //         title: 'Crain\'s New York Business ',
-    //         start: "".concat(currentYear, "-").concat(currentMonth, "-11"),
-    //         description: "Crain's 2020 Hall of Fame. Sponsored Content By Crain's Content Studio. Crain's Content Studio Presents: New Jersey: Perfect for Business. Crain's Business Forum: Letitia James, New York State Attorney General. Crain's NYC Summit: Examining racial disparities during the pandemic",
-    //         className: 'bg-soft-primary'
-    //     }, {
-    //         id: "1",
-    //         title: 'Toplantı',
-    //         start: "".concat(currentYear, "-").concat(currentMonth, "-").concat(currentDay),
-    //         description: 'The Milken Institute Global Conference gathered the best minds in the world to tackle some of its most stubborn challenges. It was a unique experience in which individuals with the power to enact change connected with experts who are reinventing health, technology, philanthropy, industry, and media.',
-    //         className: 'bg-soft-success',
-    //         allDay: true,
-    //         schedules: [{
-    //             id: "1",
-    //             title: 'Reporting',
-    //             start: "".concat(currentYear, "-").concat(currentMonth, "-").concat(currentDay, " 11:00:00"),
-    //             description: 'Time to start the conference and will briefly describe all information about the event.  ',
-    //             className: 'event-bg-soft-success'
-    //         }, {
-    //             id: "3",
-    //             title: 'Lunch',
-    //             start: "".concat(currentYear, "-").concat(currentMonth, "-").concat(currentDay, " 14:00:00"),
-    //             description: 'Lunch facility for all the attendance in the conference.',
-    //             className: 'event-bg-soft-success'
-    //         }, {
-    //             id: "5",
-    //             title: 'Contest',
-    //             start: "".concat(currentYear, "-").concat(currentMonth, "-").concat(currentDay, " 16:00:00"),
-    //             description: 'The starting of the programming contest',
-    //             className: 'event-bg-soft-success'
-    //             }, {
-    //             id: "1",
-    //             title: 'Dinner',
-    //             start: "".concat(currentYear, "-").concat(currentMonth, "-").concat(currentDay, " 22:00:00"),
-    //             description: 'Dinner facility for all the attendance in the conference',
-    //             className: 'event-bg-soft-success'
-    //         }]
-    //     }, {
-    //         id: "1",
-    //         title: "ICT Expo ".concat(currentYear, " - Product Release"),
-    //         start: "".concat(currentYear, "-").concat(currentMonth, "-16 10:00:00"),
-    //         description: "ICT Expo ".concat(currentYear, " is the largest private-sector exposition aimed at showcasing IT and ITES products and services in Switzerland."),
-    //         end: "".concat(currentYear, "-").concat(currentMonth, "-18 16:00:00"),
-    //         className: 'bg-soft-warning'
-    //     }, {
-    //         id: "1",
-    //         title: 'Meeting',
-    //         start: "".concat(currentYear, "-").concat(currentMonth, "-07 10:00:00"),
-    //         description: 'Discuss about the upcoming projects in current year and assign all tasks to the individuals'
-    //     }, {
-    //         id: "1",
-    //         title: 'Contest',
-    //         start: "".concat(currentYear, "-").concat(currentMonth, "-14 10:00:00"),
-    //         description: 'PeaceX is an international peace and amity organisation that aims at casting a pall at the striking issues surmounting the development of peoples and is committed to impacting the lives of young people all over the world.'
-    //     }, {
-    //         id: "1",
-    //         title: 'Event With Url',
-    //         start: "".concat(currentYear, "-").concat(currentMonth, "-23"),
-    //         description: 'Sample example of a event with url. Click the event, will redirect to the given link.',
-    //         className: 'bg-soft-success',
-    //         url: 'http://google.com'
-    //     }, {
-    //         id: "1",
-    //         title: 'Competition',
-    //         start: "".concat(currentYear, "-").concat(currentMonth, "-26"),
-    //         description: 'The Future of Zambia – Top 30 Under 30 is an annual award, ranking scheme, and recognition platform for young Zambian achievers under the age of 30, who are building brands, creating jobs, changing the game, and transforming the country.',
-    //         className: 'bg-soft-danger'
-    //     }, {
-    //         id: "1",
-    //         title: 'Birthday Party',
-    //         start: "".concat(currentYear, "-").concat(nextMonth, "-05"),
-    //         description: 'Will celebrate birthday party with my friends and family',
-    //         className: 'bg-soft-primary'
-    //     }, {
-    //         id: "1",
-    //         title: 'Click for Google',
-    //         url: 'http://google.com/',
-    //         start: "".concat(currentYear, "-").concat(prevMonth, "-10"),
-    //         description: 'Applications are open for the New Media Writing Prize 2020. The New Media Writing Prize (NMWP) showcases exciting and inventive stories and poetry that integrate a variety of formats, platforms, and digital media.',
-    //         className: 'bg-soft-primary'
-    //     }];
-    //TODO VURASI SADECE MODAL TESTİ İÇİN VAR VERİTABANINDAN LİSTELEME ÇALIŞIYORSA BURASI SİLİNECEK
 
     // Önayarlar: Selector’lar, event isimleri, data key’ler ve class isimleri gibi
     var Selectors = {
