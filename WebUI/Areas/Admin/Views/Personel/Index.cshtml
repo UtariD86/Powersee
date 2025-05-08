@@ -89,8 +89,19 @@
 				{
 					dataField: 'Id',
 					caption: 'Düzenle',
-					width: 150,
+					width: 200,
 					cellTemplate: function (container, options) {
+                        // Profil butonu (şluna giden)
+                        $('<a class="profile-icon" style="color:#28a745; margin-right:20%; cursor:pointer;" title="Profil">' +
+                            '<i class="fas fa-user" style="font-size: 15px;"></i>' +
+                            '</a>')
+                            .on('click', function () {
+                                var id = options.data.Id;
+                                window.location.href = '/Admin/personel/' + id + '/profil';
+                            })
+                            .appendTo(container);
+
+
 											$('<a class="edit-icon" style="color:#f0ad4e; margin-right:20%; cursor:pointer;" title="QR Kodu Görüntüle">' +
 								'<i class="fas fa-qrcode" style="font-size: 15px;"></i>' +
 							  '</a>')
