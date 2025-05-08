@@ -18,13 +18,16 @@ namespace WebUI.Areas.Admin.Controllers
         // Gerekli servisleri inject etmek için değişkenler
         private readonly IKesintiService _kesintiService;
         private readonly IPersonelService _personelService;
+        private readonly IPlanlanmisVardiyaService _planlanmisVardiyaService;
         // private readonly IPlanlananVardiyaSnapshotService _snapshotService; // Snapshot servisi varsa eklenmeli
 
         // Constructor ile servisleri inject ediyoruz
-        public KesintiController(IKesintiService kesintiService, IPersonelService personelService /*, IPlanlananVardiyaSnapshotService snapshotService */)
+        public KesintiController(IKesintiService kesintiService, IPersonelService personelService, IPlanlanmisVardiyaService planlanmisVardiyaService)
         {
             _kesintiService = kesintiService;
             _personelService = personelService;
+            _planlanmisVardiyaService = planlanmisVardiyaService;
+
             // _snapshotService = snapshotService; // Snapshot servisi varsa atanmalı
         }
 
@@ -69,17 +72,17 @@ namespace WebUI.Areas.Admin.Controllers
             }
 
             // Planlanan Vardiya Snapshot Listesi (Örnek - Snapshot servisi ve GetAll metodu varsayıldı)
-            // var snapshotResult = await _snapshotService.GetAll(); // Tüm snapshotları al (veya filtrelenmiş)
-            // if (snapshotResult.ResultStatus == ResultStatus.Success)
-            // {
-            //     model.SnapshotListesi = snapshotResult.Data
-            //                                 .Select(s => new SelectListItem { Text = $"Snapshot {s.Id} - {s.BaslangicZamani:dd.MM.yyyy HH:mm}", Value = s.Id.ToString() }) // Örnek metin
-            //                                 .ToList();
-            // }
-            // else
-            // {
+             var snapshotResult = await _planlanmisVardiyaService.GetAll(); // Tüm snapshotları al (veya filtrelenmiş)
+             if (snapshotResult.ResultStatus == ResultStatus.Success)
+             {
+                 model.SnapshotListesi = snapshotResult.Data
+                                            .Select(s => new SelectListItem { Text = $"Snapshot {s.Id} - {s.baslangicZamani:dd.MM.yyyy HH:mm}", Value = s.Id.ToString() }) // Örnek metin
+                                            .ToList();
+             }
+            else
+            {
             model.SnapshotListesi = new List<SelectListItem>(); // Şimdilik boş liste
-            // }
+             }
             // --- Dropdown Doldurma Sonu ---
 
 
@@ -155,8 +158,8 @@ namespace WebUI.Areas.Admin.Controllers
             {
                 Id = model.Id,
                 PersonelId = model.PersonelId,
-                //PlanlanmisVardiyaSnapshotId = model.PlanlanmisVardiyaSnapshotId,
-                PlanlanmisVardiyaSnapshotId = 1, //şimdilik
+                PlanlanmisVardiyaSnapshotId = model.PlanlanmisVardiyaSnapshotId.Value,
+                
                 UygulanacakTarih = model.UygulanacakTarih,
                 CezaMiktari = model.CezaMiktari,
                 // CreatedDate ve UpdatedDate Manager içinde ayarlanıyor

@@ -6,6 +6,7 @@ using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence.Abstract;
 using Persistence.Concrete;
@@ -86,7 +87,8 @@ namespace Persistence.Repositories
                     CreatedDate = g.Key.CreatedDate,
                     UpdatedDate = g.Key.UpdatedDate,
                     DeletedDate = g.Key.DeletedDate,
-                    ManagerName = dummyManagers.FirstOrDefault(m => m.Value == g.Key.Managerid.ToString())?.Text ?? "Bilinmiyor",
+                    ManagerName = context.Set<Personel>().FirstOrDefault(d => d.Id == g.Key.Managerid) is { } personel ? $"{personel.isim} {personel.soyisim}" : "Bir Hata Oluştu",
+
                     ActiveStr = g.Key.Active.HasValue ? (g.Key.Active.Value ? "Aktif" : "Pasif") : "Bilinmiyor",
                     UniqueCode = g.Key.UniqueCode,
                     UniqueCodeStr = g.Key.UniqueCode,

@@ -10,6 +10,8 @@ using Application.Services.Abstract; // IKesintiService için
 using Core.Dtos.Abstract; // IDataResult, IResult için
 using Core.Dtos.Concrete; // PageResponse, PageRequest, DataResult, Result için
 using Core.Enums; // ResultStatus için
+using Domain.Dtos;
+
 // KesintiListDto'nun tanımlanacağı varsayılan namespace (Adım 19'da oluşturulacak)
 // using Domain.Dtos; // Veya DTO'ların bulunduğu namespace
 using Domain.Entities; // Kesinti entity'si için
@@ -142,33 +144,32 @@ namespace Application.Services
         }
 
         // Grid İçin Sayfalı Getirme Metodu (Şimdilik Entity döndürüyor)
-        public async Task<IDataResult<PageResponse<Kesinti>>> GetToGrid(PageRequest request)
+        public async Task<IDataResult<PageResponse<KesintiListDto>>> GetToGrid(PageRequest request)
         {
             try
             {
-                Expression<Func<Kesinti, bool>> predicate = k => !k.DeletedDate.HasValue;
-                if (!string.IsNullOrEmpty(request.Filter))
-                {
-                    predicate = _filterHelper.GetExpression<Kesinti>(request.Filter, deleted: false);
-                }
+                Expression<Func<Kesinti, bool>> predicate = x => !x.DeletedDate.HasValue;
 
-                var kesintilerPage = await _unitOfWork.Kesintiler.GetEntitiesWithPaginationAsync(
-                    request.PageIndex,
-                    request.PageSize,
+                if (!string.IsNullOrEmpty(request.Filter))
+                    predicate = _filterHelper.GetExpression<Kesinti>(request.Filter, deleted: false);
+
+                var kesintis = await _unitOfWork.Kesintiler.GetAllKesintisAsync(
+                    pageIndex: request.PageIndex,
+                    pageSize: request.PageSize,
                     predicate: predicate,
-                    orderBy: q => q.OrderByDescending(k => k.UpdatedDate)
+                    orderBy: q => q.OrderByDescending(d => d.UpdatedDate)
                 );
 
-                if (kesintilerPage.Items.Any())
+                if (kesintis.Items.Any())
                 {
-                    return new DataResult<PageResponse<Kesinti>>(ResultStatus.Success, kesintilerPage);
+                    return new DataResult<PageResponse<KesintiListDto>>(ResultStatus.Success, kesintis);
                 }
-                // DÜZELTME: NotFound yerine Error kullanıldı, mesaj güncellendi
-                return new DataResult<PageResponse<Kesinti>>(ResultStatus.Error, "Belirtilen kriterlere uygun kesinti bulunamadı.", new PageResponse<Kesinti>());
+
+                return new DataResult<PageResponse<KesintiListDto>>(ResultStatus.Error, "Hiç talep bulunamadı", null);
             }
             catch (Exception ex)
             {
-                return new DataResult<PageResponse<Kesinti>>(ResultStatus.Error, $"Kesintiler grid için getirilirken bir hata oluştu: {ex.Message}", null, ex);
+                return new DataResult<PageResponse<KesintiListDto>>(ResultStatus.Error, $"Bir hata oluştu: {ex.Message}", null);
             }
         }
 
