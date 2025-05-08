@@ -1,6 +1,7 @@
 ﻿using Core.Dtos.Abstract;
 using Core.Dtos.Concrete;
 using Domain.Dtos;
+using Domain.Dtos.Report;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -25,5 +26,7 @@ namespace Application.Services.Abstract
       
         
         Task<IDataResult<Position>> GetById(int id);
+
+        Task<List<BirimSayiDto>> GetAllPositionsWithPersonelCounts();
     }
 }

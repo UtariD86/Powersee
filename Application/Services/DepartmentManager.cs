@@ -15,6 +15,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Dtos.Report;
 
 namespace Application.Services
 {
@@ -256,5 +257,33 @@ namespace Application.Services
 
             return sb.ToString();
         }
+
+
+
+        public async Task<List<BirimSayiDto>> GetAllDepartentsWithPersonelCounts()
+        {
+            //Burada Tüm Departmanları alıyoruz. Alırken silinmiş olanları almıyoruz. Ayrıcı güncelleme tarihine göre sıralıyoruz.
+            var departments = await _unitOfWork.Departments.GetAllAsync(
+                predicate: d => !d.DeletedDate.HasValue,
+                orderBy: q => q.OrderByDescending(d => d.UpdatedDate)
+            );
+
+            List<BirimSayiDto> departmanlar = new();
+            foreach(var department in departments)
+            {
+                var personeller = await _unitOfWork.Personels.GetAllAsync(p => p.departmanId == department.Id && !p.DeletedDate.HasValue);
+                var sayi = personeller.Count;
+                var departmanSayi = new BirimSayiDto
+                {
+                    BirimAdi = department.Name,
+                    Count = sayi
+                };
+
+                departmanlar.Add(departmanSayi);
+            }
+            //Büyükten küçüğe
+            return departmanlar.OrderByDescending(x => x.Count).ToList();
+        }
+
     }
-    }
+}

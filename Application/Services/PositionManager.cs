@@ -5,6 +5,7 @@ using Core.Dtos.Concrete;
 using Core.Enums;
 using DocumentFormat.OpenXml.Bibliography;
 using Domain.Dtos;
+using Domain.Dtos.Report;
 using Domain.Entities;
 using Persistence.Abstract;
 using System;
@@ -159,6 +160,29 @@ namespace Application.Services
             }
         }
 
+        public async Task<List<BirimSayiDto>> GetAllPositionsWithPersonelCounts()
+        {
+            //Burada Tüm Pozisyonları alıyoruz. Alırken silinmiş olanları almıyoruz. Ayrıcı güncelleme tarihine göre sıralıyoruz.
+            var Positions = await _unitOfWork.Positions.GetAllAsync(
+                predicate: d => !d.DeletedDate.HasValue,
+                orderBy: q => q.OrderByDescending(d => d.UpdatedDate)
+            );
 
+            List<BirimSayiDto> posizyonlar = new();
+            foreach (var Position in Positions)
+            {
+                var personeller = await _unitOfWork.Personels.GetAllAsync(p => p.pozisyonId == Position.Id && !p.DeletedDate.HasValue);
+                var sayi = personeller.Count;
+                var positionSayi = new BirimSayiDto
+                {
+                    BirimAdi = Position.Name,
+                    Count = sayi
+                };
+
+                posizyonlar.Add(positionSayi);
+            }
+            //Büyükten küçüğe
+            return posizyonlar.OrderByDescending(x => x.Count).ToList();
+        }
     }
 }
